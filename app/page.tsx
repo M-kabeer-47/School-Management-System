@@ -21,13 +21,17 @@ const menuItems: SidebarItem[] = [
     icon: Icons.Calendar,
     badge: "92%",
   },
+  { label: "Homework", href: "/homework", icon: Icons.ClipboardList }, // NEW
   { label: "Subjects", href: "/subjects", icon: Icons.BookOpen },
+  { label: "Timetable", href: "/timetable", icon: Icons.CalendarClock },
   { label: "Books List", href: "/books", icon: Icons.Library },
+  { label: "Announcements", href: "/announcements", icon: Icons.Megaphone },
   { label: "Report Card", href: "/reports", icon: Icons.GraduationCap },
   { label: "Fees", href: "/fees", icon: Icons.Wallet },
-  { label: "Timetable", href: "/timetable", icon: Icons.CalendarClock },
-  { label: "Announcements", href: "/announcements", icon: Icons.Megaphone },
-  { label: "Help & Support", href: "/support", icon: Icons.MessageSquare },
+  { label: "Exams", href: "/exams", icon: Icons.Exams }, // NEW
+  { label: "Achievements", href: "/achievements", icon: Icons.Trophy }, // NEW
+
+  { label: "Contact School", href: "/contact", icon: Icons.Phone }, // RENAMED
   { label: "Settings", href: "/settings", icon: Icons.Settings },
 ];
 
