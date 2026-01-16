@@ -52,7 +52,7 @@ export const Sidebar = ({ className, items, user }: SidebarProps) => {
         initial={false}
         animate={isCollapsed ? "collapsed" : "expanded"}
         variants={sidebarVariants}
-        className="hidden md:flex relative h-screen sticky top-0 flex-shrink-0 group/sidebar"
+        className="hidden md:flex relative h-[100dvh] sticky top-0 flex-shrink-0 group/sidebar"
       >
         {/* Sidebar Content */}
         <aside
@@ -88,12 +88,12 @@ export const Sidebar = ({ className, items, user }: SidebarProps) => {
           <SidebarFooter user={user} isCollapsed={isCollapsed} />
         </aside>
 
-        {/* Collapse Toggle Button - Only visible on hover */}
-        <div className="absolute -right-4 top-1/2 -translate-y-1/2 z-50 opacity-0 group-hover/sidebar:opacity-100 transition-opacity duration-200">
-          <div className="relative group/collapse">
+        {/* Collapse Toggle Button - Always visible, perfectly centered */}
+        <div className="absolute -right-4 inset-y-0 flex items-center z-50 pointer-events-none">
+          <div className="relative group/collapse pointer-events-auto">
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="w-8 h-8 rounded-full bg-background border border-border shadow-lg flex items-center justify-center text-text-muted hover:text-accent hover:border-accent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring hover:scale-110"
+              className="w-8 h-8 rounded-full bg-background border border-border shadow-lg flex items-center justify-center text-text-muted hover:text-accent hover:border-accent transition-colors duration-200 focus:outline-none hover:scale-110"
               aria-label={isCollapsed ? "Expand menu" : "Collapse menu"}
             >
               <motion.div
