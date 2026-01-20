@@ -7,9 +7,9 @@ import { SidebarItem } from "./SidebarItem";
 import { SidebarFooter } from "./SidebarFooter";
 import { MobileSidebar } from "./MobileSidebar";
 import { Icons } from "@/utils/sidebar/icons";
-import { SidebarProps } from "@/lib/types/sidebar";
 import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
+import { menuItems, currentUser } from "@/lib/constants";
 
 // Animation variants for the sidebar wrapper
 const sidebarVariants = {
@@ -31,7 +31,11 @@ const sidebarVariants = {
   },
 };
 
-export const Sidebar = ({ className, items, user }: SidebarProps) => {
+interface SidebarComponentProps {
+  className?: string;
+}
+
+export const Sidebar = ({ className }: SidebarComponentProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
 
@@ -45,7 +49,7 @@ export const Sidebar = ({ className, items, user }: SidebarProps) => {
   return (
     <>
       {/* Mobile Sidebar (Handles its own visibility) */}
-      <MobileSidebar items={items} user={user} />
+      <MobileSidebar items={menuItems} user={currentUser} />
 
       {/* Desktop Sidebar - Single animated container */}
       <motion.div
@@ -58,14 +62,14 @@ export const Sidebar = ({ className, items, user }: SidebarProps) => {
         <aside
           className={clsx(
             "flex flex-col h-full w-full bg-background border-r border-border overflow-hidden",
-            className
+            className,
           )}
         >
           <SidebarHeader isCollapsed={isCollapsed} />
 
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3 space-y-1 custom-scrollbar">
-            {items.map((item, index) => {
+            {menuItems.map((item, index) => {
               const isSettings = item.label === "Settings";
 
               return (
@@ -85,7 +89,7 @@ export const Sidebar = ({ className, items, user }: SidebarProps) => {
           </div>
 
           {/* Footer & User Profile */}
-          <SidebarFooter user={user} isCollapsed={isCollapsed} />
+          <SidebarFooter user={currentUser} isCollapsed={isCollapsed} />
         </aside>
 
         {/* Collapse Toggle Button - Always visible, perfectly centered */}

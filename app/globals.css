@@ -29,10 +29,16 @@
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
   --accent-light: #dbeafe;
+  --accent-gradient: linear-gradient(
+    90deg,
+    #60a5fa 0%,
+    #2563eb 30%,
+    #2563eb 100%
+  );
   --accent-foreground: #ffffff;
 
   /* Semantic - Status Colors */
-  --success: #16a34a;
+  --success: #17b350; /* Lime/Emerald - brighter and friendlier */
   --success-light: #dcfce7;
   --success-foreground: #ffffff;
 
@@ -79,10 +85,16 @@
   --accent: #3b82f6;
   --accent-hover: #60a5fa;
   --accent-light: #1e3a5f;
+  --accent-gradient: linear-gradient(
+    90deg,
+    #60a5fa 0%,
+    #2563eb 50%,
+    #2563eb 100%
+  );
   --accent-foreground: #ffffff;
 
   /* Semantic - Status Colors */
-  --success: #22c55e;
+  --success: #20da64;
   --success-light: #14532d;
   --success-foreground: #ffffff;
 
@@ -237,8 +249,9 @@ h6 {
 
 /* Smooth Transitions */
 * {
-  transition-property: color, background-color, border-color, outline-color,
-    fill, stroke, opacity, box-shadow, transform;
+  transition-property:
+    color, background-color, border-color, outline-color, fill, stroke, opacity,
+    box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -259,4 +272,18 @@ h6 {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+}
+
+/* Gradient Utilities */
+.bg-accent-gradient {
+  background: var(--accent-gradient) !important;
+}
+
+/* Hide Scrollbar Utility */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

@@ -25,13 +25,13 @@ export const SidebarItem = ({
           isActive
             ? "text-accent-foreground"
             : "text-text-secondary hover:text-text-primary",
-          isCollapsed && "justify-center px-2"
+          isCollapsed && "justify-center px-2",
         )}
       >
         {isActive && (
           <motion.div
             layoutId="sidebar-active"
-            className="absolute inset-0 bg-accent rounded-xl -z-10"
+            className="absolute inset-0 bg-accent-gradient rounded-xl -z-10"
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           />
         )}
@@ -43,7 +43,7 @@ export const SidebarItem = ({
         <item.icon
           className={clsx(
             "w-6 h-6 flex-shrink-0 relative z-20",
-            isActive && "text-accent-foreground"
+            isActive && "text-accent-foreground",
           )}
         />
 
@@ -60,7 +60,7 @@ export const SidebarItem = ({
               "px-2 py-0.5 rounded-full text-[11px] font-semibold relative z-20",
               isActive
                 ? "bg-accent-foreground/20 text-accent-foreground"
-                : "bg-surface-active text-text-secondary"
+                : "bg-surface-active text-text-secondary",
             )}
           >
             {item.badge}
