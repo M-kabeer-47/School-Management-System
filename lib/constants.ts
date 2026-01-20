@@ -9,7 +9,7 @@ export const currentUser: User = {
 
 export const menuItems: SidebarItem[] = [
   { label: "Dashboard", href: "/", icon: Icons.Dashboard },
-  { label: "My Child", href: "/profile", icon: Icons.User },
+  { label: "My Profile", href: "/profile", icon: Icons.User },
   {
     label: "Attendance",
     href: "/attendance",
