@@ -1,0 +1,1 @@
+export { FeesTable } from "./FeesTable";

@@ -67,7 +67,7 @@ export const TopicsList = ({ topicUnits }: TopicsListProps) => {
           {/* Unit/Chapter Header */}
           <div className="flex items-center gap-3 mb-4">
             <div className="w-1.5 h-6 rounded-full bg-accent-gradient" />
-            <h3 className="text-base md:text-lg font-bold font-heading text-text-primary">
+            <h3 className="text-base md:text-xl font-bold font-heading text-text-primary">
               {unit.unitName}
             </h3>
           </div>

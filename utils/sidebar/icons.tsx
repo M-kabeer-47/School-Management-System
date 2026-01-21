@@ -100,6 +100,24 @@ export const Icons = {
       <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
     </svg>
   ),
+  // Receipt/Invoice icon - for Fees
+  Receipt: ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z" />
+      <path d="M8 7h8" />
+      <path d="M8 11h8" />
+      <path d="M8 15h5" />
+    </svg>
+  ),
   CalendarClock: ({ className }: { className?: string }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
