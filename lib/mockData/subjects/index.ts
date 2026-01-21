@@ -9,6 +9,7 @@ export const subjects: Subject[] = [
       id: "t-001",
       name: "Mrs. Fatima Zahra",
     },
+    syllabusUrl: "/syllabus/english-class5.pdf",
   },
   {
     id: "math-101",
@@ -18,6 +19,7 @@ export const subjects: Subject[] = [
       id: "t-002",
       name: "Mr. Ahmed Hassan",
     },
+    syllabusUrl: "/syllabus/math-class5.pdf",
   },
   {
     id: "sci-101",
@@ -27,6 +29,7 @@ export const subjects: Subject[] = [
       id: "t-003",
       name: "Ms. Sana Malik",
     },
+    syllabusUrl: "/syllabus/science-class5.pdf",
   },
   {
     id: "urdu-101",
@@ -36,6 +39,7 @@ export const subjects: Subject[] = [
       id: "t-004",
       name: "Mr. Imran Qureshi",
     },
+    syllabusUrl: "/syllabus/urdu-class5.pdf",
   },
   {
     id: "isl-101",
@@ -45,6 +49,7 @@ export const subjects: Subject[] = [
       id: "t-005",
       name: "Maulana Abdul Rasheed",
     },
+    syllabusUrl: "/syllabus/islamiat-class5.pdf",
   },
   {
     id: "pst-101",
@@ -54,6 +59,7 @@ export const subjects: Subject[] = [
       id: "t-006",
       name: "Mr. Tariq Mehmood",
     },
+    syllabusUrl: "/syllabus/pakistan-studies-class5.pdf",
   },
   {
     id: "cs-101",
@@ -63,6 +69,7 @@ export const subjects: Subject[] = [
       id: "t-007",
       name: "Ms. Ayesha Siddiqui",
     },
+    syllabusUrl: "/syllabus/computer-science-class5.pdf",
   },
   {
     id: "naz-101",
@@ -72,5 +79,6 @@ export const subjects: Subject[] = [
       id: "t-008",
       name: "Qari Muhammad Yousuf",
     },
+    syllabusUrl: "/syllabus/nazra-quran-class5.pdf",
   },
 ];

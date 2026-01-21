@@ -9,4 +9,5 @@ export interface Subject {
   name: string;
   nameUrdu?: string;
   teacher: Teacher;
+  syllabusUrl?: string;
 }
