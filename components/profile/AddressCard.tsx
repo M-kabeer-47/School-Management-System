@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Edit3, Save, X, MapPin, Building, Map, Phone } from "lucide-react";
-import { Input } from "@/components/ui/Input";
+import { Save, X, MapPin, Building, Map, Phone } from "lucide-react";
+import { InfoRow } from "./InfoRow";
 
 interface AddressData {
     address: string;
@@ -41,44 +41,6 @@ export const AddressCard = ({
         setIsEditing(false);
     };
 
-    const InfoRow = ({
-        icon: Icon,
-        label,
-        value,
-        field,
-        isEmergency = false,
-    }: {
-        icon: React.ElementType;
-        label: string;
-        value: string;
-        field?: keyof AddressData;
-        isEmergency?: boolean;
-    }) => (
-        <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-lg bg-surface-active flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Icon className="w-4 h-4 text-text-muted" />
-            </div>
-            <div className="flex-1 min-w-0">
-                {isEditing ? (
-                    <Input
-                        label={label}
-                        value={isEmergency ? emergency : formData[field!] || ""}
-                        onChange={(e) =>
-                            isEmergency
-                                ? setEmergency(e.target.value)
-                                : handleChange(field!, e.target.value)
-                        }
-                    />
-                ) : (
-                    <>
-                        <p className="text-xs text-text-muted mb-0.5">{label}</p>
-                        <p className="text-sm text-text-primary font-medium">{value || "—"}</p>
-                    </>
-                )}
-            </div>
-        </div>
-    );
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -88,8 +50,8 @@ export const AddressCard = ({
             {/* Header */}
             <div className="px-5 py-4 border-b border-border flex items-center justify-between bg-surface/50">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-surface-active flex items-center justify-center">
-                        <MapPin className="w-5 h-5 text-text-secondary" />
+                    <div className="w-10 h-10 rounded-xl bg-accent-gradient flex items-center justify-center">
+                        <MapPin className="w-5 h-5 text-white" />
                     </div>
                     <h3 className="font-semibold text-text-primary font-heading">
                         Address & Contact
@@ -114,9 +76,9 @@ export const AddressCard = ({
                 ) : (
                     <button
                         onClick={() => setIsEditing(true)}
-                        className="p-2 rounded-lg hover:bg-surface-hover text-text-muted hover:text-accent transition-colors"
+                        className="px-3 py-1.5 rounded-lg hover:bg-surface-hover text-text-muted hover:text-accent transition-colors text-sm font-medium"
                     >
-                        <Edit3 className="w-4 h-4" />
+                        Edit
                     </button>
                 )}
             </div>
@@ -129,17 +91,35 @@ export const AddressCard = ({
                             icon={MapPin}
                             label="Address"
                             value={address.address}
-                            field="address"
+                            isEditing={isEditing}
+                            formValue={formData.address}
+                            onChange={(value) => handleChange("address", value)}
                         />
                     </div>
-                    <InfoRow icon={Building} label="City" value={address.city} field="city" />
-                    <InfoRow icon={Map} label="State / Province" value={address.state} field="state" />
+                    <InfoRow
+                        icon={Building}
+                        label="City"
+                        value={address.city}
+                        isEditing={isEditing}
+                        formValue={formData.city}
+                        onChange={(value) => handleChange("city", value)}
+                    />
+                    <InfoRow
+                        icon={Map}
+                        label="State / Province"
+                        value={address.state}
+                        isEditing={isEditing}
+                        formValue={formData.state}
+                        onChange={(value) => handleChange("state", value)}
+                    />
                     <div className="md:col-span-2">
                         <InfoRow
                             icon={Phone}
                             label="Emergency Contact"
                             value={emergencyContact || ""}
-                            isEmergency
+                            isEditing={isEditing}
+                            formValue={emergency}
+                            onChange={setEmergency}
                         />
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { GraduationCap, Calendar, Users, Hash, Droplets } from "lucide-react";
 import { ProfilePhoto } from "./ProfilePhoto";
+import { InfoRow } from "./InfoRow";
 import { StudentInfo } from "@/lib/types/profile";
 
 interface StudentCardProps {
@@ -15,26 +16,6 @@ export const StudentCard = ({
     student,
     onPhotoChange,
 }: StudentCardProps) => {
-    const InfoItem = ({
-        icon: Icon,
-        label,
-        value,
-    }: {
-        icon: React.ElementType;
-        label: string;
-        value: string;
-    }) => (
-        <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-accent-light flex items-center justify-center flex-shrink-0">
-                <Icon className="w-4 h-4 text-accent" />
-            </div>
-            <div className="flex-1 min-w-0">
-                <p className="text-xs text-text-muted">{label}</p>
-                <p className="text-sm text-text-primary font-medium">{value}</p>
-            </div>
-        </div>
-    );
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -68,22 +49,25 @@ export const StudentCard = ({
 
                 {/* Info Grid */}
                 <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <InfoItem
+                    <InfoRow
                         icon={GraduationCap}
                         label="Class"
                         value={`Class ${student.class}`}
+                        accentStyle
                     />
-                    <InfoItem
+                    <InfoRow
                         icon={Users}
                         label="Section"
                         value={`Section ${student.section}`}
+                        accentStyle
                     />
-                    <InfoItem
+                    <InfoRow
                         icon={Hash}
                         label="Roll Number"
                         value={student.rollNo}
+                        accentStyle
                     />
-                    <InfoItem
+                    <InfoRow
                         icon={Calendar}
                         label="Date of Birth"
                         value={new Date(student.dateOfBirth).toLocaleDateString("en-US", {
@@ -91,16 +75,19 @@ export const StudentCard = ({
                             month: "long",
                             day: "numeric",
                         })}
+                        accentStyle
                     />
-                    <InfoItem
+                    <InfoRow
                         icon={Users}
                         label="Gender"
                         value={student.gender}
+                        accentStyle
                     />
-                    <InfoItem
+                    <InfoRow
                         icon={Droplets}
                         label="Blood Group"
                         value={student.bloodGroup}
+                        accentStyle
                     />
                 </div>
             </div>

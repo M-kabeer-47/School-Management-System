@@ -24,10 +24,11 @@ export const MobileSidebar = ({ items, user }: SidebarProps) => {
 
   return (
     <div className="md:hidden">
-      {/* Trigger Button */}
+      {/* Trigger Button - Only visible on mobile, takes no width when closed */}
       <button
         onClick={() => setIsOpen(true)}
-        className="p-2 rounded-xl bg-surface hover:bg-surface-hover text-text-primary border border-border"
+        className="fixed top-4 left-4 z-40 p-2 rounded-xl bg-surface hover:bg-surface-hover text-text-primary border border-border shadow-lg"
+        aria-label="Open menu"
       >
         <Icons.Menu className="w-6 h-6" />
       </button>

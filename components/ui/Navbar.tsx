@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { Moon, Sun, Bell, LogOut, User } from "lucide-react";
+import { NavbarIcons } from "@/utils/navigation/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { clsx } from "clsx";
@@ -76,17 +76,22 @@ export const Navbar = () => {
       <div className="flex items-center gap-3">
         <NavItem
           index={0}
-          icon={theme === "dark" ? Sun : Moon}
+          icon={theme === "dark" ? NavbarIcons.Sun : NavbarIcons.Moon}
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           label="Toggle theme"
-          active={false} // Subtle toggle better than big active state here for sleekness
+          active={false}
         />
 
         {/* Notifications */}
-        <NavItem index={1} icon={Bell} badge label="Notifications" />
+        <NavItem
+          index={1}
+          icon={NavbarIcons.Notifications}
+          badge
+          label="Notifications"
+        />
 
         {/* Logout */}
-        <NavItem index={2} icon={LogOut} label="Log out" />
+        <NavItem index={2} icon={NavbarIcons.Logout} label="Log out" />
 
         {/* Separator */}
         <div className="w-px h-5 bg-border mx-1" />
@@ -95,7 +100,7 @@ export const Navbar = () => {
         <div className="pl-1 pr-1 cursor-pointer group">
           <div className="w-8 h-8 rounded-full bg-accent-gradient p-[2px] shadow-sm group-hover:shadow-md transition-all group-hover:scale-105">
             <div className="w-full h-full rounded-full bg-surface flex items-center justify-center overflow-hidden">
-              <User className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors" />
+              <NavbarIcons.Profile className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors" />
             </div>
           </div>
         </div>
