@@ -23,6 +23,6 @@ export const menuItems: SidebarItem[] = [
   { label: "Fees", href: "/fees", icon: Icons.Receipt },
   { label: "Timetable", href: "/pdf-viewer", icon: Icons.CalendarClock },
   { label: "Announcements", href: "/announcements", icon: Icons.Megaphone },
-  { label: "Help & Support", href: "/support", icon: Icons.MessageSquare },
+  { label: "Contact School", href: "/contact-school", icon: Icons.MessageSquare },
   { label: "Settings", href: "/settings", icon: Icons.Settings },
 ];
