@@ -1,7 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
 
 /* ============================================
    SCHOOL MANAGEMENT SYSTEM - DESIGN TOKENS
@@ -36,13 +33,12 @@
     90deg,
     #60a5fa 0%,
     #2563eb 30%,
-    #2563eb 70%,
     #2563eb 100%
   );
   --accent-foreground: #ffffff;
 
   /* Semantic - Status Colors */
-  --success: #17b350;
+  --success: #17b350; /* Lime/Emerald - brighter and friendlier */
   --success-light: #dcfce7;
   --success-foreground: #ffffff;
 
@@ -62,21 +58,6 @@
   --ring: #2563eb;
   --input-border: #cbd5e1;
   --input-focus: #2563eb;
-  --radius: 0.625rem;
-
-  /* Shadcn compatibility tokens */
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #2563eb;
-  --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --destructive: #dc2626;
-  --input: #e2e8f0;
 }
 
 /* Dark Mode */
@@ -107,9 +88,8 @@
   --accent-gradient: linear-gradient(
     90deg,
     #60a5fa 0%,
-    #2563eb 30%,
-    #2563eb 70%,
-    #60a5fa 100%
+    #2563eb 50%,
+    #2563eb 100%
   );
   --accent-foreground: #ffffff;
 
@@ -134,20 +114,6 @@
   --ring: #3b82f6;
   --input-border: #334155;
   --input-focus: #3b82f6;
-
-  /* Shadcn compatibility tokens */
-  --card: #080d19;
-  --card-foreground: #f1f5f9;
-  --popover: #080d19;
-  --popover-foreground: #f1f5f9;
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
-  --secondary: #1e293b;
-  --secondary-foreground: #f1f5f9;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --destructive: #ef4444;
-  --input: #1e293b;
 }
 
 /* System preference fallback for dark mode */
@@ -253,27 +219,6 @@
   /* Fonts */
   --font-heading: var(--font-montserrat);
   --font-body: var(--font-inter);
-
-  /* Shadcn compatibility */
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-destructive: var(--destructive);
-  --color-input: var(--input);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
 }
 
 /* Base Styles */
@@ -341,13 +286,4 @@ h6 {
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
 }
