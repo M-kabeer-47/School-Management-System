@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { SubjectList } from "@/components/subjects";
 import { subjects } from "@/lib/mockData/subjects";
 import { FileDown } from "lucide-react";
+import { PageHeaderIcons } from "@/utils/navigation/icons";
 import { Button } from "@/components/ui/Button";
 
 export default function SubjectsPage() {
@@ -45,7 +46,7 @@ export default function SubjectsPage() {
             className="text-2xl md:text-4xl font-bold font-heading text-text-primary flex items-center gap-2 md:gap-3"
           >
             Subjects
-            <span className="text-xl md:text-3xl">📚</span>
+            <PageHeaderIcons.Subjects className="w-8 h-8 md:w-12 md:h-12" />
           </motion.h1>
           <p className="text-text-secondary mt-1 md:mt-2 text-xs md:text-base">
             View all subjects and their teachers.

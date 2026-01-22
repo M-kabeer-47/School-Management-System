@@ -42,8 +42,12 @@ export const FeesTable = ({ challans, showPaid = false }: FeesTableProps) => {
     );
   };
 
-  const handleView = (pdfUrl: string) => {
-    window.open(pdfUrl, "_blank");
+  const handleView = (pdfUrl: string, title: string) => {
+    const params = new URLSearchParams({
+      url: pdfUrl,
+      title: title,
+    });
+    window.open(`/pdf-viewer?${params.toString()}`, "_blank");
   };
 
   return (
@@ -92,7 +96,9 @@ export const FeesTable = ({ challans, showPaid = false }: FeesTableProps) => {
                     <TableCell>{getStatusBadge(challan.status)}</TableCell>
                     <TableCell className="text-center">
                       <button
-                        onClick={() => handleView(challan.pdfUrl)}
+                        onClick={() =>
+                          handleView(challan.pdfUrl, challan.title)
+                        }
                         className="flex items-center gap-1.5 text-accent hover:text-accent-hover text-sm font-medium transition-colors mx-auto hover:cursor-pointer hover:underline"
                         title="View Challan"
                       >

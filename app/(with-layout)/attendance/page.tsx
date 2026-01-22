@@ -12,6 +12,7 @@ import { AttendanceRecord } from "@/lib/types/attendance";
 import { isSameDay } from "date-fns"; // Removed addDays, subDays, isWeekend as they were used in generator
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
+import { PageHeaderIcons } from "@/utils/navigation/icons";
 
 import { allRecords, stats } from "@/lib/mockData/attendance";
 // Removed local generators
@@ -43,7 +44,7 @@ export default function AttendancePage() {
             className="text-2xl md:text-4xl font-bold font-heading text-text-primary flex items-center gap-2 md:gap-3"
           >
             Attendance
-            <span className="text-xl md:text-3xl">📅</span>
+            <PageHeaderIcons.Attendance className="w-8 h-8 md:w-12 md:h-12" />
           </motion.h1>
           <p className="text-text-secondary mt-1 md:mt-2 text-xs md:text-base">
             Track your child&apos;s daily presence and regularity.

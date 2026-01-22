@@ -10,6 +10,7 @@ import {
 } from "@/lib/mockData/fees";
 import { Button } from "@/components/ui/Button";
 import { Eye, EyeOff } from "lucide-react";
+import { PageHeaderIcons } from "@/utils/navigation/icons";
 
 export default function FeesPage() {
   const [showAll, setShowAll] = useState(false);
@@ -34,7 +35,7 @@ export default function FeesPage() {
           className="text-2xl md:text-4xl font-bold font-heading text-text-primary flex items-center gap-2 md:gap-3"
         >
           Fees
-          <span className="text-xl md:text-3xl">💰</span>
+          <PageHeaderIcons.Fees className="w-8 h-8 md:w-12 md:h-12" />
         </motion.h1>
         <p className="text-text-secondary mt-1 md:mt-2 text-xs md:text-base">
           {hasPendingFees

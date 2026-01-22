@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Inter, Rubik } from "next/font/google";
 import "./globals.css";
-import { Sidebar } from "@/components/ui/sidebar/Sidebar";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -26,9 +26,6 @@ export const metadata: Metadata = {
   description: "School Management System",
 };
 
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
-import { Navbar } from "@/components/ui/Navbar";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${montserrat.variable} ${inter.variable} ${rubik.variable} antialiased flex h-screen bg-surface overflow-hidden`}
+        className={`${montserrat.variable} ${inter.variable} ${rubik.variable}`}
       >
         <ThemeProvider
           attribute="class"
@@ -45,17 +42,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex h-full w-full">
-            <Sidebar />
-            <main className="flex-1 min-w-0 w-full overflow-auto relative flex flex-col">
-              <Navbar />
-              <div className="flex-1 overflow-auto w-full">
-                <div className="p-4 md:px-8 md:py-6 w-full max-w-7xl mx-auto">
-                  {children}
-                </div>
-              </div>
-            </main>
-          </div>
+          <div className="w-full">{children}</div>
         </ThemeProvider>
       </body>
     </html>
