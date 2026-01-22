@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, Filter, Pin } from "lucide-react";
+import { Search, Filter, Pin, Megaphone, ClipboardList } from "lucide-react";
 import { AnnouncementCard } from "@/components/announcements/AnnouncementCard";
 import { mockAnnouncements } from "@/lib/mockData/announcements";
 import { Announcement } from "@/lib/types/announcements";
@@ -74,7 +74,7 @@ export default function AnnouncementsPage() {
                     className="text-2xl md:text-4xl font-bold font-heading text-text-primary flex items-center gap-2 md:gap-3"
                 >
                     Announcements
-                    <span className="text-xl md:text-3xl">📢</span>
+                    <Megaphone className="w-6 h-6 md:w-8 md:h-8 text-accent" />
                 </motion.h1>
                 <p className="text-text-secondary mt-1 md:mt-2 text-xs md:text-base">
                     Stay updated with the latest news and announcements from school.
@@ -135,7 +135,7 @@ export default function AnnouncementsPage() {
             <div className="bg-surface rounded-2xl border border-border p-4 md:p-6">
                 <div className="flex items-center gap-3 mb-6 pb-4 border-b border-border">
                     <div className="w-10 h-10 rounded-xl bg-accent-gradient flex items-center justify-center">
-                        <span className="text-lg">📋</span>
+                        <ClipboardList className="w-5 h-5 text-white" />
                     </div>
                     <div>
                         <h2 className="font-semibold text-text-primary font-heading text-lg">
