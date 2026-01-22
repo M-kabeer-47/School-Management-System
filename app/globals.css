@@ -287,3 +287,60 @@ h6 {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ============================================
+   PRINT STYLES - Report Card
+   ============================================ */
+@media print {
+  /* Reset page */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  /* Hide everything except report card */
+  body * {
+    visibility: hidden;
+  }
+
+  .report-card-container,
+  .report-card-container * {
+    visibility: visible;
+  }
+
+  .report-card-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 210mm;
+    height: 297mm;
+    margin: 0;
+    padding: 0;
+    box-shadow: none !important;
+    border: none !important;
+    background: white !important;
+  }
+
+  /* Force background colors to print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Hide non-printable elements */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Prevent page breaks inside elements */
+  table, tr, td, th {
+    page-break-inside: avoid;
+  }
+
+  /* Ensure gradients print */
+  .bg-gradient-to-r {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

@@ -708,8 +708,41 @@ export const PageHeaderIcons = {
     </svg>
   ),
 
-  // Profile - User Avatar card
+  // Profile - User Avatar style matching sidebar
   Profile: ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+    >
+      <defs>
+        <linearGradient id="profileGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#60a5fa" />
+          <stop offset="100%" stopColor="#2563eb" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"
+        stroke="url(#profileGradient)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle
+        cx="12"
+        cy="7"
+        r="4"
+        stroke="url(#profileGradient)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  ),
+
+  // Report Card - Certificate/Document style
+  Reports: ({ className }: { className?: string }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 48 48"
@@ -717,47 +750,39 @@ export const PageHeaderIcons = {
       className={className}
     >
       <defs>
-        <linearGradient id="profileGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <linearGradient id="reportsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#60a5fa" />
-          <stop offset="50%" stopColor="#2563eb" />
           <stop offset="100%" stopColor="#2563eb" />
         </linearGradient>
       </defs>
-      {/* ID Card outline */}
+      {/* Document */}
       <rect
         x="8"
-        y="6"
+        y="4"
         width="32"
-        height="36"
+        height="40"
         rx="3"
-        stroke="url(#profileGradient)"
+        stroke="url(#reportsGradient)"
         strokeWidth="2.5"
         fill="none"
       />
-      {/* Lanyard hole */}
-      <path
-        d="M 20 6 L 20 10 A 4 4 0 0 0 28 10 L 28 6"
-        stroke="url(#profileGradient)"
-        strokeWidth="2.5"
-        fill="none"
+      {/* Header decoration */}
+      <rect
+        x="8"
+        y="4"
+        width="32"
+        height="10"
+        rx="3"
+        fill="url(#reportsGradient)"
+        opacity="0.2"
       />
-      {/* User Head */}
-      <circle
-        cx="24"
-        cy="20"
-        r="6"
-        stroke="url(#profileGradient)"
-        strokeWidth="2.5"
-        fill="none"
-      />
-      {/* User Body/Shoulders */}
-      <path
-        d="M 12 36 Q 24 30 36 36"
-        stroke="url(#profileGradient)"
-        strokeWidth="2.5"
-        fill="none"
-        strokeLinecap="round"
-      />
+      {/* Lines */}
+      <line x1="14" y1="20" x2="34" y2="20" stroke="url(#reportsGradient)" strokeWidth="2" strokeLinecap="round" />
+      <line x1="14" y1="26" x2="34" y2="26" stroke="url(#reportsGradient)" strokeWidth="2" strokeLinecap="round" />
+      <line x1="14" y1="32" x2="26" y2="32" stroke="url(#reportsGradient)" strokeWidth="2" strokeLinecap="round" />
+      {/* Grade badge */}
+      <circle cx="32" cy="34" r="6" stroke="url(#reportsGradient)" strokeWidth="2" fill="none" />
+      <text x="32" y="37" textAnchor="middle" fontSize="7" fontWeight="bold" fill="url(#reportsGradient)">A</text>
     </svg>
   ),
 };
