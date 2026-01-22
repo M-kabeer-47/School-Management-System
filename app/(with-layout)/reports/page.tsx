@@ -111,7 +111,7 @@ export default function ReportsPage() {
             <Download className="w-4 h-4 mr-2" />
             Download
           </Button>
-          <Button variant="primary" size="sm" onClick={handlePrint}>
+          <Button variant="default" size="sm" onClick={handlePrint}>
             <Printer className="w-4 h-4 mr-2" />
             Print
           </Button>
