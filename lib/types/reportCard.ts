@@ -1,7 +1,23 @@
-export interface SubjectResult {
-  subject: string;
+export interface TermMarks {
+  term: string;
   obtainedMarks: number;
   totalMarks: number;
+  grade: string;
+}
+
+export interface SubjectResult {
+  subject: string;
+  termMarks: TermMarks[];
+  finalObtained: number;
+  finalTotal: number;
+  finalGrade: string;
+}
+
+export interface TermSummary {
+  term: string;
+  totalObtained: number;
+  totalMaxMarks: number;
+  percentage: number;
   grade: string;
 }
 
@@ -26,15 +42,16 @@ export interface ReportCardData {
   // Academic Info
   teacher: string;
   schoolYear: string;
-  term: string;
+  terms: string[]; // e.g., ["Term 1", "Term 2"]
   examDate?: string;
   
   // Results
   subjects: SubjectResult[];
-  totalObtained: number;
-  totalMaxMarks: number;
-  percentage: number;
-  overallGrade: string;
+  termSummaries: TermSummary[];
+  finalTotalObtained: number;
+  finalTotalMaxMarks: number;
+  finalPercentage: number;
+  finalGrade: string;
   rank?: string;
   remarks: string;
   

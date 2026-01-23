@@ -3,8 +3,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import {
-    Pin,
-    Calendar,
     FileText,
     Image,
     File,
@@ -96,43 +94,34 @@ export const AnnouncementCard = ({
         >
             {/* Header */}
             <div className="px-5 py-4 border-b border-border flex items-start justify-between gap-3">
-                <div className="flex items-start gap-3 flex-1 min-w-0">
+                <div className="flex items-start gap-2.5 flex-1 min-w-0">
                     <div
                         className={cn(
-                            "w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0",
+                            "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5",
                             category.bg
                         )}
                     >
-                        <CategoryIcon className={cn("w-5 h-5", category.color)} />
+                        <CategoryIcon className={cn("w-4 h-4", category.color)} />
                     </div>
                     <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                            <span
-                                className={cn(
-                                    "text-xs font-medium px-2 py-0.5 rounded-full",
-                                    category.bg,
-                                    category.color
-                                )}
-                            >
-                                {category.label}
-                            </span>
-                            {announcement.isPinned && (
-                                <span className="flex items-center gap-1 text-xs text-accent font-medium">
-                                    <Pin className="w-3 h-3" />
-                                    Pinned
-                                </span>
+                        <span
+                            className={cn(
+                                "text-[11px] font-medium px-1.5 py-0.5 rounded",
+                                category.bg,
+                                category.color
                             )}
-                        </div>
-                        <h3 className="font-semibold text-text-primary font-heading mt-1.5 text-base md:text-lg leading-tight">
+                        >
+                            {category.label}
+                        </span>
+                        <h3 className="font-semibold text-text-primary font-heading mt-1 text-base leading-tight">
                             {announcement.title}
                         </h3>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 text-text-muted text-xs flex-shrink-0">
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span>{formatDate(announcement.date)}</span>
-                </div>
+                <time className="text-text-muted text-xs flex-shrink-0 tabular-nums">
+                    {formatDate(announcement.date)}
+                </time>
             </div>
 
             {/* Content */}
