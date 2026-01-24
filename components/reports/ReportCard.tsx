@@ -13,7 +13,7 @@ export function ReportCard({ data }: ReportCardProps) {
     <div 
       className="report-card bg-white mx-auto shadow-lg print:shadow-none"
       style={{ 
-        width: "210mm", 
+        width: "250mm", 
         minHeight: "297mm",
         maxWidth: "100%",
       }}
@@ -45,14 +45,14 @@ export function ReportCard({ data }: ReportCardProps) {
           {/* Report Title with accent underline */}
           <div className="mt-4">
             <h2 className="text-xl print:text-lg font-bold text-gray-700 tracking-widest">
-              PROGRESS REPORT
+              ANNUAL PROGRESS REPORT
             </h2>
             <div className="w-32 h-1 bg-gradient-to-r from-blue-500 to-blue-600 mx-auto mt-1 rounded-full" />
           </div>
           
-          {/* Term & Year */}
+          {/* Year */}
           <p className="text-sm text-gray-600 mt-2 font-medium">
-            {data.term} • Academic Year {data.schoolYear}
+            Academic Year {data.schoolYear}
           </p>
         </header>
 
@@ -115,24 +115,41 @@ export function ReportCard({ data }: ReportCardProps) {
         </section>
 
         {/* ══════════════════════════════════════════════════════════════════
-            ACADEMIC PERFORMANCE TABLE
+            ACADEMIC PERFORMANCE TABLE WITH TERMS
         ══════════════════════════════════════════════════════════════════ */}
         <section className="mb-6 print:mb-5">
           <table className="w-full border-collapse text-sm print:text-xs">
             {/* Table Header */}
             <thead>
               <tr className="bg-gradient-to-r from-gray-700 to-gray-800">
-                <th className="border border-gray-600 px-3 py-2.5 text-left text-white font-semibold tracking-wide">
+                <th className="border border-gray-600 px-2 py-2 text-left text-white font-semibold tracking-wide" rowSpan={2}>
                   SUBJECT
                 </th>
-                <th className="border border-gray-600 px-3 py-2.5 text-center text-white font-semibold tracking-wide w-24 print:w-20">
-                  MAX MARKS
+                {data.terms.map((term) => (
+                  <th key={term} className="border border-gray-600 px-1 py-1.5 text-center text-white font-semibold tracking-wide" colSpan={2}>
+                    {term.toUpperCase()}
+                  </th>
+                ))}
+                <th className="border border-gray-600 px-1 py-1.5 text-center text-white font-semibold tracking-wide bg-blue-700" colSpan={2}>
+                  FINAL
                 </th>
-                <th className="border border-gray-600 px-3 py-2.5 text-center text-white font-semibold tracking-wide w-24 print:w-20">
-                  OBTAINED
+              </tr>
+              <tr className="bg-gray-600">
+                {data.terms.map((term) => (
+                  <>
+                    <th key={`${term}-marks`} className="border border-gray-500 px-1 py-1.5 text-center text-white text-xs font-medium w-14 print:w-12">
+                      Marks
+                    </th>
+                    <th key={`${term}-grade`} className="border border-gray-500 px-1 py-1.5 text-center text-white text-xs font-medium w-12 print:w-10">
+                      Grade
+                    </th>
+                  </>
+                ))}
+                <th className="border border-gray-500 px-1 py-1.5 text-center text-white text-xs font-medium bg-blue-600 w-14 print:w-12">
+                  Total
                 </th>
-                <th className="border border-gray-600 px-3 py-2.5 text-center text-white font-semibold tracking-wide w-20 print:w-16">
-                  GRADE
+                <th className="border border-gray-500 px-1 py-1.5 text-center text-white text-xs font-medium bg-blue-600 w-12 print:w-10">
+                  Grade
                 </th>
               </tr>
             </thead>
@@ -144,36 +161,63 @@ export function ReportCard({ data }: ReportCardProps) {
                   key={subject.subject} 
                   className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                 >
-                  <td className="border border-gray-300 px-3 py-2 text-gray-700 font-medium">
+                  <td className="border border-gray-300 px-2 py-1.5 text-gray-700 font-medium">
                     {subject.subject}
                   </td>
-                  <td className="border border-gray-300 px-3 py-2 text-center text-gray-600">
-                    {subject.totalMarks}
+                  {subject.termMarks.map((term) => (
+                    <>
+                      <td key={`${term.term}-marks`} className="border border-gray-300 px-1 py-1.5 text-center text-gray-800">
+                        {term.obtainedMarks}/{term.totalMarks}
+                      </td>
+                      <td key={`${term.term}-grade`} className="border border-gray-300 px-1 py-1.5 text-center font-semibold text-gray-700">
+                        {term.grade}
+                      </td>
+                    </>
+                  ))}
+                  <td className="border border-gray-300 px-1 py-1.5 text-center text-gray-800 font-semibold bg-blue-50">
+                    {subject.finalObtained}/{subject.finalTotal}
                   </td>
-                  <td className="border border-gray-300 px-3 py-2 text-center text-gray-800 font-semibold">
-                    {subject.obtainedMarks}
-                  </td>
-                  <td className="border border-gray-300 px-3 py-2 text-center font-bold text-gray-700">
-                    {subject.grade}
+                  <td className="border border-gray-300 px-1 py-1.5 text-center font-bold text-blue-700 bg-blue-50">
+                    {subject.finalGrade}
                   </td>
                 </tr>
               ))}
             </tbody>
             
-            {/* Table Footer - Totals */}
+            {/* Table Footer - Term Totals */}
             <tfoot>
               <tr className="bg-gray-100 font-semibold">
-                <td className="border border-gray-400 px-3 py-2.5 text-gray-800">
+                <td className="border border-gray-400 px-2 py-2 text-gray-800">
                   TOTAL
                 </td>
-                <td className="border border-gray-400 px-3 py-2.5 text-center text-gray-700">
-                  {data.totalMaxMarks}
+                {data.termSummaries.map((term) => (
+                  <>
+                    <td key={`${term.term}-total`} className="border border-gray-400 px-1 py-2 text-center text-gray-800">
+                      {term.totalObtained}/{term.totalMaxMarks}
+                    </td>
+                    <td key={`${term.term}-grade`} className="border border-gray-400 px-1 py-2 text-center font-bold text-gray-700">
+                      {term.grade}
+                    </td>
+                  </>
+                ))}
+                <td className="border border-gray-400 px-1 py-2 text-center font-bold text-blue-700 bg-blue-100">
+                  {data.finalTotalObtained}/{data.finalTotalMaxMarks}
                 </td>
-                <td className="border border-gray-400 px-3 py-2.5 text-center text-gray-800 font-bold">
-                  {data.totalObtained}
+                <td className="border border-gray-400 px-1 py-2 text-center font-bold text-blue-700 bg-blue-100">
+                  {data.finalGrade}
                 </td>
-                <td className="border border-gray-400 px-3 py-2.5 text-center font-bold text-blue-600">
-                  {data.overallGrade}
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="border border-gray-400 px-2 py-1.5 text-gray-600 text-xs">
+                  PERCENTAGE
+                </td>
+                {data.termSummaries.map((term) => (
+                  <td key={`${term.term}-pct`} className="border border-gray-400 px-1 py-1.5 text-center text-gray-700 font-medium" colSpan={2}>
+                    {term.percentage.toFixed(1)}%
+                  </td>
+                ))}
+                <td className="border border-gray-400 px-1 py-1.5 text-center font-bold text-blue-700 bg-blue-50" colSpan={2}>
+                  {data.finalPercentage.toFixed(1)}%
                 </td>
               </tr>
             </tfoot>
@@ -188,17 +232,17 @@ export function ReportCard({ data }: ReportCardProps) {
             {/* Result Summary */}
             <div className="flex-1">
               <h3 className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-2 border-b border-gray-300 pb-1">
-                Result Summary
+                Final Result Summary
               </h3>
               <table className="w-full text-sm print:text-xs">
                 <tbody>
                   <tr>
-                    <td className="py-1.5 text-gray-500">Percentage:</td>
-                    <td className="py-1.5 font-bold text-gray-800">{data.percentage.toFixed(1)}%</td>
+                    <td className="py-1.5 text-gray-500">Final Percentage:</td>
+                    <td className="py-1.5 font-bold text-gray-800">{data.finalPercentage.toFixed(1)}%</td>
                   </tr>
                   <tr>
                     <td className="py-1.5 text-gray-500">Overall Grade:</td>
-                    <td className="py-1.5 font-bold text-blue-600">{data.overallGrade}</td>
+                    <td className="py-1.5 font-bold text-blue-600">{data.finalGrade}</td>
                   </tr>
                   <tr>
                     <td className="py-1.5 text-gray-500">Class Position:</td>

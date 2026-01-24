@@ -785,6 +785,52 @@ export const PageHeaderIcons = {
       <text x="32" y="37" textAnchor="middle" fontSize="7" fontWeight="bold" fill="url(#reportsGradient)">A</text>
     </svg>
   ),
+
+  // Announcements - Notice board / Megaphone style
+  Announcements: ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+    >
+      <defs>
+        <linearGradient id="announcementsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#60a5fa" />
+          <stop offset="100%" stopColor="#2563eb" />
+        </linearGradient>
+      </defs>
+      {/* Notice board frame */}
+      <rect
+        x="6"
+        y="8"
+        width="36"
+        height="32"
+        rx="3"
+        stroke="url(#announcementsGradient)"
+        strokeWidth="2.5"
+        fill="none"
+      />
+      {/* Board header bar */}
+      <rect
+        x="6"
+        y="8"
+        width="36"
+        height="8"
+        rx="3"
+        fill="url(#announcementsGradient)"
+        opacity="0.15"
+      />
+      {/* Pin 1 */}
+      <circle cx="14" cy="12" r="2" fill="url(#announcementsGradient)" />
+      {/* Pin 2 */}
+      <circle cx="34" cy="12" r="2" fill="url(#announcementsGradient)" />
+      {/* Notice lines */}
+      <line x1="12" y1="22" x2="36" y2="22" stroke="url(#announcementsGradient)" strokeWidth="2" strokeLinecap="round" />
+      <line x1="12" y1="28" x2="30" y2="28" stroke="url(#announcementsGradient)" strokeWidth="2" strokeLinecap="round" />
+      <line x1="12" y1="34" x2="24" y2="34" stroke="url(#announcementsGradient)" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  ),
 };
 
 export const Icons = {

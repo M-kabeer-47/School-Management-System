@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ReportCard, ReportCardClassic } from "@/components/reports";
-import { mockReportCard } from "@/lib/mockData/reportCard";
+import { mockReportCards } from "@/lib/mockData/reportCard";
 import { PageHeaderIcons } from "@/utils/navigation/icons";
 import { Button } from "@/components/ui/Button";
 import { Download, Printer, LayoutGrid, GraduationCap } from "lucide-react";
 
 type LayoutType = "modern" | "classic";
 
-// Mock class data - In real app, this would come from API
+// Class data - In real app, this would come from API
 const CLASSES = [
   { id: "class-5", name: "Class 5", section: "A" },
   { id: "class-6", name: "Class 6", section: "A" },
@@ -21,6 +21,9 @@ const CLASSES = [
 export default function ReportsPage() {
   const [selectedClass, setSelectedClass] = useState(CLASSES[0].id);
   const [selectedLayout, setSelectedLayout] = useState<LayoutType>("modern");
+
+  // Get report card data based on selected class
+  const reportCardData = mockReportCards[selectedClass];
 
   const handleDownload = () => {
     // In real app, generate PDF using @react-pdf/renderer and download
@@ -107,7 +110,7 @@ export default function ReportsPage() {
 
         {/* Actions */}
         <div className="flex gap-2">
-          <Button variant="secondary" size="sm" onClick={handleDownload}>
+          <Button variant="outline" size="sm" onClick={handleDownload}>
             <Download className="w-4 h-4 mr-2" />
             Download
           </Button>
@@ -127,9 +130,9 @@ export default function ReportsPage() {
         className="flex justify-center"
       >
         {selectedLayout === "modern" ? (
-          <ReportCard data={mockReportCard} />
+          <ReportCard data={reportCardData} />
         ) : (
-          <ReportCardClassic data={mockReportCard} />
+          <ReportCardClassic data={reportCardData} />
         )}
       </motion.div>
     </motion.div>
