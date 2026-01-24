@@ -24,5 +24,5 @@ export const menuItems: SidebarItem[] = [
   { label: "Timetable", href: "/pdf-viewer", icon: Icons.CalendarClock },
   { label: "Announcements", href: "/announcements", icon: Icons.Megaphone },
   { label: "Contact School", href: "/contact-school", icon: Icons.MessageSquare },
-  { label: "Settings", href: "/settings", icon: Icons.Settings },
+  { label: "Exams", href: "/exams", icon: Icons.Exams },
 ];
