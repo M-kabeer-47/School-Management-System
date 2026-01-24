@@ -174,7 +174,7 @@ export function ReportCardClassic({ data }: ReportCardClassicProps) {
                 {data.termSummaries.map((term) => (
                   <>
                     <td key={`${term.term}-t`} className="border border-gray-400 px-1 py-2 text-center">
-                      {term.totalObtained}/{term.totalMarks}
+                      {term.totalObtained}/{term.totalMaxMarks}
                     </td>
                     <td key={`${term.term}-g`} className="border border-gray-400 px-1 py-2 text-center">
                       {term.grade}
@@ -182,7 +182,7 @@ export function ReportCardClassic({ data }: ReportCardClassicProps) {
                   </>
                 ))}
                 <td className="border border-gray-400 px-1 py-2 text-center bg-gray-300">
-                  {data.finalTotalObtained}/{data.finalTotalMarks}
+                  {data.finalTotalObtained}/{data.finalTotalMaxMarks}
                 </td>
                 <td className="border border-gray-400 px-1 py-2 text-center bg-gray-300">
                   {data.finalGrade}
@@ -221,7 +221,7 @@ export function ReportCardClassic({ data }: ReportCardClassicProps) {
                   {gradeScale.map((item, index) => (
                     <tr key={item.grade} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                       <td className="border-t border-gray-300 px-2 py-0.5 font-bold w-10">{item.grade}</td>
-                      <td className="border-t border-l border-gray-300 px-2 py-0.5 text-center">{item.range}</td>
+                      <td className="border-t border-l border-gray-300 px-2 py-0.5 text-center">{item.minPercentage}% - {item.maxPercentage}%</td>
                     </tr>
                   ))}
                 </tbody>
@@ -264,7 +264,7 @@ export function ReportCardClassic({ data }: ReportCardClassicProps) {
                 <tbody>
                   <tr>
                     <td className="border-t border-gray-300 px-2 py-1">Total Marks</td>
-                    <td className="border-t border-l border-gray-300 px-2 py-1 text-center font-semibold">{data.finalTotalObtained}/{data.finalTotalMarks}</td>
+                    <td className="border-t border-l border-gray-300 px-2 py-1 text-center font-semibold">{data.finalTotalObtained}/{data.finalTotalMaxMarks}</td>
                   </tr>
                   <tr className="bg-gray-50">
                     <td className="border-t border-gray-300 px-2 py-1">Percentage</td>
