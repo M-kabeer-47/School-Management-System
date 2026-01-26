@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { StudentCard } from "@/components/profile/StudentCard";
-import { ParentCard } from "@/components/profile/ParentCard";
-import { AddressCard } from "@/components/profile/AddressCard";
-import { mockProfile } from "@/lib/mockData/profile";
-import { ProfileData, ParentInfo } from "@/lib/types/profile";
+import { StudentCard } from "@/components/student/profile/StudentCard";
+import { ParentCard } from "@/components/student/profile/ParentCard";
+import { AddressCard } from "@/components/student/profile/AddressCard";
+import { mockProfile } from "@/lib/student/mock-data/profile";
+import { ProfileData, ParentInfo } from "@/lib/student/types/profile";
 import { PageHeaderIcons } from "@/utils/navigation/icons";
 
 export default function ProfilePage() {

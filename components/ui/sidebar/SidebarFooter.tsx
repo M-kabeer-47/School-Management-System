@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { User } from "@/lib/types/sidebar";
+import { User } from "@/lib/student/types/sidebar";
 import { Icons } from "@/utils/sidebar/icons";
 import { clsx } from "clsx";
 
@@ -16,7 +16,7 @@ export const SidebarFooter = ({ user, isCollapsed }: SidebarFooterProps) => {
       <div
         className={clsx(
           "flex items-center gap-3",
-          isCollapsed ? "justify-center" : "justify-between"
+          isCollapsed ? "justify-center" : "justify-between",
         )}
       >
         <div className="flex items-center gap-3 overflow-hidden">

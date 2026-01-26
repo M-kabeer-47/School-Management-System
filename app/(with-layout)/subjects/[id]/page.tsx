@@ -1,8 +1,8 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { SubjectDetailPage } from "@/components/subjects/detail";
-import { getSubjectDetail } from "@/lib/mockData/subjectDetail";
+import { SubjectDetailPage } from "@/components/student/subjects/detail";
+import { getSubjectDetail } from "@/lib/student/mock-data/subjectDetail";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";

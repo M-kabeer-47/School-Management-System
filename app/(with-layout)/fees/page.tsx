@@ -2,12 +2,12 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { FeesTable } from "@/components/fees";
+import { FeesTable } from "@/components/student/fees";
 import {
   challans,
   getPendingChallans,
   getPaidChallans,
-} from "@/lib/mockData/fees";
+} from "@/lib/student/mock-data/fees";
 import { Button } from "@/components/ui/Button";
 import { Eye, EyeOff } from "lucide-react";
 import { PageHeaderIcons } from "@/utils/navigation/icons";

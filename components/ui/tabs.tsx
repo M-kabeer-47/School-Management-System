@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/student/utils";
 
 type TabsVariant = "default" | "underline";
 

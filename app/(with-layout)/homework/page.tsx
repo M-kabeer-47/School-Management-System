@@ -2,15 +2,15 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { HomeworkCard } from "@/components/homework";
+import { HomeworkCard } from "@/components/student/homework";
 import {
   homeworkList,
   getRecentHomework,
   getAllHomework,
-} from "@/lib/mockData/homework";
+} from "@/lib/student/mock-data/homework";
 import { Button } from "@/components/ui/Button";
 import { Eye, EyeOff } from "lucide-react";
-import { Homework } from "@/lib/types/homework";
+import { Homework } from "@/lib/student/types/homework";
 import { Icons, PageHeaderIcons } from "@/utils/navigation/icons";
 
 export default function HomeworkPage() {

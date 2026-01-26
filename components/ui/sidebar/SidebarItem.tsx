@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { clsx } from "clsx";
-import { SidebarItem as SidebarItemType } from "@/lib/types/sidebar";
+import { SidebarItem as SidebarItemType } from "@/lib/student/types/sidebar";
 
 interface SidebarItemProps {
   item: SidebarItemType;

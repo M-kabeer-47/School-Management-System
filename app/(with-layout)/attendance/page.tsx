@@ -1,20 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { AttendanceCalendar } from "@/components/attendance/AttendanceCalendar";
+import { AttendanceCalendar } from "@/components/student/attendance/AttendanceCalendar";
 import {
   AttendanceStats as AttendanceStatsComponent,
   AttendanceHero,
   AttendanceMonthStats,
   AttendanceKey,
-} from "@/components/attendance/AttendanceStats";
-import { AttendanceRecord } from "@/lib/types/attendance";
+} from "@/components/student/attendance/AttendanceStats";
+import { AttendanceRecord } from "@/lib/student/types/attendance";
 import { isSameDay } from "date-fns"; // Removed addDays, subDays, isWeekend as they were used in generator
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
 import { PageHeaderIcons } from "@/utils/navigation/icons";
 
-import { allRecords, stats } from "@/lib/mockData/attendance";
+import { allRecords, stats } from "@/lib/student/mock-data/attendance";
 // Removed local generators
 
 export default function AttendancePage() {

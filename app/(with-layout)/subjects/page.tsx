@@ -1,15 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { SubjectList } from "@/components/subjects";
-import { subjects } from "@/lib/mockData/subjects";
+import { SubjectList } from "@/components/student/subjects/SubjectList";
+``;
+import { subjects } from "@/lib/student/mock-data/subjects";
 import { FileDown } from "lucide-react";
 import { PageHeaderIcons } from "@/utils/navigation/icons";
 import { Button } from "@/components/ui/Button";
 
 export default function SubjectsPage() {
   const handleDownloadAll = () => {
-    // Download all syllabi
+    // Download all syllabix
     subjects.forEach((subject) => {
       if (subject.syllabusUrl) {
         const link = document.createElement("a");

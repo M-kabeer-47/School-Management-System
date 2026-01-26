@@ -9,7 +9,7 @@ import { MobileSidebar } from "./MobileSidebar";
 import { Icons } from "@/utils/sidebar/icons";
 import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
-import { menuItems, currentUser } from "@/lib/constants";
+import { menuItems, currentUser } from "@/lib/student/constants";
 
 // Animation variants for the sidebar wrapper
 const sidebarVariants = {
