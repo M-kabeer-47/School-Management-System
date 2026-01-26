@@ -1,6 +1,7 @@
 import { ClassCard } from "@/components/instructor/classes/ClassCard";
 import { Icons } from "@/utils/sidebar/icons";
 import { classes } from "@/lib/instructor/mock-data/classes";
+import { PageHeaderIcons } from "@/utils/navigation/icons";
 // Mock Data
 
 export default function ClassesPage() {
@@ -8,8 +9,9 @@ export default function ClassesPage() {
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-heading font-bold tracking-tight text-text-primary">
+          <h1 className="text-2xl md:text-4xl font-heading font-bold tracking-tight text-text-primary flex items-center gap-2 md:gap-3">
             My Classes
+            <PageHeaderIcons.Classes className="w-8 h-8 md:w-12 md:h-12" />
           </h1>
           <p className="text-text-muted mt-1 text-lg">
             Manage your assigned classes and students.
