@@ -11,7 +11,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  TableActionCell,
 } from "@/components/ui/Table";
 
 interface SubjectListProps {

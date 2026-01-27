@@ -46,8 +46,11 @@ export const TableHeader = React.forwardRef<
   return (
     <thead
       ref={ref}
-      className={cn("text-accent-foreground", className)}
-      style={{ background: "var(--accent-gradient)" }}
+      className={cn(
+        "text-accent-foreground bg-accent-light text-white",
+        className,
+      )}
+      // style={{ background: "var(--accent-gradient)" }}
       {...props}
     >
       {children}

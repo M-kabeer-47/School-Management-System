@@ -50,6 +50,7 @@ export interface ClassDetailData {
   students: Student[];
   attendance: AttendanceRecord[];
   tests: TestRecord[];
+  homeworks: Homework[];
 }
 
 export interface Homework {

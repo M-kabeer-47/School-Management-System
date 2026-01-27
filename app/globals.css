@@ -28,7 +28,7 @@
   /* Brand/Accent */
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
-  --accent-light: #dbeafe;
+  --accent-light: #599bf2;
   --accent-gradient: linear-gradient(
     90deg,
     #60a5fa 0%,
@@ -86,7 +86,7 @@
   /* Brand/Accent */
   --accent: #3b82f6;
   --accent-hover: #60a5fa;
-  --accent-light: #1e3a5f;
+  --accent-light: #2465b9;
   --accent-gradient: linear-gradient(
     90deg,
     #60a5fa 0%,
@@ -143,7 +143,7 @@
     /* Brand/Accent */
     --accent: #3b82f6;
     --accent-hover: #60a5fa;
-    --accent-light: #1e3a5f;
+    --accent-light: #2465b9;
     --accent-foreground: #ffffff;
 
     /* Semantic - Status Colors */

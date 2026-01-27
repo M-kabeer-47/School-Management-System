@@ -323,8 +323,62 @@ export const getClassDetail = (id: string) => {
     students: mockStudents,
     attendance: mockAttendanceHistory,
     tests: mockTests,
+    homeworks: mockHomeworks,
   };
 };
+
+export const mockHomeworks: import("@/lib/instructor/types/class-detail").Homework[] =
+  [
+    {
+      id: "1",
+      description: "Complete Exercise 4.2 (Questions 1-10)",
+      deadline: new Date("2024-03-25T23:59:00"),
+      status: "active",
+      assignedDate: new Date("2024-03-20"),
+    },
+    {
+      id: "2",
+      description: "Read Chapter 5: Integration Techniques",
+      deadline: new Date("2024-03-22T23:59:00"),
+      status: "completed",
+      assignedDate: new Date("2024-03-18"),
+    },
+    {
+      id: "3",
+      description: "Solve past paper questions (2020-2022) for Algebra",
+      deadline: new Date("2024-03-28T12:00:00"),
+      status: "active",
+      assignedDate: new Date("2024-03-21"),
+    },
+    {
+      id: "4",
+      description: "Differentiation Rules - Worksheet 3",
+      deadline: new Date("2024-03-30T23:59:00"),
+      status: "active",
+      assignedDate: new Date("2024-03-22"),
+    },
+    {
+      id: "5",
+      description: "Vectors and Scalars: Watch Video Lecture & Summary",
+      deadline: new Date("2024-03-15T23:59:00"),
+      status: "completed",
+      assignedDate: new Date("2024-03-10"),
+    },
+    {
+      id: "6",
+      description: "Matrices: Determinants and Inverses Practice",
+      deadline: new Date("2024-04-02T12:00:00"),
+      status: "active",
+      assignedDate: new Date("2024-03-24"),
+    },
+    {
+      id: "7",
+      description: "Geometry: Circle Theorems Proofs",
+      deadline: new Date("2024-03-26T23:59:00"),
+      status: "active",
+      assignedDate: new Date("2024-03-21"),
+    },
+  ];
 
 export const getAttendanceDetails = (classId: string, recordId: string) => {
   const record = mockAttendanceHistory.find((r) => r.id === recordId);

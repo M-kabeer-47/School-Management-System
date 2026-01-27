@@ -22,7 +22,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Homework } from "@/lib/instructor/types/class-detail";
 import { AddHomeworkModal } from "@/components/instructor/classes/detail";
-
+import { mockHomeworks } from "@/lib/instructor/mock-data/class-detail";
 export default function ClassDetailPage() {
   const params = useParams();
   const classId = params.id as string;
@@ -30,15 +30,7 @@ export default function ClassDetailPage() {
 
   // Homework State
   const [isHomeworkModalOpen, setIsHomeworkModalOpen] = useState(false);
-  const [homeworks, setHomeworks] = useState<Homework[]>([
-    {
-      id: "1",
-      description: "Complete Chapter 4 Review Questions (1-10)",
-      deadline: new Date(new Date().setDate(new Date().getDate() + 2)), // 2 days later
-      assignedDate: new Date(),
-      status: "active",
-    },
-  ]);
+  const [homeworks, setHomeworks] = useState<Homework[]>(mockHomeworks);
 
   const handleAssignHomework = (data: {
     description: string;

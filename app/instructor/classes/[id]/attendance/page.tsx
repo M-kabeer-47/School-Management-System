@@ -17,6 +17,7 @@ import ConfirmDialog from "@/components/ui/ConfirmDialog";
 
 import AttendanceHeader from "@/components/instructor/classes/attendance/AttendanceHeader";
 import AttendanceTable from "@/components/instructor/classes/attendance/AttendanceTable";
+import { ActionFooter } from "@/components/instructor/classes/common/ActionFooter";
 
 type AttendanceStatus = "present" | "absent" | "leave";
 
@@ -209,31 +210,9 @@ export default function TakeAttendancePage() {
       />
 
       {/* Footer Stats & Save */}
-      <div className="fixed bottom-0 left-0 right-0 md:left-[17rem] bg-background/80 backdrop-blur-xl border-t border-border z-30 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between gap-4">
-          {/* Stats Summary */}
-          <div className="flex items-center gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-success shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-              <span className="font-bold text-text-primary tabular-nums text-lg leading-none">
-                {stats.present}
-              </span>
-              <span className="font-medium text-text-muted text-xs uppercase tracking-wider">
-                Present
-              </span>
-            </div>
-            <div className="h-4 w-px bg-border" />
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-error shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
-              <span className="font-bold text-text-primary tabular-nums text-lg leading-none">
-                {stats.absent}
-              </span>
-              <span className="font-medium text-text-muted text-xs uppercase tracking-wider">
-                Absent
-              </span>
-            </div>
-          </div>
-
+      {/* Footer Stats & Save */}
+      <ActionFooter
+        action={
           <Button
             onClick={onSaveClick}
             size={"lg"}
@@ -244,8 +223,28 @@ export default function TakeAttendancePage() {
             <Save className="w-5 h-5 mr-2" />
             Save Attendance
           </Button>
+        }
+      >
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-success shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+          <span className="font-bold text-text-primary tabular-nums text-lg leading-none">
+            {stats.present}
+          </span>
+          <span className="font-medium text-text-muted text-xs uppercase tracking-wider">
+            Present
+          </span>
         </div>
-      </div>
+        <div className="h-4 w-px bg-border" />
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-error shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
+          <span className="font-bold text-text-primary tabular-nums text-lg leading-none">
+            {stats.absent}
+          </span>
+          <span className="font-medium text-text-muted text-xs uppercase tracking-wider">
+            Absent
+          </span>
+        </div>
+      </ActionFooter>
     </div>
   );
 }
