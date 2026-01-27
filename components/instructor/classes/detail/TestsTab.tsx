@@ -1,14 +1,13 @@
 "use client";
 
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { TestRecord } from "@/lib/instructor/types/class-detail";
 import {
   Calendar,
   ChevronRight,
-  MoreVertical,
-  LayoutList,
   Plus,
   FileEdit,
-  Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/shadcn/utils";
 import {
@@ -26,6 +25,9 @@ interface TestsTabProps {
 }
 
 export const TestsTab = ({ tests }: TestsTabProps) => {
+  const params = useParams();
+  const classId = params.id as string;
+
   return (
     <div className="space-y-6">
       {/* Header Actions */}
@@ -33,10 +35,13 @@ export const TestsTab = ({ tests }: TestsTabProps) => {
         <h3 className="text-xl font-bold font-heading text-text-primary">
           Class Assessments
         </h3>
-        <button className="px-4 py-2 bg-accent text-white font-bold rounded-xl shadow-lg hover:bg-accent-hover active:scale-95 transition-all text-sm flex items-center justify-center gap-2">
+        <Link
+          href={`/instructor/classes/${classId}/marks`}
+          className="px-4 py-2 bg-accent text-white font-bold rounded-xl shadow-lg hover:bg-accent-hover active:scale-95 transition-all text-sm flex items-center justify-center gap-2"
+        >
           <Plus className="w-4 h-4" />
           Create New Test
-        </button>
+        </Link>
       </div>
 
       {/* Tests Table */}
@@ -89,7 +94,7 @@ export const TestsTab = ({ tests }: TestsTabProps) => {
                             ? "bg-green-500"
                             : test.averageScore >= 60
                               ? "bg-accent"
-                              : "bg-orange-500",
+                              : "bg-orange-500"
                         )}
                         style={{ width: `${test.averageScore}%` }}
                       />
@@ -104,7 +109,7 @@ export const TestsTab = ({ tests }: TestsTabProps) => {
                         ? "bg-blue-50 text-blue-700 border-blue-100"
                         : test.status === "upcoming"
                           ? "bg-orange-50 text-orange-700 border-orange-100"
-                          : "bg-gray-50 text-gray-700 border-gray-100",
+                          : "bg-gray-50 text-gray-700 border-gray-100"
                     )}
                   >
                     {test.status}
@@ -112,18 +117,19 @@ export const TestsTab = ({ tests }: TestsTabProps) => {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button
-                      title="Edit"
+                    <Link
+                      href={`/instructor/classes/${classId}/marks?testId=${test.id}`}
+                      title="Enter/Edit Marks"
                       className="p-2 rounded-lg hover:bg-surface-active text-text-secondary hover:text-accent transition-colors"
                     >
                       <FileEdit className="w-4 h-4" />
-                    </button>
-                    <button
-                      title="View Details"
+                    </Link>
+                    <Link
+                      href={`/instructor/classes/${classId}/marks?testId=${test.id}`}
                       className="text-sm font-bold text-accent hover:text-accent-hover inline-flex items-center gap-1 hover:underline ml-2"
                     >
-                      Details <ChevronRight className="w-4 h-4" />
-                    </button>
+                      Enter Marks <ChevronRight className="w-4 h-4" />
+                    </Link>
                   </div>
                 </TableCell>
               </TableRow>

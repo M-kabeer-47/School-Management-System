@@ -26,6 +26,11 @@ export const instructorMenuItems: SidebarItem[] = [
     icon: Icons.BookOpen,
   },
   {
+    label: "Exams",
+    href: "/instructor/exams",
+    icon: Icons.Exams,
+  },
+  {
     label: "Timetable",
     href: "/instructor/timetable",
     icon: Icons.Calendar,

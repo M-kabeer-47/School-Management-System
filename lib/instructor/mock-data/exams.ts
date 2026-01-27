@@ -1,0 +1,120 @@
+import {
+    ExamDocument,
+    InvigilationDuty,
+    MarksEntryStatus,
+} from "@/lib/instructor/types/exams";
+
+export const examDocuments: ExamDocument[] = [
+    {
+        id: "doc-001",
+        title: "Mid-Term Date Sheet",
+        type: "datesheet",
+        pdfUrl:
+            "https://mahesararslan-merge-bucket.s3.eu-north-1.amazonaws.com/room-files/77f26d1c-26cb-418c-b98c-3c7391dcef8b/1765735147127-e3bb11be-f6af-48e8-870a-688d243d34f3.pdf",
+        examName: "Mid-Term Examination 2026",
+        date: "2026-02-20",
+    },
+    {
+        id: "doc-002",
+        title: "Invigilation Schedule",
+        type: "invigilation-schedule",
+        pdfUrl:
+            "https://mahesararslan-merge-bucket.s3.eu-north-1.amazonaws.com/room-files/77f26d1c-26cb-418c-b98c-3c7391dcef8b/1765735147127-e3bb11be-f6af-48e8-870a-688d243d34f3.pdf",
+        examName: "Mid-Term Examination 2026",
+        date: "2026-02-20",
+    },
+];
+
+export const invigilationDuties: InvigilationDuty[] = [
+    {
+        id: "inv-001",
+        date: "2026-02-20",
+        startTime: "09:00 AM",
+        endTime: "12:00 PM",
+        room: "Hall A - Room 101",
+        class: "Class 8",
+        subject: "Mathematics",
+        status: "upcoming",
+    },
+    {
+        id: "inv-002",
+        date: "2026-02-22",
+        startTime: "09:00 AM",
+        endTime: "11:30 AM",
+        room: "Hall B - Room 205",
+        class: "Class 7",
+        subject: "English",
+        status: "upcoming",
+    },
+    {
+        id: "inv-003",
+        date: "2026-02-24",
+        startTime: "02:00 PM",
+        endTime: "04:30 PM",
+        room: "Hall A - Room 103",
+        class: "Class 6",
+        subject: "Science",
+        status: "upcoming",
+    },
+    {
+        id: "inv-004",
+        date: "2026-01-15",
+        startTime: "09:00 AM",
+        endTime: "12:00 PM",
+        room: "Hall C - Room 301",
+        class: "Class 5",
+        subject: "Urdu",
+        status: "completed",
+    },
+];
+
+export const marksEntryStatus: MarksEntryStatus[] = [
+    {
+        id: "marks-001",
+        classId: "c1",
+        className: "Class 6",
+        section: "Red",
+        subject: "English",
+        examName: "Mid-Term Examination",
+        deadline: "2026-03-05",
+        totalStudents: 32,
+        submittedCount: 0,
+        status: "pending",
+    },
+    {
+        id: "marks-002",
+        classId: "c2",
+        className: "Class 7",
+        section: "Blue",
+        subject: "Urdu",
+        examName: "Mid-Term Examination",
+        deadline: "2026-03-05",
+        totalStudents: 28,
+        submittedCount: 15,
+        status: "in-progress",
+    },
+    {
+        id: "marks-003",
+        classId: "c3",
+        className: "Class 8",
+        section: "Green",
+        subject: "Mathematics",
+        examName: "Mid-Term Examination",
+        deadline: "2026-03-05",
+        totalStudents: 30,
+        submittedCount: 30,
+        status: "submitted",
+    },
+    {
+        id: "marks-004",
+        classId: "c4",
+        className: "Class 5",
+        section: "Yellow",
+        subject: "Islamiat",
+        examName: "Mid-Term Examination",
+        deadline: "2026-03-05",
+        totalStudents: 25,
+        submittedCount: 0,
+        status: "pending",
+    },
+];
