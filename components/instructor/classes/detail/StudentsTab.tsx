@@ -39,66 +39,62 @@ export const StudentsTab = ({ students }: StudentsTabProps) => {
         </span>
       </div>
 
-      <div className="rounded-2xl border border-border overflow-hidden bg-surface">
-        <Table>
-          <TableHeader>
-            <TableHeadRow>
-              <TableHead className="w-[80px]">Roll No</TableHead>
-              <TableHead>Student Name</TableHead>
-              <TableHead>Father Name</TableHead>
-              <TableHead>Contact</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableHeadRow>
-          </TableHeader>
-          <TableBody>
-            {students.map((student) => (
-              <TableRow
-                key={student.id}
-                className="group hover:bg-surface-hover"
-              >
-                <TableCell className="font-bold text-text-primary">
-                  {student.rollNo}
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent">
-                      <User className="w-4 h-4" />
+      <div className="rounded-2xl border border-border bg-surface overflow-hidden">
+        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-border hover:scrollbar-thumb-text-muted">
+          <Table className="min-w-[1000px]">
+            <TableHeader>
+              <TableHeadRow>
+                <TableHead className="w-[80px]">Roll No</TableHead>
+                <TableHead>Student Name</TableHead>
+                <TableHead>Father Name</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableHeadRow>
+            </TableHeader>
+            <TableBody>
+              {students.map((student) => (
+                <TableRow
+                  key={student.id}
+                  className="group hover:bg-surface-hover"
+                >
+                  <TableCell className="font-bold text-text-primary">
+                    {student.rollNo}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent">
+                        <User className="w-4 h-4" />
+                      </div>
+                      <span className="font-medium text-text-primary">
+                        {student.name}
+                      </span>
                     </div>
-                    <span className="font-medium text-text-primary">
-                      {student.name}
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell className="text-text-secondary">
-                  {student.fatherName}
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2 text-text-secondary">
-                    <Phone className="w-3.5 h-3.5" />
-                    <span>{student.fatherWhatsapp || student.phoneNo}</span>
-                  </div>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-2">
-                    <button
-                      onClick={() => setSelectedStudent(student)}
-                      className="p-2 rounded-lg bg-surface hover:bg-surface-active transition-colors border border-border text-text-secondary hover:text-text-primary"
-                      title="View Full Details"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </button>
-                    <button
-                      className="p-2 rounded-lg bg-green-50 text-green-600 hover:bg-green-100 transition-colors border border-green-200"
-                      title="WhatsApp Father"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                    </button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                  </TableCell>
+                  <TableCell className="text-text-secondary">
+                    {student.fatherName}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2 text-text-secondary">
+                      <Phone className="w-3.5 h-3.5" />
+                      <span>{student.fatherWhatsapp || student.phoneNo}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        onClick={() => setSelectedStudent(student)}
+                        title="View Full Details"
+                        className="text-accent hover:underline"
+                      >
+                        View Details
+                      </button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
 
       {/* Student Details Drawer */}
@@ -116,7 +112,7 @@ export const StudentsTab = ({ students }: StudentsTabProps) => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-9 w-9 text-text-secondary hover:text-text-primary"
+                className="text-text-secondary hover:text-text-primary max-w-[40px]"
                 onClick={() => setSelectedStudent(null)}
               >
                 <X className="w-5 h-5" />

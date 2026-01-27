@@ -117,19 +117,21 @@ export default function HomeworkReviewTable({
                         <button
                           onClick={() => onStatusChange(student.id, "checked")}
                           className={cn(
-                            "px-4 py-1.5 rounded-lg text-sm font-bold transition-all flex items-center gap-1.5",
+                            "sm:px-4 px-3  py-1.5 rounded-lg text-sm font-bold transition-all flex items-center gap-1.5",
                             isChecked
                               ? "bg-white text-success-light shadow-sm ring-1 ring-black/5 text-green-700"
                               : "text-text-muted hover:text-text-primary",
                           )}
                         >
-                          {isChecked && <Check className="w-3.5 h-3.5" />}
+                          {isChecked && (
+                            <Check className="w-3.5 h-3.5 hidden sm:block" />
+                          )}
                           Checked
                         </button>
                         <button
                           onClick={() => onStatusChange(student.id, "pending")}
                           className={cn(
-                            "px-4 py-1.5 rounded-lg text-sm font-bold transition-all flex items-center gap-1.5",
+                            "sm:px-4 px-3  py-1.5 rounded-lg text-sm font-bold transition-all flex items-center gap-1.5",
                             isPending
                               ? "bg-white text-text-secondary shadow-sm ring-1 ring-black/5"
                               : "text-text-muted hover:text-text-primary",

@@ -109,7 +109,7 @@ export default function AttendanceTable({
                         <button
                           onClick={() => onStatusChange(student.id, "present")}
                           className={cn(
-                            "px-4 py-1.5 rounded-lg text-sm font-bold transition-all flex items-center gap-1.5",
+                            "sm:px-4 px-3 py-1.5 rounded-lg sm:text-sm text-xs font-bold transition-all flex items-center gap-1.5",
                             isPresent
                               ? "bg-white text-success-light shadow-sm ring-1 ring-black/5"
                               : "text-text-muted hover:text-text-primary",
@@ -117,19 +117,23 @@ export default function AttendanceTable({
                             isPresent && "text-green-700",
                           )}
                         >
-                          {isPresent && <Check className="w-3.5 h-3.5" />}
+                          {isPresent && (
+                            <Check className="w-3.5 h-3.5 hidden sm:block" />
+                          )}
                           Present
                         </button>
                         <button
                           onClick={() => onStatusChange(student.id, "absent")}
                           className={cn(
-                            "px-4 py-1.5 rounded-lg text-sm font-bold transition-all flex items-center gap-1.5",
+                            "sm:px-4 px-3 py-1.5 rounded-lg sm:text-sm text-xs font-bold transition-all flex items-center gap-1.5",
                             isAbsent
                               ? "bg-error text-white shadow-sm"
                               : "text-text-muted hover:text-error",
                           )}
                         >
-                          {isAbsent && <X className="w-3.5 h-3.5" />}
+                          {isAbsent && (
+                            <X className="w-3.5 h-3.5 hidden sm:block" />
+                          )}
                           Absent
                         </button>
                       </div>

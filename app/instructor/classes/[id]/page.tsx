@@ -69,35 +69,35 @@ export default function ClassDetailPage() {
 
       {/* Tabs */}
       <Tabs defaultValue="students" className="w-full">
-        <div className="mb-6">
-          <TabsList className="w-full sm:w-auto overflow-x-auto p-1 bg-surface border border-border rounded-xl">
+        <div className="mb-6 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+          <TabsList className="inline-flex w-auto min-w-[1000px] bg-surface border border-border rounded-xl p-1 h-auto">
             <TabsTrigger
               value="students"
-              className="flex items-center gap-2 px-4 py-2"
+              className="flex items-center gap-2 px-4 py-2.5 data-[state=active]:bg-surface-active data-[state=active]:text-accent data-[state=active]:shadow-sm transition-all"
             >
               <Users className="w-4 h-4" />
-              <span>Students</span>
+              <span className="whitespace-nowrap">Students</span>
             </TabsTrigger>
             <TabsTrigger
               value="homework"
-              className="flex items-center gap-2 px-4 py-2"
+              className="flex items-center gap-2 px-4 py-2.5 data-[state=active]:bg-surface-active data-[state=active]:text-accent data-[state=active]:shadow-sm transition-all"
             >
               <BookOpen className="w-4 h-4" />
-              <span>Homework</span>
+              <span className="whitespace-nowrap">Homework</span>
             </TabsTrigger>
             <TabsTrigger
               value="attendance"
-              className="flex items-center gap-2 px-4 py-2"
+              className="flex items-center gap-2 px-4 py-2.5 data-[state=active]:bg-surface-active data-[state=active]:text-accent data-[state=active]:shadow-sm transition-all"
             >
               <CalendarCheck className="w-4 h-4" />
-              <span>Attendance</span>
+              <span className="whitespace-nowrap">Attendance</span>
             </TabsTrigger>
             <TabsTrigger
               value="tests"
-              className="flex items-center gap-2 px-4 py-2"
+              className="flex items-center gap-2 px-4 py-2.5 data-[state=active]:bg-surface-active data-[state=active]:text-accent data-[state=active]:shadow-sm transition-all"
             >
               <FileText className="w-4 h-4" />
-              <span>Tests & Results</span>
+              <span className="whitespace-nowrap">Tests & Results</span>
             </TabsTrigger>
           </TabsList>
         </div>

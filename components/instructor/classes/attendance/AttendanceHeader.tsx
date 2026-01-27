@@ -42,15 +42,15 @@ export default function AttendanceHeader({
             </span>
           </div>
           {/* Display Selected Details */}
-          <div className="flex items-center gap-4 text-sm text-text-secondary">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
             <div className="flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-accent" />
               <span className="font-medium text-text-primary">
                 {lectureName || "No Topic Selected"}
               </span>
             </div>
-            <div className="w-px h-4 bg-border" />
-            <div>
+            <div className="w-px h-4 bg-border hidden sm:block" />
+            <div className="flex items-center gap-2">
               {new Date(selectedDate).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",

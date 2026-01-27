@@ -20,12 +20,16 @@ export const ActionFooter = ({
         className,
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         {/* Left Side (Stats) */}
-        <div className="flex items-center gap-6 text-sm">{children}</div>
+        <div className="flex items-center gap-6 text-sm w-full sm:w-auto justify-center sm:justify-start">
+          {children}
+        </div>
 
         {/* Right Side (Action) */}
-        <div>{action}</div>
+        <div className="w-full sm:w-auto flex justify-center sm:justify-end">
+          {action}
+        </div>
       </div>
     </div>
   );
