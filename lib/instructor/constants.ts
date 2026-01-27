@@ -16,9 +16,14 @@ export const instructorMenuItems: SidebarItem[] = [
     icon: Icons.Dashboard,
   },
   {
+    label: "My Profile",
+    href: "/instructor/profile",
+    icon: Icons.User,
+  },
+  {
     label: "Classes",
     href: "/instructor/classes",
-    icon: Icons.BookOpen, // Using BookOpen for Classes
+    icon: Icons.BookOpen,
   },
   {
     label: "Timetable",
@@ -29,6 +34,11 @@ export const instructorMenuItems: SidebarItem[] = [
     label: "Reports",
     href: "/instructor/reports",
     icon: Icons.ClipboardList,
+  },
+  {
+    label: "Contact School",
+    href: "/instructor/contact-school",
+    icon: Icons.MessageSquare,
   },
   {
     label: "Settings",
