@@ -29,7 +29,7 @@ export const HomeworkCard = ({ homework }: HomeworkCardProps) => {
   };
 
   return (
-    <div className="bg-accent-light/10 border border-border rounded-xl p-4">
+    <div className="bg-accent-light/4 border border-border rounded-xl p-4">
       {/* Content */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex items-center gap-3">

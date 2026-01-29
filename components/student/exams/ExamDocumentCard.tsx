@@ -40,23 +40,17 @@ export const ExamDocumentCard = ({
           {/* Icon */}
           <div
             className={cn(
-              "w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0",
-              isExamSlip ? "bg-accent-gradient" : "bg-info-light",
+              "w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 bg-accent-gradient",
             )}
           >
-            <FileText
-              className={cn("w-7 h-7", isExamSlip ? "text-white" : "text-info")}
-            />
+            <FileText className={cn("w-7 h-7 text-white")} />
           </div>
 
           {/* Content */}
           <div className="flex-1 min-w-0">
             <span
               className={cn(
-                "text-xs font-medium px-2 py-0.5 rounded-full",
-                isExamSlip
-                  ? "bg-accent-light text-accent"
-                  : "bg-info-light text-info",
+                "text-xs font-medium px-2 py-0.5 rounded-full bg-accent/15 text-accent",
               )}
             >
               {isExamSlip ? "Exam Slip" : "Date Sheet"}

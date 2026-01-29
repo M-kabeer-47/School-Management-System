@@ -20,7 +20,7 @@ interface ResultCardProps {
 
 const getGradeColor = (grade: string) => {
   if (grade.includes("+")) return "text-success bg-success-light";
-  if (grade === "A") return "text-accent bg-accent-light";
+  if (grade === "A") return "text-accent bg-accent/15";
   if (grade === "B") return "text-info bg-info-light";
   if (grade === "C") return "text-warning bg-warning-light";
   return "text-error bg-error-light";

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat, Inter, Rubik } from "next/font/google";
+import { Montserrat, Inter, Rubik, Raleway } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
@@ -20,6 +20,11 @@ const rubik = Rubik({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
 });
+const raleway = Raleway({
+  variable: "--font-raleway",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Student Portal",
@@ -34,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${montserrat.variable} ${inter.variable} ${rubik.variable}`}
+        className={`${montserrat.variable} ${inter.variable} ${rubik.variable} ${raleway.variable}`}
       >
         <ThemeProvider
           attribute="class"

@@ -43,7 +43,7 @@ export default function AnnouncementsPage() {
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-2xl md:text-4xl font-bold font-heading text-text-primary flex items-center gap-2 md:gap-3"
+          className="text-2xl md:text-4xl font-bold text-text-primary flex items-center gap-2 md:gap-3"
         >
           Announcements
           <PageHeaderIcons.Announcements className="w-8 h-8 md:w-12 md:h-12" />

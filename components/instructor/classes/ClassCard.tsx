@@ -68,23 +68,23 @@ export function ClassCard({
   return (
     <Link
       href={`/instructor/classes/${id}`}
-      className="group relative flex flex-col bg-surface border border-border rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+      className="group relative flex flex-col bg-surface border border-border rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-accent/50"
     >
       {/* Top Banner with Accent Gradient - Reduced Height */}
       <div className="h-20 bg-accent-gradient relative overflow-hidden p-4">
         {/* Decorative Circles/Texture */}
         <div className="absolute -right-4 -top-8 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-110 transition-transform duration-700" />
-        <div className="absolute left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-background/30 to-transparent" />
+        <div className="absolute left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-background/10 to-transparent" />
       </div>
 
       <div className="p-5 pt-12 flex-1 flex flex-col relative">
-        {/* Floating Subject Icon - Restored as per user request for "related icons" */}
-        <div className="absolute -top-10 left-6 w-16 h-16 rounded-2xl bg-background  shadow-lg flex items-center justify-center text-accent group-hover:scale-105 group-hover:-rotate-3 transition-transform duration-300 z-10">
+        {/* Floating Subject Icon - Improved visibility */}
+        <div className="absolute -top-10 left-6 w-16 h-16 rounded-2xl bg-surface border border-border shadow-lg flex items-center justify-center text-accent group-hover:scale-105 group-hover:-rotate-3 transition-transform duration-300 z-10 ring-4 ring-surface/50">
           <SubjectIcon className="w-8 h-8" strokeWidth={1.5} />
         </div>
 
         {/* Action Icon */}
-        <div className="absolute top-4 right-5 w-8 h-8 rounded-full bg-surface-active flex items-center justify-center text-text-muted group-hover:bg-accent group-hover:text-white transition-colors duration-300">
+        <div className="absolute top-4 right-5 w-8 h-8 rounded-full bg-surface-active/50 border border-border/50 flex items-center justify-center text-text-muted group-hover:bg-accent group-hover:text-white group-hover:border-accent transition-all duration-300">
           <ArrowRight className="w-4 h-4" />
         </div>
 
@@ -94,7 +94,7 @@ export function ClassCard({
             <h3 className="font-heading font-bold text-xl text-text-primary leading-tight group-hover:text-accent transition-colors">
               {name}
             </h3>
-            <span className="text-sm font-semibold text-white bg-accent-gradient px-4 min-w-[50px] py-0.5 rounded-md border border-border text-center">
+            <span className="text-sm font-semibold text-white bg-accent-gradient px-3 py-0.5 rounded-md shadow-sm">
               {section}
             </span>
           </div>
@@ -110,9 +110,9 @@ export function ClassCard({
           <div className="flex items-center gap-3">
             <div className="flex -space-x-2 overflow-hidden">
               {/* Mock Avatars */}
-              <div className="inline-block h-6 w-6 rounded-full ring-2 ring-background bg-slate-200" />
-              <div className="inline-block h-6 w-6 rounded-full ring-2 ring-background bg-slate-300" />
-              <div className="inline-block h-6 w-6 rounded-full ring-2 ring-background bg-slate-400" />
+              <div className="inline-block h-6 w-6 rounded-full ring-2 ring-surface bg-slate-200" />
+              <div className="inline-block h-6 w-6 rounded-full ring-2 ring-surface bg-slate-300" />
+              <div className="inline-block h-6 w-6 rounded-full ring-2 ring-surface bg-slate-400" />
             </div>
             <div className="text-sm hidden sm:block">
               <span className="font-bold text-text-primary">
@@ -122,7 +122,7 @@ export function ClassCard({
             </div>
           </div>
 
-          <div className="px-4 py-1.5 rounded-lg bg-surface-active group-hover:bg-accent group-hover:text-white text-text-secondary text-sm font-semibold transition-all duration-300">
+          <div className="px-4 py-1.5 rounded-lg bg-surface-active group-hover:bg-accent group-hover:text-white text-text-secondary text-sm font-semibold transition-all duration-300 shadow-sm border border-transparent group-hover:border-accent-light/20">
             View
           </div>
         </div>

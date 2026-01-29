@@ -26,7 +26,7 @@ const categoryConfig = {
     icon: Bell,
     label: "General",
     color: "text-accent",
-    bg: "bg-accent-light",
+    bg: "bg-accent/15",
   },
   academic: {
     icon: BookOpen,
@@ -135,7 +135,7 @@ export const AnnouncementCard = ({
           <div className="mt-4 p-3 bg-surface rounded-xl border border-border flex items-center justify-between gap-3 group/attachment hover:bg-surface-hover transition-colors cursor-pointer">
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-10 h-10 rounded-lg bg-accent-light flex items-center justify-center flex-shrink-0">
-                <AttachmentIcon className="w-5 h-5 text-accent" />
+                <AttachmentIcon className="w-5 h-5 text-white" />
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-medium text-text-primary truncate">

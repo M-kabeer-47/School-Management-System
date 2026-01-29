@@ -57,6 +57,7 @@ export const mockAnnouncements: Announcement[] = [
     date: "2026-01-15",
     category: "urgent",
     isPinned: true,
+    audience: "student",
   },
   {
     id: "ann-006",
@@ -88,5 +89,16 @@ export const mockAnnouncements: Announcement[] = [
       "Great news! Our school library has received a new collection of 500+ books covering various subjects including fiction, science, history, and reference materials. Students are encouraged to visit the library and explore the new additions.",
     date: "2026-01-08",
     category: "general",
+    audience: "all",
+  },
+  {
+    id: "ann-009",
+    title: "Staff Meeting: Curriculum Review",
+    content:
+      "A mandatory staff meeting will be held on Friday, January 30th at 2:00 PM in the Conference Room to review the upcoming term's curriculum.",
+    date: "2026-01-26",
+    category: "academic",
+    audience: "instructor",
+    isPinned: true,
   },
 ];

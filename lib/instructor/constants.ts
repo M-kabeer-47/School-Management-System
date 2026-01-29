@@ -41,6 +41,11 @@ export const instructorMenuItems: SidebarItem[] = [
     icon: Icons.ClipboardList,
   },
   {
+    label: "Announcements",
+    href: "/instructor/announcements",
+    icon: Icons.Megaphone,
+  },
+  {
     label: "Contact School",
     href: "/instructor/contact-school",
     icon: Icons.MessageSquare,

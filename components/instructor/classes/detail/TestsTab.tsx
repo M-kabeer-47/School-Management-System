@@ -3,12 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { TestRecord } from "@/lib/instructor/types/class-detail";
-import {
-  Calendar,
-  ChevronRight,
-  Plus,
-  FileEdit,
-} from "lucide-react";
+import { Calendar, ChevronRight, Plus, FileEdit } from "lucide-react";
 import { cn } from "@/lib/shadcn/utils";
 import {
   Table,
@@ -58,82 +53,84 @@ export const TestsTab = ({ tests }: TestsTabProps) => {
             </TableHeadRow>
           </TableHeader>
           <TableBody>
-            {tests.map((test) => (
-              <TableRow
-                key={test.id}
-                className="hover:bg-surface-hover/50 group"
-              >
-                <TableCell>
-                  <div>
-                    <p className="font-bold text-text-primary text-sm">
-                      {test.title}
-                    </p>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2 text-text-secondary text-sm">
-                    <Calendar className="w-4 h-4 text-text-muted" />
-                    {new Date(test.date).toLocaleDateString()}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span className="font-mono text-sm font-bold text-text-primary bg-surface-active px-2 py-1 rounded">
-                    {test.totalMarks} pts
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <div className="w-32">
-                    <div className="flex justify-between text-xs mb-1 font-medium">
-                      <span>{test.averageScore}%</span>
+            {tests
+              .filter((test) => test.status !== "upcoming")
+              .map((test) => (
+                <TableRow
+                  key={test.id}
+                  className="hover:bg-surface-hover/50 group"
+                >
+                  <TableCell>
+                    <div>
+                      <p className="font-bold text-text-primary text-sm">
+                        {test.title}
+                      </p>
                     </div>
-                    <div className="h-2 w-full bg-surface-active rounded-full overflow-hidden">
-                      <div
-                        className={cn(
-                          "h-full rounded-full transition-all duration-500",
-                          test.averageScore >= 80
-                            ? "bg-green-500"
-                            : test.averageScore >= 60
-                              ? "bg-accent"
-                              : "bg-orange-500"
-                        )}
-                        style={{ width: `${test.averageScore}%` }}
-                      />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2 text-text-secondary text-sm">
+                      <Calendar className="w-4 h-4 text-text-muted" />
+                      {new Date(test.date).toLocaleDateString()}
                     </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span
-                    className={cn(
-                      "px-2.5 py-0.5 rounded-full text-xs font-bold border capitalize",
-                      test.status === "graded"
-                        ? "bg-blue-50 text-blue-700 border-blue-100"
-                        : test.status === "upcoming"
-                          ? "bg-orange-50 text-orange-700 border-orange-100"
-                          : "bg-gray-50 text-gray-700 border-gray-100"
-                    )}
-                  >
-                    {test.status}
-                  </span>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Link
-                      href={`/instructor/classes/${classId}/marks?testId=${test.id}`}
-                      title="Enter/Edit Marks"
-                      className="p-2 rounded-lg hover:bg-surface-active text-text-secondary hover:text-accent transition-colors"
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-mono text-sm font-bold text-text-primary bg-surface-active px-2 py-1 rounded w-[90px] inline-flex items-center justify-center">
+                      {test.totalMarks} pts
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="w-32">
+                      <div className="flex justify-between text-xs mb-1 font-medium">
+                        <span>{test.averageScore}%</span>
+                      </div>
+                      <div className="h-2 w-full bg-surface-active rounded-full overflow-hidden">
+                        <div
+                          className={cn(
+                            "h-full rounded-full transition-all duration-500",
+                            test.averageScore >= 80
+                              ? "bg-green-500"
+                              : test.averageScore >= 60
+                                ? "bg-accent"
+                                : "bg-orange-500",
+                          )}
+                          style={{ width: `${test.averageScore}%` }}
+                        />
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={cn(
+                        "px-2.5 py-0.5 rounded-full text-xs font-bold border capitalize",
+                        test.status === "graded"
+                          ? "bg-blue-50 text-blue-700 border-blue-100"
+                          : test.status === "upcoming"
+                            ? "bg-orange-50 text-orange-700 border-orange-100"
+                            : "bg-gray-50 text-gray-700 border-gray-100",
+                      )}
                     >
-                      <FileEdit className="w-4 h-4" />
-                    </Link>
-                    <Link
-                      href={`/instructor/classes/${classId}/marks?testId=${test.id}`}
-                      className="text-sm font-bold text-accent hover:text-accent-hover inline-flex items-center gap-1 hover:underline ml-2"
-                    >
-                      Enter Marks <ChevronRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+                      {test.status}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link
+                        href={`/instructor/classes/${classId}/marks?testId=${test.id}`}
+                        title="Enter/Edit Marks"
+                        className="p-2 rounded-lg hover:bg-surface-active text-text-secondary hover:text-accent transition-colors"
+                      >
+                        <FileEdit className="w-4 h-4" />
+                      </Link>
+                      <Link
+                        href={`/instructor/classes/${classId}/marks?testId=${test.id}`}
+                        className="text-sm font-bold text-accent hover:text-accent-hover inline-flex items-center gap-1 hover:underline ml-2"
+                      >
+                        Enter Marks <ChevronRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </div>

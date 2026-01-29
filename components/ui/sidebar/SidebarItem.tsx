@@ -53,20 +53,6 @@ export const SidebarItem = ({
           </span>
         )}
 
-        {/* Badge - Using neutral colors for secondary emphasis */}
-        {!isCollapsed && item.badge && (
-          <span
-            className={clsx(
-              "px-2 py-0.5 rounded-full text-[11px] font-semibold relative z-20",
-              isActive
-                ? "bg-accent-foreground/20 text-accent-foreground"
-                : "bg-surface-active text-text-secondary",
-            )}
-          >
-            {item.badge}
-          </span>
-        )}
-
         {/* Tooltip for collapsed state */}
         {isCollapsed && (
           <div className="absolute left-full ml-2 w-max px-3 py-1.5 bg-surface-active text-text-primary text-sm font-medium rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 shadow-lg border border-border">

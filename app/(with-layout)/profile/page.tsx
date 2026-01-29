@@ -79,7 +79,6 @@ export default function ProfilePage() {
         <section>
           <h2 className="text-lg md:text-xl font-semibold text-text-primary font-heading mb-4 flex items-center gap-2">
             <span>Parent / Guardian Information</span>
-            <span className="text-base md:text-lg">👨‍👩‍👦</span>
           </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
             <ParentCard
@@ -102,14 +101,9 @@ export default function ProfilePage() {
         {/* Address & Emergency Contact */}
         <section>
           <h2 className="text-lg md:text-xl font-semibold text-text-primary font-heading mb-4 flex items-center gap-2">
-            <span>Address & Emergency Contact</span>
-            <span className="text-base md:text-lg">🏠</span>
+            <span>Address</span>
           </h2>
-          <AddressCard
-            address={profile.address}
-            emergencyContact={profile.emergencyContact}
-            onSave={handleAddressSave}
-          />
+          <AddressCard address={profile.address} onSave={handleAddressSave} />
         </section>
       </div>
     </motion.div>

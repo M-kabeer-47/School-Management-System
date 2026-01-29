@@ -38,7 +38,7 @@
   --accent-foreground: #ffffff;
 
   /* Semantic - Status Colors */
-  --success: #17b350; /* Lime/Emerald - brighter and friendlier */
+  --success: #17b350;
   --success-light: #dcfce7;
   --success-foreground: #ffffff;
 
@@ -58,8 +58,6 @@
   --ring: #2563eb;
   --input-border: #cbd5e1;
   --input-focus: #2563eb;
-  --font-heading: var(--font-montserrat);
-  --font-body: var(--font-inter);
 }
 
 /* Dark Mode */
@@ -217,13 +215,19 @@
   --color-ring: var(--ring);
   --color-input-border: var(--input-border);
   --color-input-focus: var(--input-focus);
-
-  /* Fonts */
-  --font-heading: var(--font-montserrat);
-  --font-sans: var(--font-inter);
 }
 
-/* Base Styles */
+/* ============================================
+   FIXED FONT CONFIGURATION
+   ============================================ */
+
+/* Set up font variables on body where Next.js injects them */
+body {
+  --font-heading: var(--font-inter);
+  --font-body: var(--font-inter);
+}
+
+/* Apply fonts to elements */
 p,
 span,
 li,
@@ -236,9 +240,7 @@ option,
 label,
 th,
 td {
-  /* background-color: var(--background); */
-
-  font-family: var(--font-inter);
+  font-family: var(--font-body), var(--font-inter);
 }
 
 h1,
@@ -247,7 +249,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-heading);
+  font-family: var(--font-heading), var(--font-raleway), Georgia, serif;
 }
 
 /* Focus Ring Utility */
@@ -259,8 +261,6 @@ h6 {
   outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
-
-/* Smooth Transitions */
 
 /* Custom Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
