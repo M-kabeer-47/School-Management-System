@@ -19,10 +19,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Homework } from "@/lib/instructor/types/class-detail";
 import { AddHomeworkModal } from "@/components/instructor/classes/detail";
 import { mockHomeworks } from "@/lib/instructor/mock-data/class-detail";
+import { PrintableAttendanceSheet } from "@/components/instructor/classes/attendance/PrintableAttendanceSheet";
 export default function ClassDetailPage() {
   const params = useParams();
   const classId = params.id as string;
@@ -31,6 +32,20 @@ export default function ClassDetailPage() {
   // Homework State
   const [isHomeworkModalOpen, setIsHomeworkModalOpen] = useState(false);
   const [homeworks, setHomeworks] = useState<Homework[]>(mockHomeworks);
+
+  // Print Attendance Sheet
+  const [showPrintSheet, setShowPrintSheet] = useState(false);
+  const printRef = useRef<HTMLDivElement>(null);
+
+  const handlePrintAttendance = () => {
+    setShowPrintSheet(true);
+    // Wait for the component to render before printing
+    setTimeout(() => {
+      window.print();
+      // Hide after print dialog closes
+      setTimeout(() => setShowPrintSheet(false), 500);
+    }, 100);
+  };
 
   const handleAssignHomework = (data: {
     description: string;
@@ -65,6 +80,7 @@ export default function ClassDetailPage() {
       <ClassHeader
         classData={classData}
         onAddHomework={() => setIsHomeworkModalOpen(true)}
+        onPrintAttendance={handlePrintAttendance}
       />
 
       {/* Tabs */}
@@ -127,6 +143,19 @@ export default function ClassDetailPage() {
         onClose={() => setIsHomeworkModalOpen(false)}
         onAssign={handleAssignHomework}
       />
+
+      {/* Printable Attendance Sheet - Hidden until print */}
+      {showPrintSheet && (
+        <div className="fixed inset-0 bg-white z-[9999] overflow-auto print:block hidden print:visible">
+          <PrintableAttendanceSheet
+            ref={printRef}
+            students={classData.students}
+            subject={classData.name}
+            grade={classData.grade}
+            section={classData.section}
+          />
+        </div>
+      )}
     </div>
   );
 }

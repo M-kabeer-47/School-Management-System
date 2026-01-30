@@ -11,11 +11,6 @@ export const currentInstructor: User = {
 
 export const instructorMenuItems: SidebarItem[] = [
   {
-    label: "Dashboard",
-    href: "/instructor",
-    icon: Icons.Dashboard,
-  },
-  {
     label: "My Profile",
     href: "/instructor/profile",
     icon: Icons.User,
@@ -49,10 +44,5 @@ export const instructorMenuItems: SidebarItem[] = [
     label: "Contact School",
     href: "/instructor/contact-school",
     icon: Icons.MessageSquare,
-  },
-  {
-    label: "Settings",
-    href: "/instructor/settings",
-    icon: Icons.Settings,
   },
 ];

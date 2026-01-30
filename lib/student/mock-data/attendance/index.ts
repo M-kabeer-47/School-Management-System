@@ -5,15 +5,23 @@ import {
 } from "@/lib/student/types/attendance";
 import { addDays, subDays, isWeekend } from "date-fns";
 
+// Deterministic seed-based random function for consistent server/client rendering
+const seededRandom = (seed: number) => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
+
 export const generateAttendanceData = (): AttendanceRecord[] => {
   const records: AttendanceRecord[] = [];
   const today = new Date();
   const startDate = subDays(today, 120);
-
+  
   let currentDate = startDate;
+  let dayIndex = 0;
+  
   while (currentDate <= today) {
     if (!isWeekend(currentDate)) {
-      const rand = Math.random();
+      const rand = seededRandom(dayIndex);
       let status: AttendanceStatus = "Present";
       let reason: string | undefined = undefined;
       let checkIn: string | undefined = "07:55 AM";
@@ -42,6 +50,7 @@ export const generateAttendanceData = (): AttendanceRecord[] => {
       });
     }
     currentDate = addDays(currentDate, 1);
+    dayIndex++;
   }
   return records;
 };

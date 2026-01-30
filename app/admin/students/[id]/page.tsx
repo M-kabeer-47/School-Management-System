@@ -1,0 +1,220 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { useParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import {
+  ArrowLeft,
+  Trash2,
+  User,
+  Phone,
+  MapPin,
+  Calendar,
+  Users,
+  Map,
+  Building,
+  Hash,
+  Mail,
+} from "lucide-react";
+import { allStudents } from "@/lib/admin/mock-data/students";
+import { ParentCard } from "@/components/student/profile/ParentCard";
+import { ParentInfo } from "@/lib/student/types/profile";
+import { InfoGridCard } from "@/components/admin/students/detail/InfoGridCard";
+import { StudentOverviewCard } from "@/components/admin/students/detail/StudentOverviewCard";
+
+export default function StudentDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const id = params.id as string;
+
+  // Find student by ID (using mock data for now)
+  const student = allStudents.find((s) => s.id === id) || allStudents[0];
+
+  if (!student) {
+    return <div>Student not found</div>;
+  }
+
+  // Calculate Age
+  const calculateAge = (dob: string) => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  // Parent Data Mapping
+  const fatherInfo: ParentInfo = {
+    name: student.fatherName,
+    cnic: student.fatherNicNo,
+    email: student.fatherEmail,
+    phone: student.fatherWhatsapp,
+    occupation: "Business", // Mock
+  };
+
+  const motherInfo: ParentInfo = {
+    name: "Mrs. " + student.fatherName.split(" ")[0], // Mock name based on father
+    cnic: "00000-0000000-0",
+    email: "mother@example.com",
+    phone: "0000-0000000",
+    occupation: "Housewife",
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-8 max-w-7xl mx-auto pb-10"
+    >
+      {/* Page Header (Navigation) */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center">
+        <div className="flex items-center w-full sm:w-auto gap-3">
+          {/* Compact Back Button */}
+          <Button
+            variant="ghost"
+            className="p-1 min-w-[30px] h-auto w-auto hover:bg-accent/10 text-text-secondary hover:text-text-primary -ml-1 sm:ml-0"
+            onClick={() => router.back()}
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <div className="flex-1">
+            <h1 className="text-2xl font-bold text-text-primary font-heading">
+              Student Profile
+            </h1>
+            <p className="text-text-secondary text-sm">
+              View and manage student information
+            </p>
+          </div>
+        </div>
+
+        {/* Delete option REMOVED */}
+      </div>
+
+      {/* Row 1: Student Overview (Identity + Academic) */}
+      <StudentOverviewCard
+        student={student}
+        onEdit={() => console.log("Edit Overview")}
+        onSave={(data) => console.log("Save Overview", data)}
+      />
+
+      {/* Row 2: Personal (Left) + Contact (Right) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <InfoGridCard
+          title="PERSONAL INFORMATION"
+          icon={User}
+          data={student}
+          fields={[
+            {
+              key: "dateOfBirth",
+              label: "Date of Birth",
+              icon: Calendar,
+              type: "date",
+            },
+            {
+              key: "age",
+              label: "Age",
+              icon: Users,
+              editable: false,
+              format: () => `${calculateAge(student.dateOfBirth)} years`,
+            },
+            {
+              key: "gender",
+              label: "Gender",
+              icon: User,
+              type: "select",
+              options: [
+                { label: "Male", value: "Male" },
+                { label: "Female", value: "Female" },
+                { label: "Other", value: "Other" },
+              ],
+            },
+          ]}
+          onSave={(data) => console.log("Save Personal", data)}
+        />
+
+        <InfoGridCard
+          title="CONTACT INFORMATION"
+          icon={Phone}
+          data={student}
+          fields={[
+            { key: "studentEmail", label: "Student Email", icon: Mail },
+            {
+              key: "studentWhatsapp",
+              label: "Student WhatsApp",
+              icon: Phone,
+              type: "number",
+            },
+            {
+              key: "phoneNo",
+              label: "Phone Number",
+              icon: Phone,
+              type: "number",
+            },
+          ]}
+          onSave={(data) => console.log("Save Contact", data)}
+        />
+      </div>
+
+      {/* 3. Parent / Guardian Section */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-bold text-text-primary font-heading uppercase tracking-wider">
+            Parent / Guardian Information
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="relative">
+            {/* Visual indicator for primary */}
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-accent rounded-l-2xl z-10"></div>
+            <ParentCard
+              title="Father"
+              parent={fatherInfo}
+              isPrimary={true}
+              onSave={(data) => console.log("Save Father", data)}
+            />
+          </div>
+          <div className="relative">
+            <ParentCard
+              title="Mother"
+              parent={motherInfo}
+              isPrimary={false}
+              onSave={(data) => console.log("Save Mother", data)}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Address Only (Additional Info removed) */}
+      <div className="grid grid-cols-1 gap-6">
+        <InfoGridCard
+          title="ADDRESS"
+          icon={MapPin}
+          data={student}
+          fields={[
+            { key: "presentAddress", label: "Address", icon: MapPin },
+            {
+              key: "city",
+              label: "City",
+              icon: Building,
+              format: () => "Lahore",
+              editable: true,
+            },
+            { key: "region", label: "State / Province", icon: Map },
+            {
+              key: "postalCode",
+              label: "Postal Code",
+              icon: Hash,
+              format: () => "54000",
+              editable: true,
+            },
+          ]}
+          onSave={(data) => console.log("Save Address", data)}
+        />
+      </div>
+    </motion.div>
+  );
+}

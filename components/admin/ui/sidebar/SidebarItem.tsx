@@ -12,7 +12,7 @@ interface SidebarItemProps {
   isCollapsed: boolean;
 }
 
-export const SidebarItem = ({
+export const AdminSidebarItem = ({
   item,
   isActive,
   isCollapsed,
@@ -28,6 +28,7 @@ export const SidebarItem = ({
           isCollapsed && "justify-center px-2",
         )}
       >
+        {/* Active State Background - Uses simpler animation to prevent flicker issues */}
         {isActive && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}

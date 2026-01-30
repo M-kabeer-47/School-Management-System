@@ -8,15 +8,21 @@ import {
   Clock,
   CalendarCheck,
   PlusCircle,
+  Printer,
 } from "lucide-react";
 import Link from "next/link";
 
 interface ClassHeaderProps {
   classData: ClassDetailData;
   onAddHomework: () => void;
+  onPrintAttendance: () => void;
 }
 
-export const ClassHeader = ({ classData, onAddHomework }: ClassHeaderProps) => {
+export const ClassHeader = ({
+  classData,
+  onAddHomework,
+  onPrintAttendance,
+}: ClassHeaderProps) => {
   return (
     <div className="relative overflow-hidden rounded-3xl mb-6">
       {/* Premium Gradient Background - Static */}
@@ -66,6 +72,14 @@ export const ClassHeader = ({ classData, onAddHomework }: ClassHeaderProps) => {
             >
               <PlusCircle className="w-5 h-5" />
               <span>Add Homework</span>
+            </Button>
+            <Button
+              onClick={onPrintAttendance}
+              className="flex items-center min-w-[180px] bg-white/10 text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 active:scale-95 transition-all backdrop-blur-md"
+              size={"lg"}
+            >
+              <Printer className="w-5 h-5" />
+              <span>Print Attendance</span>
             </Button>
           </div>
         </div>
