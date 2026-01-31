@@ -1,7 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SearchBar } from "@/components/ui/SearchBar";
 import { Button } from "@/components/ui/Button";
 import { Student, StudentFilters } from "@/lib/admin/types/student";
 import {
@@ -12,14 +11,8 @@ import {
 import { StudentFilters as StudentFiltersComponent } from "@/components/admin/students/StudentFilters";
 import { StudentTable } from "@/components/admin/students/StudentTable";
 import { Pagination } from "@/components/admin/students/Pagination";
-import {
-  Plus,
-  Download,
-  Upload,
-  Trash2,
-  ArrowUpCircle,
-  MessageSquare,
-} from "lucide-react";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import { Plus, Download, Upload, Trash2, ArrowUpCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { PromoteStudentModal } from "@/components/admin/students/PromoteStudentModal";
 
@@ -35,6 +28,11 @@ export default function StudentsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
   const [isPromoteModalOpen, setIsPromoteModalOpen] = useState(false);
+
+  // Delete State
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const itemsPerPage = 10;
 
   // Get unique values for filters
@@ -120,6 +118,21 @@ export default function StudentsPage() {
     setSelectedStudentIds([]); // Clear selection after action
   };
 
+  const handleDeleteSelected = async () => {
+    setIsDeleting(true);
+    // Simulate API call
+    console.log(
+      `Deleting ${selectedStudentIds.length} students:`,
+      selectedStudentIds,
+    );
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    // In real app, you would refresh data here
+    setIsDeleting(false);
+    setIsDeleteOpen(false);
+    setSelectedStudentIds([]);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -188,6 +201,7 @@ export default function StudentsPage() {
                       size="sm"
                       variant="outline"
                       className="text-error border-error/20 hover:bg-error/10 hover:text-error"
+                      onClick={() => setIsDeleteOpen(true)}
                     >
                       <Trash2 className="w-4 h-4" />
                       Delete Selected
@@ -237,6 +251,18 @@ export default function StudentsPage() {
         totalItems={filteredStudents.length}
         itemsPerPage={itemsPerPage}
         onPageChange={setCurrentPage}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
+        onConfirm={handleDeleteSelected}
+        title="Delete Students"
+        message={`Are you sure you want to delete ${selectedStudentIds.length} selected student(s)? This action cannot be undone.`}
+        confirmText="Delete"
+        variant="danger"
+        isLoading={isDeleting}
       />
     </motion.div>
   );

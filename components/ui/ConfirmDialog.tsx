@@ -71,7 +71,7 @@ export default function ConfirmDialog({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.16 }}
-            className="bg-surface rounded-2xl shadow-xl w-full max-w-md border border-border overflow-hidden"
+            className="bg-surface rounded-2xl shadow-xl w-full max-w-lg border border-border overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-border bg-surface-hover/30">
@@ -114,14 +114,14 @@ export default function ConfirmDialog({
                 variant="outline"
                 onClick={onClose}
                 disabled={isLoading}
-                className="min-w-[100px]"
+                className="min-w-[130px]"
               >
                 {cancelText}
               </Button>
               <Button
                 onClick={handleConfirm}
                 disabled={isLoading}
-                className={`${styles.button} min-w-[100px] shadow-sm`}
+                className={`${styles.button} min-w-[130px] shadow-sm`}
               >
                 {isLoading ? (
                   <LoadingSpinner size="sm" text="Please wait..." />

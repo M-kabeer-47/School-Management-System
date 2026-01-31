@@ -21,6 +21,11 @@ export const adminMenuItems: SidebarItem[] = [
     icon: Icons.GraduationCap,
   },
   {
+    label: "Classes",
+    href: "/admin/classes",
+    icon: Icons.Users,
+  },
+  {
     label: "Staff",
     href: "/admin/staff",
     icon: Icons.User,

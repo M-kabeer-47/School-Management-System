@@ -40,6 +40,15 @@ Before saving a single record, we run a "Dry Run" import.
   - _System_: "We see 'Grade 5', '5th', 'Five'. We will map these to Class ID: 5."
 - **UI**: The user sees a "Health Report": "450 Rows Ready, 12 Rows Need Attention." They can fix data right there in a grid view or re-upload.
 
+### Phase 3b: Structure Discovery (The "Auto-Setup" Layer)
+
+- **Problem**: The file has students in "Grade 9", but your system only has Grades 1-8.
+- **Solution**: We scan the `Class` and `Section` columns for _new_ values.
+- **UI Prompt**:
+  > "We found 2 new Classes in your file: **Grade 9** and **Grade 10**.
+  > Do you want to create these classes automatically?"
+- **Benefit**: This saves the admin hours of manual setup. They just import the students, and the school structure is built for them.
+
 ### Phase 4: The Intelligent Import
 
 - The system processes the valid records.

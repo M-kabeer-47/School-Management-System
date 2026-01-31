@@ -13,12 +13,13 @@ const seededRandom = (seed: number) => {
 
 export const generateAttendanceData = (): AttendanceRecord[] => {
   const records: AttendanceRecord[] = [];
-  const today = new Date();
+  // FIX: Use a fixed date to prevent hydration mismatches between Server and Client
+  const today = new Date("2026-01-30T12:00:00");
   const startDate = subDays(today, 120);
-  
+
   let currentDate = startDate;
   let dayIndex = 0;
-  
+
   while (currentDate <= today) {
     if (!isWeekend(currentDate)) {
       const rand = seededRandom(dayIndex);

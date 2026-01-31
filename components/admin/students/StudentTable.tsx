@@ -119,16 +119,12 @@ export function StudentTable({
                     <div className="font-medium text-text-primary text-sm">
                       {student.fatherName}
                     </div>
-                    <div className="text-xs text-text-muted">
-                      {student.fatherEmail}
-                    </div>
                   </div>
                 </TableCell>
                 <TableCell>
                   <div className="text-sm">
-                    <div className="text-text-primary">{student.fatherWhatsapp}</div>
-                    <div className="text-xs text-text-muted">
-                      Phone: {student.phoneNo}
+                    <div className="text-text-primary">
+                      {student.fatherWhatsapp}
                     </div>
                   </div>
                 </TableCell>

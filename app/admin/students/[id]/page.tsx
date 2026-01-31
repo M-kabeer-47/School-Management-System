@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import {
   ArrowLeft,
-  Trash2,
   User,
   Phone,
   MapPin,
@@ -70,7 +69,7 @@ export default function StudentDetailPage() {
       className="space-y-8 max-w-7xl mx-auto pb-10"
     >
       {/* Page Header (Navigation) */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center w-full sm:w-auto gap-3">
           {/* Compact Back Button */}
           <Button
@@ -89,8 +88,6 @@ export default function StudentDetailPage() {
             </p>
           </div>
         </div>
-
-        {/* Delete option REMOVED */}
       </div>
 
       {/* Row 1: Student Overview (Identity + Academic) */}
@@ -128,7 +125,6 @@ export default function StudentDetailPage() {
               options: [
                 { label: "Male", value: "Male" },
                 { label: "Female", value: "Female" },
-                { label: "Other", value: "Other" },
               ],
             },
           ]}
