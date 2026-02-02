@@ -3,6 +3,7 @@ export interface SidebarItem {
   icon: React.ComponentType<{ className?: string }>;
   href: string;
   badge?: string | number;
+  subItems?: SidebarItem[];
 }
 
 export interface User {
@@ -16,3 +17,4 @@ export interface SidebarProps {
   items: SidebarItem[];
   user: User;
 }
+

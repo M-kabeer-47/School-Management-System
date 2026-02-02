@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { AdminSidebarItem } from "./SidebarItem";
 import { AdminSidebarHeader } from "./SidebarHeader";
 import { AdminSidebarFooter } from "./SidebarFooter";
@@ -15,6 +16,14 @@ interface SidebarProps {
 
 export const AdminMobileSidebar = ({ items, user }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Helper to check active state
+  const isActive = (href: string) => {
+    if (href === "/admin" && pathname === "/admin") return true;
+    if (href !== "/admin" && pathname?.startsWith(href)) return true;
+    return false;
+  };
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -24,6 +33,11 @@ export const AdminMobileSidebar = ({ items, user }: SidebarProps) => {
       document.body.style.overflow = "unset";
     }
   }, [isOpen]);
+
+  // Close menu on navigation
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   return (
     <div className="md:hidden">
@@ -72,7 +86,7 @@ export const AdminMobileSidebar = ({ items, user }: SidebarProps) => {
                   <AdminSidebarItem
                     key={item.href}
                     item={item}
-                    isActive={false} // Todo: Add active state logic if needed for mobile
+                    isActive={isActive(item.href)}
                     isCollapsed={false}
                   />
                 ))}
@@ -86,3 +100,4 @@ export const AdminMobileSidebar = ({ items, user }: SidebarProps) => {
     </div>
   );
 };
+

@@ -39,6 +39,23 @@ export const adminMenuItems: SidebarItem[] = [
     label: "Finance",
     href: "/admin/finance",
     icon: Icons.Wallet,
+    subItems: [
+      {
+        label: "Fee Management",
+        href: "/admin/finance/fee-management",
+        icon: Icons.Receipt,
+      },
+      {
+        label: "Salary Management",
+        href: "/admin/finance/salary",
+        icon: Icons.DollarSign,
+      },
+      {
+        label: "Other Expenses",
+        href: "/admin/finance/expenses",
+        icon: Icons.BookMarked,
+      },
+    ],
   },
   {
     label: "Exams",
