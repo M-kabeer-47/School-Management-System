@@ -9,15 +9,16 @@ import {
     TableRow,
     TableCell,
 } from "@/components/ui/Table";
-import { User, Calendar } from "lucide-react";
+import { User, Eye } from "lucide-react";
 import { cn } from "@/lib/shadcn/utils";
 import { DiscountedStudent } from "@/lib/admin/types/finance";
 
 interface DiscountedStudentsTableProps {
     students: DiscountedStudent[];
+    onViewDetails: (student: DiscountedStudent) => void;
 }
 
-export function DiscountedStudentsTable({ students }: DiscountedStudentsTableProps) {
+export function DiscountedStudentsTable({ students, onViewDetails }: DiscountedStudentsTableProps) {
     const getDiscountColor = (type: string) => {
         const colors: Record<string, string> = {
             "Sibling Discount": "bg-blue-100 text-blue-700 border-blue-200",
@@ -34,12 +35,11 @@ export function DiscountedStudentsTable({ students }: DiscountedStudentsTablePro
                 <TableHeader>
                     <TableHeadRow>
                         <TableHead>Student</TableHead>
+                        <TableHead>Admission No</TableHead>
                         <TableHead>Class</TableHead>
                         <TableHead>Discount Type</TableHead>
                         <TableHead>Discount %</TableHead>
-                        <TableHead>Monthly Saving</TableHead>
-                        <TableHead>Validity</TableHead>
-                        <TableHead>Approved By</TableHead>
+                        <TableHead className="text-center">Actions</TableHead>
                     </TableHeadRow>
                 </TableHeader>
                 <TableBody>
@@ -50,13 +50,13 @@ export function DiscountedStudentsTable({ students }: DiscountedStudentsTablePro
                                     <div className="w-9 h-9 rounded-full bg-accent/10 flex items-center justify-center">
                                         <User className="w-4 h-4 text-accent" />
                                     </div>
-                                    <div>
-                                        <p className="font-medium text-text-primary">
-                                            {student.studentName}
-                                        </p>
-                                        <p className="text-xs text-text-muted">{student.admissionNo}</p>
-                                    </div>
+                                    <span className="font-medium text-text-primary">
+                                        {student.studentName}
+                                    </span>
                                 </div>
+                            </TableCell>
+                            <TableCell>
+                                <span className="font-mono text-sm">{student.admissionNo}</span>
                             </TableCell>
                             <TableCell>
                                 <div className="flex items-center gap-2">
@@ -78,22 +78,14 @@ export function DiscountedStudentsTable({ students }: DiscountedStudentsTablePro
                                     {student.discountPercentage}%
                                 </span>
                             </TableCell>
-                            <TableCell>
-                                <span className="font-semibold text-text-primary">
-                                    Rs. {student.monthlyDiscount.toLocaleString()}
-                                </span>
-                            </TableCell>
-                            <TableCell>
-                                <div className="flex items-center gap-1.5 text-sm text-text-secondary">
-                                    <Calendar className="w-3.5 h-3.5 text-text-muted" />
-                                    {new Date(student.validFrom).toLocaleDateString()}
-                                    {student.validTo && (
-                                        <> - {new Date(student.validTo).toLocaleDateString()}</>
-                                    )}
-                                </div>
-                            </TableCell>
-                            <TableCell className="text-sm text-text-secondary">
-                                {student.approvedBy}
+                            <TableCell className="text-center">
+                                <button
+                                    onClick={() => onViewDetails(student)}
+                                    className="inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-surface-hover text-text-secondary hover:text-accent hover:bg-accent/10 transition-all font-medium text-sm"
+                                >
+                                    <Eye className="w-4 h-4" />
+                                    View
+                                </button>
                             </TableCell>
                         </TableRow>
                     ))}

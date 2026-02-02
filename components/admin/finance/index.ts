@@ -9,5 +9,6 @@ export { FeeDetailsDrawer } from "./FeeDetailsDrawer";
 export { DefaultersTable } from "./DefaultersTable";
 export { ClassCollectionTable } from "./ClassCollectionTable";
 export { DiscountedStudentsTable } from "./DiscountedStudentsTable";
+export { DiscountDetailsDrawer } from "./DiscountDetailsDrawer";
 export { PrintChallanTable } from "./PrintChallanTable";
 

@@ -17,7 +17,7 @@ import { allStudents } from "./students";
 export const feeStructures: FeeStructure[] = [
     {
         id: "fs-1",
-        className: "Class 1",
+        className: "1",
         academicYear: "2025-2026",
         items: [
             { id: "f1", name: "Tuition Fee", amount: 3000 },
@@ -30,7 +30,7 @@ export const feeStructures: FeeStructure[] = [
     },
     {
         id: "fs-2",
-        className: "Class 5",
+        className: "5",
         academicYear: "2025-2026",
         items: [
             { id: "f1", name: "Tuition Fee", amount: 4000 },
@@ -44,7 +44,7 @@ export const feeStructures: FeeStructure[] = [
     },
     {
         id: "fs-3",
-        className: "Class 10",
+        className: "10",
         academicYear: "2025-2026",
         items: [
             { id: "f1", name: "Tuition Fee", amount: 5500 },
@@ -76,7 +76,7 @@ export const feeChallans: FeeChallan[] = [
         studentId: "s1",
         studentName: "Ahmed Ali Khan",
         fatherName: "Imran Khan",
-        class: "Class 5",
+        class: "5",
         section: "A",
         admissionNo: "ADM-2024-0045",
         month: "January 2026",
@@ -104,7 +104,7 @@ export const feeChallans: FeeChallan[] = [
         studentId: "s2",
         studentName: "Fatima Zahra",
         fatherName: "Hassan Ahmed",
-        class: "Class 8",
+        class: "8",
         section: "B",
         admissionNo: "ADM-2023-0112",
         month: "January 2026",
@@ -128,7 +128,7 @@ export const feeChallans: FeeChallan[] = [
         studentId: "s3",
         studentName: "Mohammad Bilal",
         fatherName: "Tariq Mahmood",
-        class: "Class 10",
+        class: "10",
         section: "A",
         admissionNo: "ADM-2022-0078",
         month: "December 2025",
@@ -152,7 +152,7 @@ export const feeChallans: FeeChallan[] = [
         studentId: "s4",
         studentName: "Ayesha Siddiqui",
         fatherName: "Kamran Siddiqui",
-        class: "Class 3",
+        class: "3",
         section: "C",
         admissionNo: "ADM-2024-0201",
         month: "January 2026",
@@ -183,7 +183,7 @@ export const feeDefaulters: FeeDefaulter[] = [
         studentId: "s3",
         studentName: "Mohammad Bilal",
         fatherName: "Tariq Mahmood",
-        class: "Class 10",
+        class: "10",
         section: "A",
         admissionNo: "ADM-2022-0078",
         phone: "0300-1234567",
@@ -198,7 +198,7 @@ export const feeDefaulters: FeeDefaulter[] = [
         studentId: "s5",
         studentName: "Usman Ghani",
         fatherName: "Abdul Ghani",
-        class: "Class 7",
+        class: "7",
         section: "B",
         admissionNo: "ADM-2023-0156",
         phone: "0321-9876543",
@@ -212,7 +212,7 @@ export const feeDefaulters: FeeDefaulter[] = [
         studentId: "s6",
         studentName: "Zainab Noor",
         fatherName: "Noor Ahmed",
-        class: "Class 5",
+        class: "5",
         section: "A",
         admissionNo: "ADM-2024-0089",
         phone: "0333-4567890",
@@ -229,7 +229,7 @@ export const discountedStudents: DiscountedStudent[] = [
         id: "disc-001",
         studentId: "s1",
         studentName: "Ahmed Ali Khan",
-        class: "Class 5",
+        class: "5",
         section: "A",
         admissionNo: "ADM-2024-0045",
         discountType: "Sibling Discount",
@@ -243,7 +243,7 @@ export const discountedStudents: DiscountedStudent[] = [
         id: "disc-002",
         studentId: "s4",
         studentName: "Ayesha Siddiqui",
-        class: "Class 3",
+        class: "3",
         section: "C",
         admissionNo: "ADM-2024-0201",
         discountType: "Staff Child",
@@ -257,7 +257,7 @@ export const discountedStudents: DiscountedStudent[] = [
         id: "disc-003",
         studentId: "s7",
         studentName: "Hamza Raza",
-        class: "Class 9",
+        class: "9",
         section: "A",
         admissionNo: "ADM-2022-0034",
         discountType: "Merit Scholarship",
@@ -272,21 +272,21 @@ export const discountedStudents: DiscountedStudent[] = [
 
 // Class-wise Fee Collection Summary
 export const classFeeCollection: ClassFeeCollection[] = [
-    { id: "cfc-1", className: "Class 1", section: "A", totalStudents: 35, totalCollectable: 140000, totalCollected: 126000, totalPending: 14000, collectionPercentage: 90, defaultersCount: 2 },
-    { id: "cfc-2", className: "Class 1", section: "B", totalStudents: 32, totalCollectable: 128000, totalCollected: 121600, totalPending: 6400, collectionPercentage: 95, defaultersCount: 1 },
-    { id: "cfc-3", className: "Class 5", section: "A", totalStudents: 40, totalCollectable: 208000, totalCollected: 187200, totalPending: 20800, collectionPercentage: 90, defaultersCount: 3 },
-    { id: "cfc-4", className: "Class 5", section: "B", totalStudents: 38, totalCollectable: 197600, totalCollected: 177840, totalPending: 19760, collectionPercentage: 90, defaultersCount: 2 },
-    { id: "cfc-5", className: "Class 8", section: "A", totalStudents: 42, totalCollectable: 275100, totalCollected: 261345, totalPending: 13755, collectionPercentage: 95, defaultersCount: 1 },
-    { id: "cfc-6", className: "Class 8", section: "B", totalStudents: 40, totalCollectable: 262000, totalCollected: 235800, totalPending: 26200, collectionPercentage: 90, defaultersCount: 3 },
-    { id: "cfc-7", className: "Class 10", section: "A", totalStudents: 45, totalCollectable: 400500, totalCollected: 360450, totalPending: 40050, collectionPercentage: 90, defaultersCount: 4 },
-    { id: "cfc-8", className: "Class 10", section: "B", totalStudents: 43, totalCollectable: 382700, totalCollected: 363565, totalPending: 19135, collectionPercentage: 95, defaultersCount: 2 },
+    { id: "cfc-1", className: "1", section: "A", totalStudents: 35, totalCollectable: 140000, totalCollected: 126000, totalPending: 14000, collectionPercentage: 90, defaultersCount: 2 },
+    { id: "cfc-2", className: "1", section: "B", totalStudents: 32, totalCollectable: 128000, totalCollected: 121600, totalPending: 6400, collectionPercentage: 95, defaultersCount: 1 },
+    { id: "cfc-3", className: "5", section: "A", totalStudents: 40, totalCollectable: 208000, totalCollected: 187200, totalPending: 20800, collectionPercentage: 90, defaultersCount: 3 },
+    { id: "cfc-4", className: "5", section: "B", totalStudents: 38, totalCollectable: 197600, totalCollected: 177840, totalPending: 19760, collectionPercentage: 90, defaultersCount: 2 },
+    { id: "cfc-5", className: "8", section: "A", totalStudents: 42, totalCollectable: 275100, totalCollected: 261345, totalPending: 13755, collectionPercentage: 95, defaultersCount: 1 },
+    { id: "cfc-6", className: "8", section: "B", totalStudents: 40, totalCollectable: 262000, totalCollected: 235800, totalPending: 26200, collectionPercentage: 90, defaultersCount: 3 },
+    { id: "cfc-7", className: "10", section: "A", totalStudents: 45, totalCollectable: 400500, totalCollected: 360450, totalPending: 40050, collectionPercentage: 90, defaultersCount: 4 },
+    { id: "cfc-8", className: "10", section: "B", totalStudents: 43, totalCollectable: 382700, totalCollected: 363565, totalPending: 19135, collectionPercentage: 95, defaultersCount: 2 },
 ];
 
 // Recent Payments
 export const recentPayments: FeePayment[] = [
-    { id: "pay-001", challanId: "ch-001", challanNo: "CH-2026-001", studentId: "s1", studentName: "Ahmed Ali Khan", class: "Class 5", section: "A", amount: 4680, paymentDate: "2026-01-08", paymentMethod: "bank", receiptNo: "RCP-2026-001", receivedBy: "Admin Office" },
-    { id: "pay-002", challanId: "ch-004", challanNo: "CH-2026-004", studentId: "s4", studentName: "Ayesha Siddiqui", class: "Class 3", section: "C", amount: 3188, paymentDate: "2026-01-05", paymentMethod: "cash", receiptNo: "RCP-2026-004", receivedBy: "Fee Counter" },
-    { id: "pay-003", challanId: "ch-010", challanNo: "CH-2026-010", studentId: "s8", studentName: "Sara Malik", class: "Class 7", section: "A", amount: 5800, paymentDate: "2026-01-04", paymentMethod: "online", receiptNo: "RCP-2026-010", receivedBy: "Online Portal" },
+    { id: "pay-001", challanId: "ch-001", challanNo: "CH-2026-001", studentId: "s1", studentName: "Ahmed Ali Khan", class: "5", section: "A", amount: 4680, paymentDate: "2026-01-08", paymentMethod: "bank", receiptNo: "RCP-2026-001", receivedBy: "Admin Office" },
+    { id: "pay-002", challanId: "ch-004", challanNo: "CH-2026-004", studentId: "s4", studentName: "Ayesha Siddiqui", class: "3", section: "C", amount: 3188, paymentDate: "2026-01-05", paymentMethod: "cash", receiptNo: "RCP-2026-004", receivedBy: "Fee Counter" },
+    { id: "pay-003", challanId: "ch-010", challanNo: "CH-2026-010", studentId: "s8", studentName: "Sara Malik", class: "7", section: "A", amount: 5800, paymentDate: "2026-01-04", paymentMethod: "online", receiptNo: "RCP-2026-010", receivedBy: "Online Portal" },
 ];
 
 // Other Expenses
