@@ -1137,3 +1137,166 @@ export const Icons = {
     </svg>
   ),
 };
+
+export const KPIIcons = {
+  // Total Students - Group of avatars
+  TotalStudents: ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+    >
+      <defs>
+        <linearGradient
+          id="kpiTotalGradient"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop offset="0%" stopColor="#60a5fa" />
+          <stop offset="100%" stopColor="#2563eb" />
+        </linearGradient>
+      </defs>
+
+      {/* Background Left - Body & Head */}
+      <path
+        d="M12 28 C 9 28, 6 30, 6 34 L 6 38 H 18 L 18 34 C 18 30, 15 28, 12 28 Z"
+        fill="url(#kpiTotalGradient)"
+        opacity="0.4"
+      />
+      <circle
+        cx="12"
+        cy="22"
+        r="4"
+        fill="url(#kpiTotalGradient)"
+        opacity="0.4"
+      />
+
+      {/* Background Right - Body & Head */}
+      <path
+        d="M36 28 C 33 28, 30 30, 30 34 L 30 38 H 42 L 42 34 C 42 30, 39 28, 36 28 Z"
+        fill="url(#kpiTotalGradient)"
+        opacity="0.4"
+      />
+      <circle
+        cx="36"
+        cy="22"
+        r="4"
+        fill="url(#kpiTotalGradient)"
+        opacity="0.4"
+      />
+
+      {/* Foreground Center - Body & Head */}
+      <path
+        d="M24 26 C 19 26, 16 29, 16 34 L 16 40 H 32 L 32 34 C 32 29, 29 26, 24 26 Z"
+        fill="url(#kpiTotalGradient)"
+      />
+      <circle cx="24" cy="18" r="6" fill="url(#kpiTotalGradient)" />
+    </svg>
+  ),
+
+  // Boy - Short hair, collar
+  Boy: ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+    >
+      <defs>
+        <linearGradient id="kpiBoyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#3b82f6" />
+          <stop offset="100%" stopColor="#0ea5e9" />
+        </linearGradient>
+      </defs>
+
+      {/* Head */}
+      <circle cx="24" cy="18" r="9" fill="url(#kpiBoyGradient)" />
+
+      {/* Body / Shoulders */}
+      <path
+        d="M 12 44 L 12 36 C 12 30, 16 28, 24 28 C 32 28, 36 30, 36 36 L 36 44 Z"
+        fill="url(#kpiBoyGradient)"
+      />
+    </svg>
+  ),
+
+  Girl: ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+    >
+      <defs>
+        <linearGradient
+          id="kpiGirlGradient"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop offset="0%" stopColor="#ec4899" />
+          <stop offset="100%" stopColor="#d946ef" />
+        </linearGradient>
+      </defs>
+
+      {/* Head */}
+      <circle cx="24" cy="18" r="9" fill="url(#kpiGirlGradient)" />
+
+      {/* Body / Shoulders */}
+      <path
+        d="M 12 44 L 12 36 C 12 30, 16 28, 24 28 C 32 28, 36 30, 36 36 L 36 44 Z"
+        fill="url(#kpiGirlGradient)"
+      />
+    </svg>
+  ),
+
+  // Attendance - Quality checkmark with progress ring
+  AttendanceRate: ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+    >
+      <defs>
+        <linearGradient id="kpiAttGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#10b981" />
+          <stop offset="100%" stopColor="#059669" />
+        </linearGradient>
+      </defs>
+
+      {/* Track Ring (Faint) */}
+      <circle
+        cx="24"
+        cy="24"
+        r="18"
+        stroke="#ecfdf5"
+        strokeWidth="5"
+        opacity="0.8"
+      />
+
+      {/* Progress Arc (approx 85%) - Clean mathematical arc */}
+      <path
+        d="M 24 6 A 18 18 0 1 1 10 35"
+        stroke="url(#kpiAttGradient)"
+        strokeWidth="5"
+        strokeLinecap="round"
+        fill="none"
+      />
+
+      {/* Checkmark (Centered & Weighted) */}
+      <path
+        d="M 16 25 L 22 31 L 32 19"
+        stroke="url(#kpiAttGradient)"
+        strokeWidth="4.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+    </svg>
+  ),
+};

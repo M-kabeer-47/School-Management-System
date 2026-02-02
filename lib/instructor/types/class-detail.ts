@@ -20,6 +20,7 @@ export interface Student {
   studentEmail: string;
   fatherEmail: string;
   avatar: string;
+  attendancePercentage?: number;
 }
 
 export interface AttendanceRecord {

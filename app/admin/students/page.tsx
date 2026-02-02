@@ -53,7 +53,9 @@ export default function StudentsPage() {
         student.fatherName
           .toLowerCase()
           .includes(filters.search.toLowerCase()) ||
-        student.email?.toLowerCase().includes(filters.search.toLowerCase());
+        student.studentEmail
+          ?.toLowerCase()
+          .includes(filters.search.toLowerCase());
 
       const classMatch =
         filters.class === "all" || student.class === filters.class;
@@ -160,7 +162,7 @@ export default function StudentsPage() {
             <Download className="w-4 h-4" />
             Export
           </Button>
-          <Button>
+          <Button onClick={() => router.push("/admin/students/add")}>
             <Plus className="w-4 h-4" />
             Add Student
           </Button>

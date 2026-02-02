@@ -2,10 +2,17 @@
 
 import { useState } from "react";
 import Modal from "@/components/ui/Modal";
-import { Plus, Users } from "lucide-react";
+import { Users, LayoutGrid } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Combobox } from "@/components/ui/Combobox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
 import { teachers } from "@/lib/admin/mock-data/teachers";
 
 interface AddSectionModalProps {
@@ -13,6 +20,18 @@ interface AddSectionModalProps {
   onClose: () => void;
   grade: string;
 }
+
+const SECTION_OPTIONS = [
+  "Section A",
+  "Section B",
+  "Section C",
+  "Section D",
+  "Section E",
+  "Red",
+  "Blue",
+  "Green",
+  "Yellow",
+];
 
 export default function AddSectionModal({
   isOpen,
@@ -23,7 +42,6 @@ export default function AddSectionModal({
     sectionName: "",
     room: "",
     classTeacherId: "",
-    capacity: "30",
   });
   const [loading, setLoading] = useState(false);
 
@@ -49,7 +67,6 @@ export default function AddSectionModal({
       sectionName: "",
       room: "",
       classTeacherId: "",
-      capacity: "30",
     });
   };
 
@@ -59,72 +76,75 @@ export default function AddSectionModal({
       onClose={onClose}
       title={`Add Section to ${grade}`}
       description="Create a new section and assign a class teacher."
-      maxWidth="md"
-      icon={<Users className="w-6 h-6 text-accent" />}
+      maxWidth="2xl"
     >
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-text-secondary">
-              Section Name <span className="text-red-500">*</span>
-            </label>
-            <Input
-              value={formData.sectionName}
-              onChange={(e) =>
-                setFormData({ ...formData, sectionName: e.target.value })
-              }
-              placeholder="e.g. A, Rose, Blue"
-              required
-              autoFocus
-            />
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="grid grid-cols-1 gap-6">
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-text-secondary flex items-center gap-2">
+                <LayoutGrid className="w-4 h-4" />
+                Section Name <span className="text-red-500">*</span>
+              </label>
+              <Select
+                value={formData.sectionName}
+                onValueChange={(val) =>
+                  setFormData({ ...formData, sectionName: val })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a section" />
+                </SelectTrigger>
+                <SelectContent>
+                  {SECTION_OPTIONS.map((opt) => (
+                    <SelectItem key={opt} value={opt}>
+                      {opt}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-text-secondary flex items-center gap-2">
+                <Users className="w-4 h-4" />
+                Class Teacher <span className="text-red-500">*</span>
+              </label>
+              <div className="relative">
+                <Combobox
+                  options={teacherOptions}
+                  value={formData.classTeacherId}
+                  onChange={(val) =>
+                    setFormData({ ...formData, classTeacherId: val })
+                  }
+                  placeholder="Select a class teacher..."
+                  searchPlaceholder="Search by name or department..."
+                  dropdownClassName="max-h-80"
+                />
+              </div>
+              <p className="text-xs text-text-muted mt-2">
+                Assigning a class teacher will give them admin rights for this
+                section.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-text-secondary">
+                Room Number <span className="text-red-500">*</span>
+              </label>
+              <Input
+                value={formData.room}
+                onChange={(e) =>
+                  setFormData({ ...formData, room: e.target.value })
+                }
+                placeholder="e.g. 101"
+                required
+              />
+            </div>
           </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-text-secondary">
-              Room Number <span className="text-red-500">*</span>
-            </label>
-            <Input
-              value={formData.room}
-              onChange={(e) =>
-                setFormData({ ...formData, room: e.target.value })
-              }
-              placeholder="e.g. 101"
-              required
-            />
-          </div>
         </div>
 
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-text-secondary">
-            Class Teacher <span className="text-red-500">*</span>
-          </label>
-          <Combobox
-            options={teacherOptions}
-            value={formData.classTeacherId}
-            onChange={(val) =>
-              setFormData({ ...formData, classTeacherId: val })
-            }
-            placeholder="Select a teacher..."
-            searchPlaceholder="Search by name or department..."
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-text-secondary">
-            Student Capacity
-          </label>
-          <Input
-            type="number"
-            value={formData.capacity}
-            onChange={(e) =>
-              setFormData({ ...formData, capacity: e.target.value })
-            }
-            placeholder="Max students"
-            min={1}
-          />
-        </div>
-
-        <div className="flex justify-end gap-3 pt-4 border-t border-border mt-6">
+        <div className="flex justify-end gap-3 pt-6 border-t border-border">
           <Button
             type="button"
             variant="ghost"
@@ -138,6 +158,7 @@ export default function AddSectionModal({
             disabled={
               loading || !formData.sectionName || !formData.classTeacherId
             }
+            className="bg-accent hover:bg-accent-hover text-white min-w-[120px]"
           >
             {loading ? "Creating..." : "Create Section"}
           </Button>

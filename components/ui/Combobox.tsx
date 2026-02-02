@@ -19,6 +19,7 @@ interface ComboboxProps {
   placeholder?: string;
   searchPlaceholder?: string;
   className?: string;
+  dropdownClassName?: string;
   emptyMessage?: string;
 }
 
@@ -29,6 +30,7 @@ export function Combobox({
   placeholder = "Select...",
   searchPlaceholder = "Search...",
   className,
+  dropdownClassName,
   emptyMessage = "No results found.",
 }: ComboboxProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -106,7 +108,10 @@ export function Combobox({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 5, scale: 0.98 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-border bg-surface p-1 shadow-lg text-text-primary"
+            className={clsx(
+              "absolute z-50 mt-1 w-full overflow-auto rounded-xl border border-border bg-surface p-1 shadow-lg text-text-primary",
+              dropdownClassName || "max-h-60",
+            )}
           >
             {/* Search Input */}
             <div className="flex items-center border-b border-border px-3 py-2 sticky top-0 bg-surface z-10">

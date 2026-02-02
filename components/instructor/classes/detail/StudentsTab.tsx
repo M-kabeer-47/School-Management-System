@@ -23,9 +23,13 @@ import { User, Phone, MessageCircle, Eye, MapPin, X } from "lucide-react";
 
 interface StudentsTabProps {
   students: Student[];
+  showAttendance?: boolean;
 }
 
-export const StudentsTab = ({ students }: StudentsTabProps) => {
+export const StudentsTab = ({
+  students,
+  showAttendance = false,
+}: StudentsTabProps) => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
   return (
@@ -48,6 +52,9 @@ export const StudentsTab = ({ students }: StudentsTabProps) => {
                 <TableHead>Student Name</TableHead>
                 <TableHead>Father Name</TableHead>
                 <TableHead>Contact</TableHead>
+                {showAttendance && (
+                  <TableHead className="w-[180px]">Attendance</TableHead>
+                )}
                 <TableHead className="text-right">Actions</TableHead>
               </TableHeadRow>
             </TableHeader>
@@ -79,6 +86,35 @@ export const StudentsTab = ({ students }: StudentsTabProps) => {
                       <span>{student.fatherWhatsapp || student.phoneNo}</span>
                     </div>
                   </TableCell>
+                  {showAttendance && (
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs font-semibold">
+                          <span
+                            className={
+                              (student.attendancePercentage || 0) < 75
+                                ? "text-error"
+                                : "text-success"
+                            }
+                          >
+                            {student.attendancePercentage || 0}%
+                          </span>
+                        </div>
+                        <div className="h-2 w-full bg-surface-active rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-500 ${
+                              (student.attendancePercentage || 0) < 75
+                                ? "bg-error"
+                                : "bg-success"
+                            }`}
+                            style={{
+                              width: `${student.attendancePercentage || 0}%`,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </TableCell>
+                  )}
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-2">
                       <button

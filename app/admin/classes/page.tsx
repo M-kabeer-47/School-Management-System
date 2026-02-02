@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Plus } from "lucide-react";
 import { ClassCard } from "@/components/admin/classes/ClassCard";
@@ -12,6 +13,7 @@ import { clsx } from "clsx";
 import AddSectionModal from "@/components/admin/classes/AddSectionModal";
 
 export default function ClassesPage() {
+  const router = useRouter();
   const [activeGrade, setActiveGrade] = useState("All");
   const [isAddSectionOpen, setIsAddSectionOpen] = useState(false);
 
@@ -111,7 +113,7 @@ export default function ClassesPage() {
                 <ClassCard
                   key={section.id}
                   data={section}
-                  onClick={() => console.log("Open details for", section.id)}
+                  onClick={() => router.push(`/admin/classes/${section.id}`)}
                 />
               ))}
 
