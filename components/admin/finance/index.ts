@@ -11,4 +11,5 @@ export { ClassCollectionTable } from "./ClassCollectionTable";
 export { DiscountedStudentsTable } from "./DiscountedStudentsTable";
 export { DiscountDetailsDrawer } from "./DiscountDetailsDrawer";
 export { PrintChallanTable } from "./PrintChallanTable";
+export { ChallanPrintTemplate } from "./ChallanPrintTemplate";
 
