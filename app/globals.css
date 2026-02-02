@@ -60,7 +60,53 @@
   --input-border: #cbd5e1;
   --input-focus: #2563eb;
 }
+.dark {
+  --background: #030712;
+  --foreground: #f1f5f9;
 
+  /* Surfaces */
+  --surface: #080d19;
+  --surface-hover: #0f1629;
+  --surface-active: #1a2332;
+
+  /* Borders */
+  --border: #1e293b;
+  --border-strong: #334155;
+
+  /* Text */
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #718096;
+  --text-disabled: #475569;
+
+  /* Brand/Accent */
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-light: #2465b9;
+  --accent-foreground: #ffffff;
+
+  /* Semantic - Status Colors */
+  --success: #22c55e;
+  --success-light: #14532d;
+  --success-foreground: #ffffff;
+
+  --warning: #eab308;
+  --warning-light: #422006;
+  --warning-foreground: #000000;
+
+  --error: #ef4444;
+  --error-light: #450a0a;
+  --error-foreground: #ffffff;
+
+  --info: #0ea5e9;
+  --info-light: #0c4a6e;
+  --info-foreground: #ffffff;
+
+  /* Interactive */
+  --ring: #3b82f6;
+  --input-border: #334155;
+  --input-focus: #3b82f6;
+}
 /* System preference fallback for dark mode */
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {

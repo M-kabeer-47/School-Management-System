@@ -84,7 +84,7 @@ export function ClassKPICards({
             <p className="text-sm font-bold text-text-muted uppercase tracking-wider mb-1">
               {card.label}
             </p>
-            <h3 className="text-3xl font-black text-text-primary font-heading tracking-tight">
+            <h3 className="text-3xl font-bold text-text-primary tracking-tight">
               {card.value}
             </h3>
           </div>

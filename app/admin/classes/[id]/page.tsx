@@ -127,7 +127,7 @@ export default function ClassDetailsPage() {
             variant="ghost"
             size="icon"
             onClick={() => router.back()}
-            className="rounded-full bg-surface border border-border hover:bg-surface-hover"
+            className="min-w-[40px]"
           >
             <ArrowLeft className="w-5 h-5 text-text-secondary" />
           </Button>
@@ -152,11 +152,8 @@ export default function ClassDetailsPage() {
               >
                 <Eye className="w-4 h-4" /> View Syllabus
               </Button>
-              <Button
-                variant="outline"
-                className="gap-2 bg-surface hover:bg-surface-hover border-dashed"
-              >
-                <Upload className="w-4 h-4 text-text-muted" /> Update Syllabus
+              <Button className="gap-2 ">
+                <Upload className="w-4 h-4 text-white" /> Update Syllabus
               </Button>
             </>
           ) : (
@@ -164,13 +161,6 @@ export default function ClassDetailsPage() {
               <Plus className="w-4 h-4" /> Add Syllabus
             </Button>
           )}
-          <div className="w-px h-8 bg-border mx-1 hidden md:block" />
-          <Button
-            variant="outline"
-            className="gap-2 bg-surface hover:bg-surface-hover shadow-sm"
-          >
-            <User className="w-4 h-4" /> Change Class Teacher
-          </Button>
         </div>
       </div>
 
