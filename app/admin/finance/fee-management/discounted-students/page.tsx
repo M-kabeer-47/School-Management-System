@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Percent, Download, Filter, Plus, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/admin/PageHeader";
+import { Pagination } from "@/components/admin/students/Pagination";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Input } from "@/components/ui/Input";
 import {
@@ -21,10 +22,13 @@ import { discountedStudents, feeDiscounts } from "@/lib/admin/mock-data/finance"
 import { allStudents, getUniqueClasses } from "@/lib/admin/mock-data/students";
 import { DiscountedStudent } from "@/lib/admin/types/finance";
 
+const ITEMS_PER_PAGE = 10;
+
 export default function DiscountedStudentsPage() {
     const [search, setSearch] = useState("");
     const [discountFilter, setDiscountFilter] = useState("all");
     const [showFilters, setShowFilters] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
 
     // Drawer state
     const [selectedStudent, setSelectedStudent] = useState<DiscountedStudent | null>(null);
@@ -56,6 +60,15 @@ export default function DiscountedStudentsPage() {
         });
     }, [search, discountFilter]);
 
+    // Pagination
+    const paginatedStudents = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        return filteredStudents.slice(startIndex, endIndex);
+    }, [filteredStudents, currentPage]);
+
+    const totalPages = Math.ceil(filteredStudents.length / ITEMS_PER_PAGE);
+
     const totalMonthlyDiscount = filteredStudents.reduce(
         (sum, s) => sum + s.monthlyDiscount,
         0
@@ -64,6 +77,7 @@ export default function DiscountedStudentsPage() {
     const clearFilters = () => {
         setSearch("");
         setDiscountFilter("all");
+        setCurrentPage(1);
     };
 
     const handleViewDetails = (student: DiscountedStudent) => {
@@ -134,18 +148,18 @@ export default function DiscountedStudentsPage() {
             </PageHeader>
 
             {/* Summary Card */}
-            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5">
+            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-2xl p-5">
                 <div className="flex flex-wrap items-center gap-6">
                     <div>
-                        <p className="text-sm text-blue-600 font-medium">Total Students</p>
-                        <p className="text-3xl font-bold text-blue-700">
+                        <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">Total Students</p>
+                        <p className="text-3xl font-bold text-blue-700 dark:text-blue-300">
                             {filteredStudents.length}
                         </p>
                     </div>
-                    <div className="h-12 w-px bg-blue-200" />
+                    <div className="h-12 w-px bg-blue-200 dark:bg-blue-800" />
                     <div>
-                        <p className="text-sm text-blue-600 font-medium">Monthly Discount Value</p>
-                        <p className="text-3xl font-bold text-blue-700">
+                        <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">Monthly Discount Value</p>
+                        <p className="text-3xl font-bold text-blue-700 dark:text-blue-300">
                             Rs. {totalMonthlyDiscount.toLocaleString()}
                         </p>
                     </div>
@@ -217,15 +231,21 @@ export default function DiscountedStudentsPage() {
                 </AnimatePresence>
             </div>
 
-            {/* Results Count */}
-            <div className="text-sm text-text-secondary px-6">
-                Showing {filteredStudents.length} of {discountedStudents.length} students
+            {/* Students Table with Pagination */}
+            <div className="bg-background rounded-2xl border border-border overflow-hidden shadow-sm">
+                <DiscountedStudentsTable
+                    students={paginatedStudents}
+                    onViewDetails={handleViewDetails}
+                />
             </div>
 
-            {/* Students Table */}
-            <DiscountedStudentsTable
-                students={filteredStudents}
-                onViewDetails={handleViewDetails}
+            {/* Pagination */}
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={filteredStudents.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+                onPageChange={setCurrentPage}
             />
 
             {/* Empty State */}
