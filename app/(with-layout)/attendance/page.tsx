@@ -12,7 +12,7 @@ import { AttendanceRecord } from "@/lib/student/types/attendance";
 import { isSameDay } from "date-fns"; // Removed addDays, subDays, isWeekend as they were used in generator
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
-import { PageHeaderIcons } from "@/utils/navigation/icons";
+import { PageHeaderIcons } from "@/utils/student/icons";
 
 import { allRecords, stats } from "@/lib/student/mock-data/attendance";
 // Removed local generators

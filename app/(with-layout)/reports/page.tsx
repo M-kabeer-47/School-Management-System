@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ReportCard, ReportCardClassic } from "@/components/student/reports";
 import { mockReportCards } from "@/lib/student/mock-data/reportCard";
-import { PageHeaderIcons } from "@/utils/navigation/icons";
+import { PageHeaderIcons } from "@/utils/student/icons";
 import { Button } from "@/components/ui/Button";
 import { Download, Printer, LayoutGrid, GraduationCap } from "lucide-react";
 

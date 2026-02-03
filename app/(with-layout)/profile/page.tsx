@@ -7,7 +7,7 @@ import { ParentCard } from "@/components/student/profile/ParentCard";
 import { AddressCard } from "@/components/student/profile/AddressCard";
 import { mockProfile } from "@/lib/student/mock-data/profile";
 import { ProfileData, ParentInfo } from "@/lib/student/types/profile";
-import { PageHeaderIcons } from "@/utils/navigation/icons";
+import { PageHeaderIcons } from "@/utils/student/icons";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<ProfileData>(mockProfile);

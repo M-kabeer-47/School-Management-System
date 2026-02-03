@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { KPIIcons } from "@/utils/navigation/icons";
+import { KPIIcons } from "@/utils/admin/icons";
 
 import {
   AnalyticsKPICards,

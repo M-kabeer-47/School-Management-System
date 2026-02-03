@@ -11,7 +11,8 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Eye, EyeOff } from "lucide-react";
 import { Homework } from "@/lib/student/types/homework";
-import { Icons, PageHeaderIcons } from "@/utils/navigation/icons";
+import { Icons } from "@/utils/common/icons";
+import { PageHeaderIcons } from "@/utils/student/icons";
 
 export default function HomeworkPage() {
   const [showAll, setShowAll] = useState(false);

@@ -10,7 +10,7 @@ import {
 } from "@/lib/student/mock-data/fees";
 import { Button } from "@/components/ui/Button";
 import { Eye, EyeOff } from "lucide-react";
-import { PageHeaderIcons } from "@/utils/navigation/icons";
+import { PageHeaderIcons } from "@/utils/student/icons";
 
 export default function FeesPage() {
   const [showAll, setShowAll] = useState(false);

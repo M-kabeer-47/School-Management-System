@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Pin } from "lucide-react";
 import { AnnouncementCard } from "@/components/student/announcements/AnnouncementCard";
 import { mockAnnouncements } from "@/lib/student/mock-data/announcements";
-import { PageHeaderIcons } from "@/utils/navigation/icons";
+import { PageHeaderIcons } from "@/utils/student/icons";
 
 export default function AnnouncementsPage() {
   // Separate pinned and regular announcements, sort by date

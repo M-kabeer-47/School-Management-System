@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { NavbarIcons } from "@/utils/navigation/icons";
+import { NavbarIcons } from "@/utils/common/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { clsx } from "clsx";

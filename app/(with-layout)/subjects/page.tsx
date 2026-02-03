@@ -5,7 +5,7 @@ import { SubjectList } from "@/components/student/subjects/SubjectList";
 ``;
 import { subjects } from "@/lib/student/mock-data/subjects";
 import { FileDown } from "lucide-react";
-import { PageHeaderIcons } from "@/utils/navigation/icons";
+import { PageHeaderIcons } from "@/utils/student/icons";
 import { Button } from "@/components/ui/Button";
 
 export default function SubjectsPage() {
