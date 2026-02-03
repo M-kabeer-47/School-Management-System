@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Percent, Download, Filter, Plus, CheckCircle } from "lucide-react";
+import { Percent, Download, Filter, Plus, CheckCircle, User, Check } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { Pagination } from "@/components/admin/students/Pagination";
@@ -15,6 +15,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/Select";
+import {
+    CommandDialog,
+    CommandInput,
+    CommandList,
+    CommandEmpty,
+    CommandGroup,
+    CommandItem,
+} from "@/components/ui/Command";
 import { DiscountedStudentsTable, DiscountDetailsDrawer } from "@/components/admin/finance";
 import { ClassSelect } from "@/components/admin/students/ClassSelect";
 import Modal from "@/components/ui/Modal";
@@ -44,6 +52,9 @@ export default function DiscountedStudentsPage() {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
+
+    // Student selection palette state
+    const [isStudentPaletteOpen, setIsStudentPaletteOpen] = useState(false);
 
     const uniqueDiscountTypes = [...new Set(discountedStudents.map((d) => d.discountType))];
     const uniqueClasses = getUniqueClasses();
@@ -120,10 +131,18 @@ export default function DiscountedStudentsPage() {
         });
     };
 
+    const handleStudentSelect = (studentId: string) => {
+        setNewDiscount(prev => ({ ...prev, studentId }));
+        setIsStudentPaletteOpen(false);
+    };
+
     // Students without discount for selection
     const availableStudents = allStudents.filter(
         (s) => !discountedStudents.some((ds) => ds.studentId === s.id)
     );
+
+    // Get selected student details for display
+    const selectedStudentForDiscount = allStudents.find(s => s.id === newDiscount.studentId);
 
     return (
         <motion.div
@@ -310,21 +329,37 @@ export default function DiscountedStudentsPage() {
                                 <label className="block text-sm font-medium text-text-secondary mb-2">
                                     Select Student
                                 </label>
-                                <Select
-                                    value={newDiscount.studentId}
-                                    onValueChange={(value) => setNewDiscount(prev => ({ ...prev, studentId: value }))}
+                                <button
+                                    type="button"
+                                    onClick={() => setIsStudentPaletteOpen(true)}
+                                    className="w-full flex items-center gap-3 p-3 rounded-xl border border-border hover:border-accent/50 hover:bg-surface-hover transition-all text-left"
                                 >
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Choose a student" />
-                                    </SelectTrigger>
-                                    <SelectContent position="popper">
-                                        {availableStudents.slice(0, 20).map((student) => (
-                                            <SelectItem key={student.id} value={student.id}>
-                                                {student.studentName} ({student.admissionNo}) - {student.class}-{student.section}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
+                                    {selectedStudentForDiscount ? (
+                                        <>
+                                            <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                                                <User className="w-5 h-5 text-accent" />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="font-medium text-text-primary truncate">
+                                                    {selectedStudentForDiscount.studentName}
+                                                </p>
+                                                <p className="text-sm text-text-muted truncate">
+                                                    {selectedStudentForDiscount.admissionNo} • {selectedStudentForDiscount.class}-{selectedStudentForDiscount.section}
+                                                </p>
+                                            </div>
+                                            <div className="w-5 h-5 rounded-full bg-accent flex items-center justify-center shrink-0">
+                                                <Check className="w-3 h-3 text-white" />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="w-10 h-10 rounded-full bg-surface-hover flex items-center justify-center shrink-0">
+                                                <User className="w-5 h-5 text-text-muted" />
+                                            </div>
+                                            <span className="text-text-muted">Click to search and select a student...</span>
+                                        </>
+                                    )}
+                                </button>
                             </div>
                         )}
 
@@ -409,6 +444,43 @@ export default function DiscountedStudentsPage() {
                     </div>
                 )}
             </Modal>
+
+            {/* Student Selection Command Palette */}
+            <CommandDialog open={isStudentPaletteOpen} onOpenChange={setIsStudentPaletteOpen}>
+                <CommandInput placeholder="Search by name or admission number..." />
+                <CommandList className="custom-scrollbar">
+                    <CommandEmpty>No students found.</CommandEmpty>
+                    <CommandGroup heading="Available Students">
+                        {availableStudents.map((student) => (
+                            <CommandItem
+                                key={student.id}
+                                onSelect={() => handleStudentSelect(student.id)}
+                                className="flex items-center justify-between group"
+                            >
+                                <div className="flex items-center gap-4 py-0.5">
+                                    <div className="w-9 h-9 rounded-full bg-surface-active flex items-center justify-center text-accent font-bold overflow-hidden border border-border group-data-[selected=true]:border-accent/40 transition-colors shrink-0">
+                                        <User className="w-4 h-4" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="font-medium text-text-primary">
+                                            {student.studentName}
+                                        </span>
+                                        <span className="text-[10px] text-text-muted uppercase tracking-widest font-semibold">
+                                            {student.admissionNo} • {student.class}-{student.section}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {newDiscount.studentId === student.id && (
+                                    <div className="w-5 h-5 rounded-full bg-accent/20 flex items-center justify-center text-accent border border-accent/20">
+                                        <Check className="w-3 h-3" />
+                                    </div>
+                                )}
+                            </CommandItem>
+                        ))}
+                    </CommandGroup>
+                </CommandList>
+            </CommandDialog>
         </motion.div>
     );
 }
