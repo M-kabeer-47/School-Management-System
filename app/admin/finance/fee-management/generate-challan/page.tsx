@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import {
@@ -12,6 +12,7 @@ import {
     Printer,
     Download,
     Calendar,
+    X,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/admin/PageHeader";
@@ -24,8 +25,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/Select";
+import { ChallanPrintTemplate } from "@/components/admin/finance/ChallanPrintTemplate";
 import { feeStructures, feeDiscounts } from "@/lib/admin/mock-data/finance";
 import { allStudents } from "@/lib/admin/mock-data/students";
+import { ChallanData } from "@/lib/admin/types/finance";
 import { cn } from "@/lib/shadcn/utils";
 
 type Step = 1 | 2 | 3;
@@ -51,12 +54,19 @@ export default function GenerateChallanPage() {
     const [customItem, setCustomItem] = useState({ name: "", amount: 0 });
 
     // Step 3: Final Details
-    const [dueDate, setDueDate] = useState<string>(
-        new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
-    );
+    const [dueDate, setDueDate] = useState<string>("");
     const [remarks, setRemarks] = useState("");
     const [isGenerating, setIsGenerating] = useState(false);
     const [isGenerated, setIsGenerated] = useState(false);
+    const [generatedChallan, setGeneratedChallan] = useState<ChallanData | null>(null);
+    const [showPrintPreview, setShowPrintPreview] = useState(false);
+
+    // Set default due date on client side to avoid hydration mismatch
+    useEffect(() => {
+        if (!dueDate) {
+            setDueDate(new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]);
+        }
+    }, [dueDate]);
 
     // Filter students based on search
     const filteredStudents = allStudents
@@ -124,8 +134,32 @@ export default function GenerateChallanPage() {
 
     // Generate challan
     const handleGenerate = async () => {
+        if (!selectedStudent) return;
+
         setIsGenerating(true);
         await new Promise((resolve) => setTimeout(resolve, 1500));
+
+        // Create ChallanData object for the template
+        const challanNumber = `CH-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
+        const currentMonth = new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+
+        const challanData: ChallanData = {
+            id: `challan-${Date.now()}`,
+            studentName: selectedStudent.studentName,
+            fatherName: selectedStudent.fatherName,
+            admissionNo: selectedStudent.admissionNo,
+            class: selectedStudent.class,
+            section: selectedStudent.section,
+            challanNo: challanNumber,
+            month: currentMonth,
+            dueDate: new Date(dueDate).toLocaleDateString('en-GB'),
+            total: netAmount,
+            items: feeItems
+                .filter(f => f.selected)
+                .map(f => ({ name: f.name, amount: f.amount })),
+        };
+
+        setGeneratedChallan(challanData);
         setIsGenerating(false);
         setIsGenerated(true);
     };
@@ -450,33 +484,89 @@ export default function GenerateChallanPage() {
                     )}
 
                     {/* Success State */}
-                    {isGenerated && (
+                    {isGenerated && generatedChallan && (
                         <motion.div
                             key="success"
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            className="flex flex-col items-center justify-center py-12"
+                            className="space-y-6"
                         >
-                            <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-6">
-                                <Check className="w-10 h-10 text-green-600" />
+                            {/* Success Header */}
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+                                        <Check className="w-6 h-6 text-green-600" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-text-primary">
+                                            Challan Generated Successfully!
+                                        </h2>
+                                        <p className="text-sm text-text-secondary">
+                                            Challan #{generatedChallan.challanNo} for {selectedStudent?.studentName}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-3">
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => {
+                                            const printContent = document.getElementById('challan-print-area');
+                                            if (printContent) {
+                                                const printWindow = window.open('', '_blank');
+                                                if (printWindow) {
+                                                    printWindow.document.write(`
+                                                        <html>
+                                                            <head>
+                                                                <title>Fee Challan - ${generatedChallan.challanNo}</title>
+                                                                <style>
+                                                                    * { margin: 0; padding: 0; box-sizing: border-box; }
+                                                                    body { font-family: Arial, sans-serif; }
+                                                                    @media print {
+                                                                        body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+                                                                    }
+                                                                </style>
+                                                            </head>
+                                                            <body>${printContent.innerHTML}</body>
+                                                        </html>
+                                                    `);
+                                                    printWindow.document.close();
+                                                    printWindow.print();
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        <Printer className="w-4 h-4" />
+                                        Print Challan
+                                    </Button>
+                                    <Button onClick={() => router.push("/admin/finance/fee-management")}>
+                                        Back to Fee Management
+                                    </Button>
+                                </div>
                             </div>
-                            <h2 className="text-2xl font-bold text-text-primary mb-2">
-                                Challan Generated!
-                            </h2>
-                            <p className="text-text-secondary mb-6">
-                                Challan has been created for {selectedStudent?.studentName}
-                            </p>
-                            <div className="flex gap-3">
-                                <Button variant="outline">
-                                    <Printer className="w-4 h-4" />
-                                    Print Challan
-                                </Button>
-                                <Button variant="outline">
-                                    <Download className="w-4 h-4" />
-                                    Download PDF
-                                </Button>
-                                <Button onClick={() => router.push("/admin/finance/fee-management")}>
-                                    Back to Fee Management
+
+                            {/* Challan Preview */}
+                            <div className="bg-white rounded-xl border border-border p-4 overflow-x-auto">
+                                <div id="challan-print-area">
+                                    <ChallanPrintTemplate challan={generatedChallan} />
+                                </div>
+                            </div>
+
+                            {/* Generate Another */}
+                            <div className="text-center">
+                                <Button
+                                    variant="ghost"
+                                    onClick={() => {
+                                        setIsGenerated(false);
+                                        setGeneratedChallan(null);
+                                        setCurrentStep(1);
+                                        setSelectedStudent(null);
+                                        setFeeItems([]);
+                                        setSelectedDiscount("none");
+                                        setRemarks("");
+                                    }}
+                                >
+                                    <Plus className="w-4 h-4" />
+                                    Generate Another Challan
                                 </Button>
                             </div>
                         </motion.div>
