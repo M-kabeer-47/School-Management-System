@@ -44,7 +44,7 @@ const generateClassPapers = (
       section: section,
       subject: subject,
       teacher: `Teacher ${subject.substring(0, 3)}`,
-      isUploaded: Math.random() > 0.4, // Random status
+      isUploaded: (idx + grade) % 3 !== 0, // Deterministic status (2/3 uploaded)
       deadline: "2025-03-12",
     })),
   );
