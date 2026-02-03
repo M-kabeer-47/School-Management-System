@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/admin/PageHeader";
+import { Pagination } from "@/components/admin/students/Pagination";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { ClassSelect } from "@/components/admin/students/ClassSelect";
 import { DefaultersTable } from "@/components/admin/finance";
@@ -21,11 +22,14 @@ import { feeDefaulters } from "@/lib/admin/mock-data/finance";
 import { getUniqueClasses } from "@/lib/admin/mock-data/students";
 import { FeeDefaulter } from "@/lib/admin/types/finance";
 
+const ITEMS_PER_PAGE = 10;
+
 export default function DefaultersPage() {
     const [search, setSearch] = useState("");
     const [classFilter, setClassFilter] = useState("all");
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
     const [showFilters, setShowFilters] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
 
     // Reminder Modal
     const [isReminderModalOpen, setIsReminderModalOpen] = useState(false);
@@ -49,6 +53,15 @@ export default function DefaultersPage() {
             return matchesSearch && matchesClass;
         });
     }, [search, classFilter]);
+
+    // Pagination
+    const paginatedDefaulters = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        return filteredDefaulters.slice(startIndex, endIndex);
+    }, [filteredDefaulters, currentPage]);
+
+    const totalPages = Math.ceil(filteredDefaulters.length / ITEMS_PER_PAGE);
 
     const totalDue = filteredDefaulters.reduce((sum, d) => sum + d.totalDue, 0);
     const selectedDefaulters = filteredDefaulters.filter((d) =>
@@ -90,6 +103,7 @@ export default function DefaultersPage() {
     const clearFilters = () => {
         setSearch("");
         setClassFilter("all");
+        setCurrentPage(1);
     };
 
     return (
@@ -236,18 +250,24 @@ export default function DefaultersPage() {
                 )}
             </AnimatePresence>
 
-            {/* Results Count */}
-            <div className="text-sm text-text-secondary px-6">
-                Showing {filteredDefaulters.length} of {feeDefaulters.length} defaulters
+            {/* Defaulters Table with Pagination */}
+            <div className="bg-surface border border-border rounded-2xl shadow-sm overflow-hidden">
+                <DefaultersTable
+                    defaulters={paginatedDefaulters}
+                    selectedIds={selectedIds}
+                    onToggleSelect={handleToggleSelect}
+                    onToggleSelectAll={handleSelectAll}
+                    onSendReminder={handleSendReminder}
+                />
             </div>
 
-            {/* Defaulters Table */}
-            <DefaultersTable
-                defaulters={filteredDefaulters}
-                selectedIds={selectedIds}
-                onToggleSelect={handleToggleSelect}
-                onToggleSelectAll={handleSelectAll}
-                onSendReminder={handleSendReminder}
+            {/* Pagination */}
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={filteredDefaulters.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+                onPageChange={setCurrentPage}
             />
 
             {/* Empty State */}

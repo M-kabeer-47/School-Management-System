@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CreditCard, Download, Printer, X, Receipt } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/admin/PageHeader";
+import { Pagination } from "@/components/admin/students/Pagination";
 import {
     FeeCollectionFilters,
     FeeCollectionTable,
@@ -14,6 +15,8 @@ import {
 import { getUniqueClasses, getUniqueSections } from "@/lib/admin/mock-data/students";
 import { studentFeeRecords } from "@/lib/admin/mock-data/finance";
 import { StudentFeeRecord } from "@/lib/admin/types/finance";
+
+const ITEMS_PER_PAGE = 10;
 
 export default function FeeCollectionPage() {
     const [records] = useState<StudentFeeRecord[]>(studentFeeRecords);
@@ -26,6 +29,7 @@ export default function FeeCollectionPage() {
     const [showFilters, setShowFilters] = useState(false);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
     const [selectedRecord, setSelectedRecord] = useState<StudentFeeRecord | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const uniqueClasses = getUniqueClasses();
     const uniqueSections = getUniqueSections();
@@ -46,6 +50,15 @@ export default function FeeCollectionPage() {
         });
     }, [records, filters]);
 
+    // Pagination
+    const paginatedRecords = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        return filteredRecords.slice(startIndex, endIndex);
+    }, [filteredRecords, currentPage]);
+
+    const totalPages = Math.ceil(filteredRecords.length / ITEMS_PER_PAGE);
+
     // Stats
     const totalCollected = filteredRecords
         .filter((r) => r.status === "paid")
@@ -60,6 +73,7 @@ export default function FeeCollectionPage() {
 
     const clearFilters = () => {
         setFilters({ search: "", class: "all", section: "all", status: "all" });
+        setCurrentPage(1);
     };
 
     const handleToggleSelect = (id: string) => {
@@ -69,10 +83,10 @@ export default function FeeCollectionPage() {
     };
 
     const handleToggleSelectAll = () => {
-        if (selectedIds.length === filteredRecords.length) {
+        if (selectedIds.length === paginatedRecords.length) {
             setSelectedIds([]);
         } else {
-            setSelectedIds(filteredRecords.map((r) => r.id));
+            setSelectedIds(paginatedRecords.map((r) => r.id));
         }
     };
 
@@ -98,13 +112,13 @@ export default function FeeCollectionPage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="bg-background rounded-2xl border border-border p-5 shadow-sm">
                     <p className="text-sm text-text-muted font-medium">Total Collected</p>
-                    <p className="text-2xl font-bold text-green-600 mt-1">
+                    <p className="text-2xl font-bold text-green-600 dark:text-green-400 mt-1">
                         Rs. {totalCollected.toLocaleString()}
                     </p>
                 </div>
                 <div className="bg-background rounded-2xl border border-border p-5 shadow-sm">
                     <p className="text-sm text-text-muted font-medium">Pending Amount</p>
-                    <p className="text-2xl font-bold text-orange-600 mt-1">
+                    <p className="text-2xl font-bold text-orange-600 dark:text-orange-400 mt-1">
                         Rs. {totalPending.toLocaleString()}
                     </p>
                 </div>
@@ -156,18 +170,24 @@ export default function FeeCollectionPage() {
                 )}
             </AnimatePresence>
 
-            {/* Results Count */}
-            <div className="text-sm text-text-secondary px-6">
-                Showing {filteredRecords.length} of {records.length} students
+            {/* Table with Pagination */}
+            <div className="bg-surface border border-border rounded-2xl shadow-sm overflow-hidden">
+                <FeeCollectionTable
+                    records={paginatedRecords}
+                    selectedIds={selectedIds}
+                    onToggleSelect={handleToggleSelect}
+                    onToggleSelectAll={handleToggleSelectAll}
+                    onViewDetails={setSelectedRecord}
+                />
             </div>
 
-            {/* Table */}
-            <FeeCollectionTable
-                records={filteredRecords}
-                selectedIds={selectedIds}
-                onToggleSelect={handleToggleSelect}
-                onToggleSelectAll={handleToggleSelectAll}
-                onViewDetails={setSelectedRecord}
+            {/* Pagination */}
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={filteredRecords.length}
+                itemsPerPage={ITEMS_PER_PAGE}
+                onPageChange={setCurrentPage}
             />
 
             {/* Empty State */}

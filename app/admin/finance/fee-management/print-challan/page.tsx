@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Printer, FileText, Filter, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/admin/PageHeader";
+import { Pagination } from "@/components/admin/students/Pagination";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { ClassSelect } from "@/components/admin/students/ClassSelect";
 import { PrintChallanTable } from "@/components/admin/finance";
@@ -12,6 +13,8 @@ import { ChallanPrintTemplate } from "@/components/admin/finance/ChallanPrintTem
 import { getUniqueClasses } from "@/lib/admin/mock-data/students";
 import { challanData } from "@/lib/admin/mock-data/finance";
 import { ChallanData } from "@/lib/admin/types/finance";
+
+const ITEMS_PER_PAGE = 10;
 
 export default function PrintChallanPage() {
     const [challans] = useState<ChallanData[]>(challanData);
@@ -21,6 +24,7 @@ export default function PrintChallanPage() {
     const [previewChallan, setPreviewChallan] = useState<ChallanData | null>(null);
     const [showFilters, setShowFilters] = useState(false);
     const [isPrinting, setIsPrinting] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const uniqueClasses = getUniqueClasses();
 
@@ -34,6 +38,15 @@ export default function PrintChallanPage() {
             return matchesSearch && matchesClass;
         });
     }, [challans, search, classFilter]);
+
+    // Pagination
+    const paginatedChallans = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        return filteredChallans.slice(startIndex, endIndex);
+    }, [filteredChallans, currentPage]);
+
+    const totalPages = Math.ceil(filteredChallans.length / ITEMS_PER_PAGE);
 
     const handleSelectAll = () => {
         if (selectedIds.length === filteredChallans.length) {
@@ -66,6 +79,7 @@ export default function PrintChallanPage() {
     const clearFilters = () => {
         setSearch("");
         setClassFilter("all");
+        setCurrentPage(1);
     };
 
     return (
@@ -116,12 +130,12 @@ export default function PrintChallanPage() {
                 </PageHeader>
 
                 {/* Info Card */}
-                <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
+                <div className="bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800 rounded-xl p-4">
                     <div className="flex items-center gap-3">
-                        <FileText className="w-5 h-5 text-purple-600" />
+                        <FileText className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                         <div>
-                            <p className="font-medium text-purple-800">Bulk Print Instructions</p>
-                            <p className="text-sm text-purple-600">
+                            <p className="font-medium text-purple-800 dark:text-purple-300">Bulk Print Instructions</p>
+                            <p className="text-sm text-purple-600 dark:text-purple-400">
                                 Select multiple students using checkboxes and click "Print Selected" to
                                 print all at once
                             </p>
@@ -191,9 +205,9 @@ export default function PrintChallanPage() {
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
-                            className="bg-purple-100 border border-purple-200 rounded-xl px-4 py-3 flex items-center justify-between"
+                            className="bg-purple-100 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800 rounded-xl px-4 py-3 flex items-center justify-between"
                         >
-                            <span className="text-sm font-medium text-purple-700">
+                            <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
                                 {selectedIds.length} challans selected for printing
                             </span>
                             <Button
@@ -208,18 +222,24 @@ export default function PrintChallanPage() {
                     )}
                 </AnimatePresence>
 
-                {/* Results Count */}
-                <div className="text-sm text-text-secondary px-6">
-                    Showing {filteredChallans.length} of {challans.length} challans
+                {/* Challans Table with Pagination */}
+                <div className="bg-surface border border-border rounded-2xl shadow-sm overflow-hidden">
+                    <PrintChallanTable
+                        challans={paginatedChallans}
+                        selectedIds={selectedIds}
+                        onToggleSelect={handleToggleSelect}
+                        onToggleSelectAll={handleSelectAll}
+                        onPreview={setPreviewChallan}
+                    />
                 </div>
 
-                {/* Challans Table */}
-                <PrintChallanTable
-                    challans={filteredChallans}
-                    selectedIds={selectedIds}
-                    onToggleSelect={handleToggleSelect}
-                    onToggleSelectAll={handleSelectAll}
-                    onPreview={setPreviewChallan}
+                {/* Pagination */}
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalItems={filteredChallans.length}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    onPageChange={setCurrentPage}
                 />
 
                 {/* Empty State */}
