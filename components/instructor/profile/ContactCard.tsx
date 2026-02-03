@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Save, X, Mail, Phone, MessageCircle } from "lucide-react";
-import { InfoRow } from "@/components/student/profile/InfoRow";
+import { InfoRow } from "./InfoRow";
 
 interface ContactInfo {
   email: string;

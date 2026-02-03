@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Save, X, MapPin, Building, Map, Phone } from "lucide-react";
-import { InfoRow } from "@/components/student/profile/InfoRow";
+import { InfoRow } from "./InfoRow";
 
 interface AddressData {
   address: string;

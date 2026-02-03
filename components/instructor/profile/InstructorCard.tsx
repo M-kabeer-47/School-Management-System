@@ -12,8 +12,8 @@ import {
   Clock,
   Award,
 } from "lucide-react";
-import { ProfilePhoto } from "@/components/student/profile/ProfilePhoto";
-import { InfoRow } from "@/components/student/profile/InfoRow";
+import { ProfilePhoto } from "./ProfilePhoto";
+import { InfoRow } from "./InfoRow";
 import { InstructorInfo } from "@/lib/instructor/types/profile";
 
 interface InstructorCardProps {

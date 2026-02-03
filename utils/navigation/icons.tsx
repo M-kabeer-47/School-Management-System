@@ -1299,4 +1299,201 @@ export const KPIIcons = {
       />
     </svg>
   ),
+
+  // Class Average - Gauge/Speedometer style with trend
+  ClassAvg: ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+    >
+      <defs>
+        <linearGradient id="kpiAvgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#8b5cf6" />
+          <stop offset="100%" stopColor="#6366f1" />
+        </linearGradient>
+      </defs>
+
+      {/* Gauge Background Track */}
+      <path
+        d="M 8 36 A 20 20 0 1 1 40 36"
+        stroke="url(#kpiAvgGradient)"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeDasharray="10 6"
+        opacity="0.2"
+      />
+
+      {/* Gauge Filled Track (75%) */}
+      <path
+        d="M 8 36 A 20 20 0 1 1 36 20"
+        stroke="url(#kpiAvgGradient)"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+
+      {/* Needle/Trend Arrow */}
+      <path
+        d="M 24 28 L 34 14"
+        stroke="url(#kpiAvgGradient)"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="24" cy="28" r="4" fill="url(#kpiAvgGradient)" />
+    </svg>
+  ),
+
+  // Tests - Clean stack of papers with A+ Grade
+  Tests: ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+    >
+      <defs>
+        <linearGradient
+          id="kpiTestsGradient"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop offset="0%" stopColor="#3b82f6" />
+          <stop offset="100%" stopColor="#2563eb" />
+        </linearGradient>
+      </defs>
+
+      {/* Bottom Paper (Offset) */}
+      <rect
+        x="12"
+        y="8"
+        width="24"
+        height="32"
+        rx="2"
+        fill="url(#kpiTestsGradient)"
+        opacity="0.15"
+        transform="rotate(-6 24 24)"
+      />
+
+      {/* Middle Paper (Offset) */}
+      <rect
+        x="12"
+        y="8"
+        width="24"
+        height="32"
+        rx="2"
+        fill="url(#kpiTestsGradient)"
+        opacity="0.25"
+        transform="rotate(6 24 24)"
+      />
+
+      {/* Loop to ensure clean cut */}
+
+      {/* Top Paper (Main) */}
+      <rect
+        x="12"
+        y="8"
+        width="24"
+        height="32"
+        rx="3"
+        fill="white"
+        stroke="url(#kpiTestsGradient)"
+        strokeWidth="2.5"
+      />
+
+      {/* A+ Grade */}
+      <path
+        d="M 18 20 L 21 12 L 24 20 M 19 17 H 23"
+        stroke="url(#kpiTestsGradient)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M 28 14 H 34 M 31 11 V 17"
+        stroke="url(#kpiTestsGradient)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+
+      {/* Horizontal Lines */}
+      <line
+        x1="16"
+        y1="26"
+        x2="32"
+        y2="26"
+        stroke="url(#kpiTestsGradient)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        opacity="0.3"
+      />
+      <line
+        x1="16"
+        y1="32"
+        x2="28"
+        y2="32"
+        stroke="url(#kpiTestsGradient)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        opacity="0.3"
+      />
+    </svg>
+  ),
+
+  // Top Score - Trophy with glowing effect
+  TopScore: ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 48 48"
+      fill="none"
+      className={className}
+    >
+      <defs>
+        <linearGradient
+          id="kpiTrophyGradient"
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop offset="0%" stopColor="#f59e0b" />
+          <stop offset="100%" stopColor="#d97706" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M 14 12 H 34 V 24 C 34 30, 30 34, 24 34 C 18 34, 14 30, 14 24 V 12 Z"
+        fill="url(#kpiTrophyGradient)"
+      />
+      <path
+        d="M 14 16 H 8 V 22 C 8 24, 10 26, 12 26 H 14"
+        stroke="url(#kpiTrophyGradient)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M 34 16 H 40 V 22 C 40 24, 38 26, 36 26 H 34"
+        stroke="url(#kpiTrophyGradient)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M 24 34 V 40 M 18 40 H 30"
+        stroke="url(#kpiTrophyGradient)"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <path
+        d="M 24 8 V 10"
+        stroke="url(#kpiTrophyGradient)"
+        strokeWidth="3"
+        strokeLinecap="round"
+        opacity="0.6"
+      />
+    </svg>
+  ),
 };

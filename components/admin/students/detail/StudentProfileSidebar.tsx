@@ -1,6 +1,6 @@
 import { Student } from "@/lib/admin/types/student";
 import { Mail, Phone, MapPin, Calendar, GraduationCap } from "lucide-react";
-import { ProfilePhoto } from "@/components/student/profile/ProfilePhoto";
+import { ProfilePhoto } from "./ProfilePhoto";
 
 interface StudentProfileSidebarProps {
   student: Student;

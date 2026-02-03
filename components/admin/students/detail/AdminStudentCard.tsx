@@ -11,8 +11,8 @@ import {
   CreditCard,
   Clock,
 } from "lucide-react";
-import { ProfilePhoto } from "@/components/student/profile/ProfilePhoto";
-import { InfoRow } from "@/components/student/profile/InfoRow";
+import { ProfilePhoto } from "./ProfilePhoto";
+import { InfoRow } from "./InfoRow";
 import { Student } from "@/lib/admin/types/student";
 
 interface AdminStudentCardProps {

@@ -20,36 +20,32 @@ export function ClassKPICards({
       value: totalStudents,
       icon: KPIIcons.TotalStudents,
       color: "text-primary",
-      bg: "bg-surface",
+      bg: "bg-primary/10",
       border: "border-border",
-      gradient: "from-primary/5 to-transparent",
     },
     {
       label: "Boys",
       value: totalBoys,
       icon: KPIIcons.Boy,
       color: "text-blue-500",
-      bg: "bg-surface",
+      bg: "bg-blue-500/10",
       border: "border-border",
-      gradient: "from-blue-500/5 to-transparent",
     },
     {
       label: "Girls",
       value: totalGirls,
       icon: KPIIcons.Girl,
       color: "text-pink-500",
-      bg: "bg-surface",
+      bg: "bg-pink-500/10",
       border: "border-border",
-      gradient: "from-pink-500/5 to-transparent",
     },
     {
       label: "Avg. Attendance",
       value: `${avgAttendance}%`,
       icon: KPIIcons.AttendanceRate,
       color: "text-emerald-500",
-      bg: "bg-surface",
+      bg: "bg-emerald-500/10",
       border: "border-border",
-      gradient: "from-emerald-500/5 to-transparent",
     },
   ];
 
@@ -63,14 +59,6 @@ export function ClassKPICards({
             card.border,
           )}
         >
-          {/* Subtle Gradient Background */}
-          <div
-            className={cn(
-              "absolute inset-0 bg-gradient-to-br opacity-50",
-              card.gradient,
-            )}
-          />
-
           <div
             className={cn(
               "relative z-10 w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm",

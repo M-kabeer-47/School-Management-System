@@ -85,30 +85,24 @@ export const ClassSubjectsTab = ({
             <TableHeadRow>
               <TableHead>Subject</TableHead>
               <TableHead>Teacher</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Actions</TableHead>
             </TableHeadRow>
           </TableHeader>
           <TableBody>
             {subjects.map((item) => (
               <TableRow key={item.id}>
-                <TableCell className="font-medium">
-                  {item.subjectName}
-                </TableCell>
+                <TableCell className="">{item.subjectName}</TableCell>
                 <TableCell className="text-text-secondary">
                   <div className="flex items-center gap-2">
                     {item.teacherName}
                   </div>
                 </TableCell>
-                <TableCell className="text-right">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleOpenPalette(item.id)}
-                    className="text-accent hover:text-accent hover:bg-accent/5 transition-colors gap-2"
-                  >
-                    <UserCog className="w-4 h-4" />
-                    Change
-                  </Button>
+                <TableCell
+                  className="flex items-center gap-2 cursor-pointer text-accent"
+                  onClick={() => handleOpenPalette(item.id)}
+                >
+                  <UserCog className="w-4 h-4 " />
+                  Change
                 </TableCell>
               </TableRow>
             ))}

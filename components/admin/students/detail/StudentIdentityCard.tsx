@@ -1,6 +1,6 @@
 "use client";
 
-import { ProfilePhoto } from "@/components/student/profile/ProfilePhoto";
+import { ProfilePhoto } from "./ProfilePhoto";
 import { Student } from "@/lib/admin/types/student";
 
 interface StudentIdentityCardProps {

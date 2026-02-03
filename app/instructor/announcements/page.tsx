@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Pin } from "lucide-react";
-import { AnnouncementCard } from "@/components/student/announcements/AnnouncementCard";
+import { AnnouncementCard } from "@/components/instructor/announcements/AnnouncementCard";
 import { mockAnnouncements } from "@/lib/student/mock-data/announcements";
 import { PageHeaderIcons } from "@/utils/navigation/icons";
 

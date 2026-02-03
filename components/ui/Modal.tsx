@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { cn } from "@/lib/shadcn/utils";
 
 interface ModalProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface ModalProps {
   icon?: React.ReactNode;
   children: React.ReactNode;
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl";
+  showHeader?: boolean;
 }
 
 const maxWidthClasses = {
@@ -30,6 +32,7 @@ export default function Modal({
   icon,
   children,
   maxWidth = "lg",
+  showHeader = true,
 }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -77,31 +80,40 @@ export default function Modal({
             className={`bg-surface border border-border rounded-2xl shadow-2xl w-full ${maxWidthClasses[maxWidth]} max-h-[90vh] overflow-hidden flex flex-col`}
           >
             {/* Header */}
-            <div className="flex items-start justify-between p-6 border-b border-border">
-              <div className="flex items-start gap-3">
-                {icon && <div className="flex-shrink-0">{icon}</div>}
-                <div className="flex-1">
-                  <h2 className="text-2xl font-raleway font-bold text-text-primary">
-                    {title}
-                  </h2>
-                  {description && (
-                    <p className="text-sm text-text-muted mt-1">
-                      {description}
-                    </p>
-                  )}
+            {showHeader && (
+              <div className="flex items-start justify-between p-6 border-b border-border">
+                <div className="flex items-start gap-3">
+                  {icon && <div className="flex-shrink-0">{icon}</div>}
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-raleway font-bold text-text-primary">
+                      {title}
+                    </h2>
+                    {description && (
+                      <p className="text-sm text-text-muted mt-1">
+                        {description}
+                      </p>
+                    )}
+                  </div>
                 </div>
+                <button
+                  onClick={onClose}
+                  className="ml-4 p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-accent/5 transition-colors"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <button
-                onClick={onClose}
-                className="ml-4 p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-accent/5 transition-colors"
-                aria-label="Close modal"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+            )}
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-6">{children}</div>
+            <div
+              className={cn(
+                "flex-1 overflow-y-auto",
+                showHeader ? "p-6" : "p-0",
+              )}
+            >
+              {children}
+            </div>
           </motion.div>
         </motion.div>
       )}

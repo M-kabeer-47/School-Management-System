@@ -3,7 +3,7 @@
 import * as React from "react";
 import { type DialogProps } from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 import { cn } from "@/lib/shadcn/utils";
 import {
@@ -12,6 +12,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/Dialog";
+import Modal from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 
 const Command = React.forwardRef<
@@ -33,15 +34,24 @@ interface CommandDialogProps extends DialogProps {}
 
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
-    <Dialog {...props}>
-      <DialogContent className="overflow-hidden p-0 shadow-2xl border-none max-w-lg bg-transparent">
-        <DialogTitle className="sr-only">Search</DialogTitle>
-        <DialogDescription className="sr-only">
-          Search through available options.
-        </DialogDescription>
-        <Command className="border-none rounded-2xl">{children}</Command>
-      </DialogContent>
-    </Dialog>
+    <Modal
+      isOpen={props.open || false}
+      onClose={() => props.onOpenChange?.(false)}
+      showHeader={false}
+      maxWidth="lg"
+      title="Search"
+    >
+      <div className="relative flex flex-col h-full">
+        <button
+          onClick={() => props.onOpenChange?.(false)}
+          className="absolute right-2 top-3 z-[60] p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-accent/5 transition-colors focus:outline-none focus:ring-2 focus:ring-accent/20"
+          aria-label="Close"
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <Command className="border-none rounded-2xl flex-1">{children}</Command>
+      </div>
+    </Modal>
   );
 };
 CommandDialog.displayName = "CommandDialog";
@@ -50,7 +60,7 @@ const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div className="px-4 pt-12 pb-2" cmdk-input-wrapper="">
+  <div className="px-4 pt-14 pb-2" cmdk-input-wrapper="">
     <CommandPrimitive.Input ref={ref} asChild {...props}>
       <Input
         leftIcon={<Search className="h-4 w-4" />}

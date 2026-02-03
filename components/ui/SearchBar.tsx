@@ -14,7 +14,17 @@ interface SearchBarProps {
 }
 
 const SearchBar = React.forwardRef<HTMLDivElement, SearchBarProps>(
-  ({ className, placeholder = "Search...", value, onChange, onClear, isLoading = false }, ref) => {
+  (
+    {
+      className,
+      placeholder = "Search...",
+      value,
+      onChange,
+      onClear,
+      isLoading = false,
+    },
+    ref,
+  ) => {
     const [isFocused, setIsFocused] = React.useState(false);
 
     const handleClear = () => {
@@ -23,15 +33,9 @@ const SearchBar = React.forwardRef<HTMLDivElement, SearchBarProps>(
     };
 
     return (
-      <div
-        ref={ref}
-        className={cn(
-          "relative group/search",
-          className,
-        )}
-      >
+      <div ref={ref} className={cn("relative group/search", className)}>
         {/* Search Icon */}
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted transition-colors duration-200 group-hover/search:text-text-secondary">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted transition-colors duration-200 group-hover/search:text-text-secondary z-10">
           {isLoading ? (
             <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin" />
           ) : (
@@ -62,7 +66,7 @@ const SearchBar = React.forwardRef<HTMLDivElement, SearchBarProps>(
           className={cn(
             "pl-11 pr-10",
             isFocused && "ring-2 ring-accent/30 border-accent",
-            "transition-all duration-200"
+            "transition-all duration-200",
           )}
         />
 
@@ -93,7 +97,7 @@ const SearchBar = React.forwardRef<HTMLDivElement, SearchBarProps>(
         <div
           className={cn(
             "absolute inset-0 rounded-xl bg-accent/5 pointer-events-none transition-opacity duration-200",
-            isFocused ? "opacity-100" : "opacity-0"
+            isFocused ? "opacity-100" : "opacity-0",
           )}
         />
       </div>
