@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import {
@@ -54,14 +54,19 @@ export default function GenerateChallanPage() {
     const [customItem, setCustomItem] = useState({ name: "", amount: 0 });
 
     // Step 3: Final Details
-    const [dueDate, setDueDate] = useState<string>(
-        new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
-    );
+    const [dueDate, setDueDate] = useState<string>("");
     const [remarks, setRemarks] = useState("");
     const [isGenerating, setIsGenerating] = useState(false);
     const [isGenerated, setIsGenerated] = useState(false);
     const [generatedChallan, setGeneratedChallan] = useState<ChallanData | null>(null);
     const [showPrintPreview, setShowPrintPreview] = useState(false);
+
+    // Set default due date on client side to avoid hydration mismatch
+    useEffect(() => {
+        if (!dueDate) {
+            setDueDate(new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]);
+        }
+    }, [dueDate]);
 
     // Filter students based on search
     const filteredStudents = allStudents

@@ -1,3 +1,5 @@
+"use client";
+
 import { KPIIcons } from "@/utils/navigation/icons";
 import { cn } from "@/lib/shadcn/utils";
 

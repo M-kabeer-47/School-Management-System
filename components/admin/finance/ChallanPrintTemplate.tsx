@@ -14,22 +14,28 @@ export function ChallanPrintTemplate({
     schoolAddress = "Islamabad, Pakistan"
 }: ChallanPrintTemplateProps) {
     const invoiceNo = `1002${challan.challanNo.replace(/\D/g, '')}01002555`;
-    const issueDate = new Date().toLocaleDateString('en-GB', {
-        weekday: 'long',
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric'
-    });
+
+    // Use stable date strings derived from props to avoid hydration mismatch
+    const issueDate = challan.dueDate; // Use due date as issue date reference
 
     // Calculate late fee amounts
     const baseAmount = challan.total;
     const lateFee1 = Math.round(baseAmount * 0.02); // 2% late fee
     const lateFee2 = Math.round(baseAmount * 0.04); // 4% late fee
 
-    // Due dates
+    // Due dates - derive from passed dueDate string
     const dueDate1 = challan.dueDate;
-    const dueDate2 = new Date(new Date(challan.dueDate).getTime() + 12 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB');
-    const dueDate3 = new Date(new Date(challan.dueDate).getTime() + 20 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB');
+    // Parse the date string and calculate additional dates
+    const parseDateString = (dateStr: string) => {
+        const parts = dateStr.split('/');
+        if (parts.length === 3) {
+            return new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+        }
+        return new Date(dateStr);
+    };
+    const baseDueDate = parseDateString(challan.dueDate);
+    const dueDate2 = new Date(baseDueDate.getTime() + 12 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB');
+    const dueDate3 = new Date(baseDueDate.getTime() + 20 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB');
 
     const ChallanCopy = ({ copyType }: { copyType: "Bank Copy" | "Account Copy" | "Student Copy" }) => (
         <div className="challan-copy border border-gray-400 text-[10px] leading-tight" style={{ width: '32%', fontSize: '10px' }}>
