@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 interface ModalProps {
   isOpen: boolean;

@@ -6,7 +6,7 @@ import { getClassDetail } from "@/lib/instructor/mock-data/class-detail";
 import { marksEntryStatus } from "@/lib/instructor/mock-data/exams"; // [NEW] Import mock exams
 import { FileText, Save } from "lucide-react";
 
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import Modal from "@/components/ui/Modal";

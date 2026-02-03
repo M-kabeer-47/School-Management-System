@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { AdminSidebarItem } from "./SidebarItem";
 import { AdminSidebarHeader } from "./SidebarHeader";
 import { AdminSidebarFooter } from "./SidebarFooter";
-import { Icons } from "@/utils/sidebar/icons";
+import { Icons } from "@/utils/admin/icons";
 import { SidebarItem, User } from "@/lib/student/types/sidebar";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -100,4 +100,3 @@ export const AdminMobileSidebar = ({ items, user }: SidebarProps) => {
     </div>
   );
 };
-

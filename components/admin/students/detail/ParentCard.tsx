@@ -12,7 +12,7 @@ import {
   Briefcase,
 } from "lucide-react";
 import { ParentInfo } from "@/lib/admin/types/student-detail";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { InfoRow } from "./InfoRow";
 
 interface ParentCardProps {

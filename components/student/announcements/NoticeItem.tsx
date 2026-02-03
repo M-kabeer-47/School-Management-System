@@ -10,7 +10,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { Announcement } from "@/lib/student/types/announcements";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 interface NoticeItemProps {
   announcement: Announcement;

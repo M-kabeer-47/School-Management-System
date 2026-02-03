@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/Table";
 import { Eye, Check, CheckCircle, Clock, AlertTriangle } from "lucide-react";
 import { clsx } from "clsx";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { StudentFeeRecord } from "@/lib/admin/types/finance";
 
 // Re-export for convenience

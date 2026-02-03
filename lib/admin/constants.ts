@@ -1,4 +1,4 @@
-import { Icons } from "@/utils/sidebar/icons";
+import { Icons } from "@/utils/admin/icons";
 import { SidebarItem, User } from "@/lib/student/types/sidebar";
 
 // Mock current user for Admin Portal

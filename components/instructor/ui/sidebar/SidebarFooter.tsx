@@ -2,7 +2,7 @@
 
 import React from "react";
 import { User } from "@/lib/student/types/sidebar";
-import { Icons } from "@/utils/sidebar/icons";
+import { Icons } from "@/utils/instructor/icons";
 import { clsx } from "clsx";
 
 interface SidebarFooterProps {

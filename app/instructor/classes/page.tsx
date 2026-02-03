@@ -1,7 +1,6 @@
 import { ClassCard } from "@/components/instructor/classes/ClassCard";
-import { Icons } from "@/utils/common/icons";
 import { classes } from "@/lib/instructor/mock-data/classes";
-import { PageHeaderIcons } from "@/utils/instructor/icons";
+import { Icons, PageHeaderIcons } from "@/utils/instructor/icons";
 // Mock Data
 
 export default function ClassesPage() {

@@ -11,7 +11,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { TermResult } from "@/lib/student/types/exams";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 interface ResultCardProps {
   result: TermResult;

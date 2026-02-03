@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { AdminSidebar } from "@/components/admin/ui/sidebar/Sidebar";
-import { Navbar } from "@/components/ui/Navbar";
+import { Navbar } from "@/components/admin/Navbar";
 
 export const metadata: Metadata = {
   title: "Admin Portal | School Management System",

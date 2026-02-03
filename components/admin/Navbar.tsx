@@ -1,10 +1,98 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { NavbarIcons } from "@/utils/common/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { clsx } from "clsx";
+
+// Inline Icons
+const SunIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2" />
+    <path d="M12 20v2" />
+    <path d="m4.93 4.93 1.41 1.41" />
+    <path d="m17.66 17.66 1.41 1.41" />
+    <path d="M2 12h2" />
+    <path d="M20 12h2" />
+    <path d="m6.34 17.66-1.41 1.41" />
+    <path d="m19.07 4.93-1.41 1.41" />
+  </svg>
+);
+
+const MoonIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+  </svg>
+);
+
+const NotificationsIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+  </svg>
+);
+
+const LogoutIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+    <polyline points="16 17 21 12 16 7" />
+    <line x1="21" x2="9" y1="12" y2="12" />
+  </svg>
+);
+
+const ProfileIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <circle cx="12" cy="12" r="10" />
+    <circle cx="12" cy="10" r="3" />
+    <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" />
+  </svg>
+);
 
 export const Navbar = () => {
   const { theme, setTheme } = useTheme();
@@ -76,7 +164,7 @@ export const Navbar = () => {
       <div className="flex items-center gap-3">
         <NavItem
           index={0}
-          icon={theme === "dark" ? NavbarIcons.Sun : NavbarIcons.Moon}
+          icon={theme === "dark" ? SunIcon : MoonIcon}
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           label="Toggle theme"
           active={false}
@@ -85,13 +173,13 @@ export const Navbar = () => {
         {/* Notifications */}
         <NavItem
           index={1}
-          icon={NavbarIcons.Notifications}
+          icon={NotificationsIcon}
           badge
           label="Notifications"
         />
 
         {/* Logout */}
-        <NavItem index={2} icon={NavbarIcons.Logout} label="Log out" />
+        <NavItem index={2} icon={LogoutIcon} label="Log out" />
 
         {/* Separator */}
         <div className="w-px h-5 bg-border mx-1" />
@@ -100,7 +188,7 @@ export const Navbar = () => {
         <div className="pl-1 pr-1 cursor-pointer group">
           <div className="w-8 h-8 rounded-full bg-accent-gradient p-[2px] shadow-sm group-hover:shadow-md transition-all group-hover:scale-105">
             <div className="w-full h-full rounded-full bg-surface flex items-center justify-center overflow-hidden">
-              <NavbarIcons.Profile className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors" />
+              <ProfileIcon className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors" />
             </div>
           </div>
         </div>

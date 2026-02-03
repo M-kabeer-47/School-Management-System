@@ -6,7 +6,7 @@ import { SidebarHeader } from "./SidebarHeader";
 import { SidebarItem } from "./SidebarItem";
 import { SidebarFooter } from "./SidebarFooter";
 import { MobileSidebar } from "./MobileSidebar";
-import { Icons } from "@/utils/common/icons";
+import { Icons } from "@/utils/student/icons";
 import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
 import { menuItems, currentUser } from "@/lib/student/constants";

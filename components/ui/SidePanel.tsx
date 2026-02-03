@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { createPortal } from "react-dom";
 import { motion, useDragControls, useMotionValue } from "framer-motion";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { Search } from "lucide-react";
 import {
   Table,

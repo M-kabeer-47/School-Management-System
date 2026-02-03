@@ -10,7 +10,7 @@ import { TopicsList } from "./TopicsList";
 import { MaterialsList } from "./MaterialsList";
 import { TestsTable } from "./TestsTable";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
-import { SubjectIcons } from "@/utils/common/icons";
+import { Icons, SubjectIcons } from "@/utils/student/icons";
 import { motion } from "framer-motion";
 
 interface SubjectDetailPageProps {

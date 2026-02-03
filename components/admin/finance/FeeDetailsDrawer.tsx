@@ -30,7 +30,7 @@ import {
     Phone,
     FileText,
 } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { StudentFeeRecord } from "@/lib/admin/types/finance";
 
 interface FeeDetailsDrawerProps {

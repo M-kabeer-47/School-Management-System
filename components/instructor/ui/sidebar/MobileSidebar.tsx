@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { InstructorSidebarItem } from "./SidebarItem";
 import { InstructorSidebarHeader } from "./SidebarHeader";
 import { InstructorSidebarFooter } from "./SidebarFooter";
-import { Icons } from "@/utils/sidebar/icons";
+import { Icons } from "@/utils/instructor/icons";
 import { SidebarProps } from "@/lib/student/types/sidebar";
 import { motion, AnimatePresence } from "framer-motion";
 

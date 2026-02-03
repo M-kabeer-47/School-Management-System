@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckCircle2, AlertCircle, Clock, Search } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { Button } from "@/components/ui/Button";
 import {
   Table,

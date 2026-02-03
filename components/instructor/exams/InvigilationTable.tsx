@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Calendar, Clock, MapPin, BookOpen, Users } from "lucide-react";
 import { InvigilationDuty } from "@/lib/instructor/types/exams";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import {
     Table,
     TableHeader,

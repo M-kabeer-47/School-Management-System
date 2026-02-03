@@ -3,7 +3,7 @@
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Camera, User } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 interface ProfilePhotoProps {
   photoUrl?: string;

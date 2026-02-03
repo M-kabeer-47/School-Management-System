@@ -20,7 +20,7 @@ import {
     discountedStudents,
     getFinanceStats,
 } from "@/lib/admin/mock-data/finance";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 export default function FeeManagementPage() {
     const stats = getFinanceStats();

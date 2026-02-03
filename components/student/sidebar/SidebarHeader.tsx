@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Icons } from "@/utils/sidebar/icons";
+import { Icons } from "@/utils/student/icons";
 
 interface SidebarHeaderProps {
   isCollapsed: boolean;

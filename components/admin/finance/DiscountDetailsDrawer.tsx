@@ -20,7 +20,7 @@ import {
     CheckCircle,
     AlertTriangle,
 } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { DiscountedStudent } from "@/lib/admin/types/finance";
 import Modal from "@/components/ui/Modal";
 

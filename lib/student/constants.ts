@@ -1,5 +1,5 @@
 import { SidebarItem, User } from "@/lib/student/types/sidebar";
-import { Icons } from "@/utils/sidebar/icons";
+import { Icons } from "@/utils/student/icons";
 
 export const currentUser: User = {
   name: "Ali Khan",

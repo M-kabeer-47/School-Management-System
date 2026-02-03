@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { feeChallans, recentPayments } from "@/lib/admin/mock-data/finance";
 import { allStudents } from "@/lib/admin/mock-data/students";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 export default function StudentCollectionPage() {
     const [search, setSearch] = useState("");

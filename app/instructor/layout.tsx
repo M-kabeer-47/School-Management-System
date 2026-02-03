@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { InstructorSidebar } from "@/components/instructor/ui/sidebar/Sidebar";
-import { Navbar } from "@/components/ui/Navbar";
+import { Navbar } from "@/components/instructor/Navbar";
 
 export const metadata: Metadata = {
   title: "Instructor Portal | School Management System",

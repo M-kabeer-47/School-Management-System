@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/Select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { SearchBar } from "@/components/ui/SearchBar";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 interface PaperFiltersProps {
   searchQuery: string;

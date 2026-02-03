@@ -10,7 +10,7 @@ import {
     TableCell,
 } from "@/components/ui/Table";
 import { AlertTriangle } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { ClassFeeCollection } from "@/lib/admin/types/finance";
 
 interface ClassCollectionTableProps {

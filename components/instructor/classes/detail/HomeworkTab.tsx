@@ -10,7 +10,7 @@ import {
   PlayCircle,
   MoreVertical,
 } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { Homework } from "@/lib/instructor/types/class-detail";
 import {
   Table,

@@ -26,7 +26,7 @@ import {
   startOfDay,
   set,
 } from "date-fns";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 // ═══════════════════════════════════════════════════════════════════
 // TYPES

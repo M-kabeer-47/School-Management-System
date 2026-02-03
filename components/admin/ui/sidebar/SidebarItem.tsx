@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { clsx } from "clsx";
 import { SidebarItem as SidebarItemType } from "@/lib/student/types/sidebar";
-import { Icons } from "@/utils/sidebar/icons";
+import { Icons } from "@/utils/admin/icons";
 
 interface SidebarItemProps {
   item: SidebarItemType;
@@ -46,7 +46,7 @@ export const AdminSidebarItem = ({
         isActive && !hasSubItems
           ? "text-accent-foreground"
           : "text-text-secondary hover:text-text-primary",
-        isCollapsed && "justify-center px-2"
+        isCollapsed && "justify-center px-2",
       )}
     >
       {/* Active State Background */}
@@ -67,7 +67,7 @@ export const AdminSidebarItem = ({
       <item.icon
         className={clsx(
           "w-6 h-6 flex-shrink-0 relative z-20",
-          isActive && !hasSubItems && "text-accent-foreground"
+          isActive && !hasSubItems && "text-accent-foreground",
         )}
       />
 
@@ -100,7 +100,10 @@ export const AdminSidebarItem = ({
   return (
     <div>
       {hasSubItems ? (
-        <button onClick={handleClick} className="block group relative w-full text-left">
+        <button
+          onClick={handleClick}
+          className="block group relative w-full text-left"
+        >
           {ItemContent}
         </button>
       ) : (
@@ -128,7 +131,7 @@ export const AdminSidebarItem = ({
                     "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-200 group/sub",
                     isSubItemActive(subItem.href)
                       ? "bg-accent/10 text-accent font-medium"
-                      : "text-text-secondary hover:text-text-primary hover:bg-surface-hover"
+                      : "text-text-secondary hover:text-text-primary hover:bg-surface-hover",
                   )}
                 >
                   <subItem.icon className="w-4 h-4 flex-shrink-0" />
@@ -142,4 +145,3 @@ export const AdminSidebarItem = ({
     </div>
   );
 };
-

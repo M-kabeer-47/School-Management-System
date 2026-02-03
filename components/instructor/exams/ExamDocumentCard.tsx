@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FileText, Calendar, ExternalLink, ClipboardList } from "lucide-react";
 import { ExamDocument } from "@/lib/instructor/types/exams";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import Link from "next/link";
 
 interface ExamDocumentCardProps {

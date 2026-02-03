@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { SidebarItem } from "./SidebarItem";
 import { SidebarHeader } from "./SidebarHeader";
 import { SidebarFooter } from "./SidebarFooter";
-import { Icons } from "@/utils/sidebar/icons";
+import { Icons } from "@/utils/student/icons";
 import { SidebarProps } from "@/lib/student/types/sidebar";
 import { clsx } from "clsx";
 import { motion, AnimatePresence } from "framer-motion";

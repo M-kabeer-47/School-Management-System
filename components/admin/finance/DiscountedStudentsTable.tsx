@@ -10,7 +10,7 @@ import {
     TableCell,
 } from "@/components/ui/Table";
 import { User, Eye } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { DiscountedStudent } from "@/lib/admin/types/finance";
 
 interface DiscountedStudentsTableProps {

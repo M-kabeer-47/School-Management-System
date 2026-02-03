@@ -11,7 +11,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { Complaint } from "@/lib/student/types/contact";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { useState } from "react";
 
 interface ComplaintCardProps {

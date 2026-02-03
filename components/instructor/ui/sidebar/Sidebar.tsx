@@ -6,7 +6,7 @@ import { InstructorSidebarHeader } from "./SidebarHeader";
 import { InstructorSidebarItem } from "./SidebarItem";
 import { InstructorSidebarFooter } from "./SidebarFooter";
 import { InstructorMobileSidebar } from "./MobileSidebar";
-import { Icons } from "@/utils/sidebar/icons";
+import { Icons } from "@/utils/instructor/icons";
 import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
 import {

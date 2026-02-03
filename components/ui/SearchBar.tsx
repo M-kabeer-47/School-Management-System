@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Input } from "@/components/ui/Input";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 interface SearchBarProps {
   placeholder?: string;

@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Eye, EyeOff } from "lucide-react";
 import { Homework } from "@/lib/student/types/homework";
-import { Icons } from "@/utils/common/icons";
+import { Icons } from "@/utils/student/icons";
 import { PageHeaderIcons } from "@/utils/student/icons";
 
 export default function HomeworkPage() {

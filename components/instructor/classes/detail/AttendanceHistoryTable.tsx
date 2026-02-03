@@ -2,7 +2,7 @@
 
 import { AttendanceRecord } from "@/lib/instructor/types/class-detail";
 import { CheckCircle2, XCircle, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import {
   Table,
   TableHeader,

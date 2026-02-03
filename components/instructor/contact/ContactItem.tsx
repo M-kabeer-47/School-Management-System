@@ -1,5 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 interface ContactItemProps {
   icon: LucideIcon;

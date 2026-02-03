@@ -6,7 +6,7 @@ import { AdminSidebarHeader } from "./SidebarHeader";
 import { AdminSidebarItem } from "./SidebarItem";
 import { AdminSidebarFooter } from "./SidebarFooter";
 import { AdminMobileSidebar } from "./MobileSidebar";
-import { Icons } from "@/utils/common/icons";
+import { Icons } from "@/utils/admin/icons";
 import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
 import { adminMenuItems, currentAdmin } from "@/lib/admin/constants";

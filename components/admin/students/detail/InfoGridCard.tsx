@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { LucideIcon, Save, X } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { Input } from "@/components/ui/Input";
 import {
   Select,

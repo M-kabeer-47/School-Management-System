@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/Table";
 import { Check, Phone, Mail, Send } from "lucide-react";
 import { clsx } from "clsx";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { Button } from "@/components/ui/Button";
 import { FeeDefaulter } from "@/lib/admin/types/finance";
 

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { MessageSquare, History } from "lucide-react";
 import { ComplaintForm } from "./ComplaintForm";
 import { ComplaintCard } from "./ComplaintCard";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { Complaint } from "@/lib/student/types/contact";
 
 interface ContactRequestsPanelProps {

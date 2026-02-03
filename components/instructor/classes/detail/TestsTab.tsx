@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { TestRecord } from "@/lib/instructor/types/class-detail";
 import { Calendar, ChevronRight, Plus, FileEdit } from "lucide-react";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import {
   Table,
   TableHeader,

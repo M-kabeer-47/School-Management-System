@@ -1,7 +1,7 @@
 "use client";
 
 import { AdminIcons } from "@/utils/admin/icons";
-import { StatCard } from "@/components/common/StatCard";
+import { StatCard } from "@/components/admin/ui/StatCard";
 
 interface PaperKPIsProps {
   total: number;

@@ -8,7 +8,7 @@ import {
 } from "@/lib/instructor/mock-data/class-detail";
 import { CalendarCheck, Save } from "lucide-react";
 
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import DateTimePicker from "@/components/ui/DateTimePicker";

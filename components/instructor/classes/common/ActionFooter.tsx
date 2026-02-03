@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 interface ActionFooterProps {
   children?: React.ReactNode; // Left side content (stats)

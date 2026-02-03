@@ -3,9 +3,9 @@
 import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
 import { mockInstructorComplaints } from "@/lib/instructor/mock-data/contact";
-import { SchoolInfoCard } from "@/components/common/contact/SchoolInfoCard";
-import { PrincipalInfoCard } from "@/components/common/contact/PrincipalInfoCard";
-import { ContactRequestsPanel } from "@/components/common/contact/ContactRequestsPanel";
+import { SchoolInfoCard } from "@/components/instructor/contact/SchoolInfoCard";
+import { PrincipalInfoCard } from "@/components/instructor/contact/PrincipalInfoCard";
+import { ContactRequestsPanel } from "@/components/instructor/contact/ContactRequestsPanel";
 
 export default function InstructorContactSchoolPage() {
   const handleComplaintSubmit = (data: {

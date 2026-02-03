@@ -29,7 +29,7 @@ import { ChallanPrintTemplate } from "@/components/admin/finance/ChallanPrintTem
 import { feeStructures, feeDiscounts } from "@/lib/admin/mock-data/finance";
 import { allStudents } from "@/lib/admin/mock-data/students";
 import { ChallanData } from "@/lib/admin/types/finance";
-import { cn } from "@/lib/shadcn/utils";
+import { cn } from "@/lib/common/utils";
 
 type Step = 1 | 2 | 3;
 
