@@ -9,7 +9,7 @@ import {
   TestsTab,
   HomeworkTab,
 } from "@/components/instructor/classes/detail";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
+import { ResponsiveTabs } from "@/components/ui/ResponsiveTabs";
 import {
   Users,
   CalendarCheck,
@@ -24,10 +24,13 @@ import { Homework } from "@/lib/instructor/types/class-detail";
 import { AddHomeworkModal } from "@/components/instructor/classes/detail";
 import { mockHomeworks } from "@/lib/instructor/mock-data/class-detail";
 import { PrintableAttendanceSheet } from "@/components/instructor/classes/attendance/PrintableAttendanceSheet";
+
 export default function ClassDetailPage() {
   const params = useParams();
   const classId = params.id as string;
   const classData = getClassDetail(classId);
+
+  const [activeTab, setActiveTab] = useState("students");
 
   // Homework State
   const [isHomeworkModalOpen, setIsHomeworkModalOpen] = useState(false);
@@ -61,6 +64,29 @@ export default function ClassDetailPage() {
     setHomeworks([newHomework, ...homeworks]);
   };
 
+  const tabOptions = [
+    {
+      value: "students",
+      label: "Students",
+      icon: <Users className="w-4 h-4" />,
+    },
+    {
+      value: "homework",
+      label: "Homework",
+      icon: <BookOpen className="w-4 h-4" />,
+    },
+    {
+      value: "attendance",
+      label: "Attendance",
+      icon: <CalendarCheck className="w-4 h-4" />,
+    },
+    {
+      value: "tests",
+      label: "Tests & Results",
+      icon: <FileText className="w-4 h-4" />,
+    },
+  ];
+
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 pb-10">
       {/* Back Navigation */}
@@ -84,58 +110,23 @@ export default function ClassDetailPage() {
       />
 
       {/* Tabs */}
-      <Tabs defaultValue="students" className="w-full">
-        <div className="mb-6 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
-          <TabsList className="inline-flex w-auto min-w-[1000px] bg-surface border border-border rounded-xl p-1 h-auto">
-            <TabsTrigger
-              value="students"
-              className="flex items-center gap-2 px-4 py-2.5 data-[state=active]:bg-surface-active data-[state=active]:text-accent data-[state=active]:shadow-sm transition-all"
-            >
-              <Users className="w-4 h-4" />
-              <span className="whitespace-nowrap">Students</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="homework"
-              className="flex items-center gap-2 px-4 py-2.5 data-[state=active]:bg-surface-active data-[state=active]:text-accent data-[state=active]:shadow-sm transition-all"
-            >
-              <BookOpen className="w-4 h-4" />
-              <span className="whitespace-nowrap">Homework</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="attendance"
-              className="flex items-center gap-2 px-4 py-2.5 data-[state=active]:bg-surface-active data-[state=active]:text-accent data-[state=active]:shadow-sm transition-all"
-            >
-              <CalendarCheck className="w-4 h-4" />
-              <span className="whitespace-nowrap">Attendance</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="tests"
-              className="flex items-center gap-2 px-4 py-2.5 data-[state=active]:bg-surface-active data-[state=active]:text-accent data-[state=active]:shadow-sm transition-all"
-            >
-              <FileText className="w-4 h-4" />
-              <span className="whitespace-nowrap">Tests & Results</span>
-            </TabsTrigger>
-          </TabsList>
-        </div>
+      <ResponsiveTabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        options={tabOptions}
+        className="mb-8"
+      />
 
-        <div className="bg-transparent">
-          <TabsContent value="students" className="mt-0">
-            <StudentsTab students={classData.students} />
-          </TabsContent>
-
-          <TabsContent value="homework" className="mt-0">
-            <HomeworkTab homeworks={homeworks} />
-          </TabsContent>
-
-          <TabsContent value="attendance" className="mt-0">
-            <AttendanceTab attendanceHistory={classData.attendance} />
-          </TabsContent>
-
-          <TabsContent value="tests" className="mt-0">
-            <TestsTab tests={classData.tests} />
-          </TabsContent>
-        </div>
-      </Tabs>
+      <div className="bg-transparent">
+        {activeTab === "students" && (
+          <StudentsTab students={classData.students} />
+        )}
+        {activeTab === "homework" && <HomeworkTab homeworks={homeworks} />}
+        {activeTab === "attendance" && (
+          <AttendanceTab attendanceHistory={classData.attendance} />
+        )}
+        {activeTab === "tests" && <TestsTab tests={classData.tests} />}
+      </div>
 
       {/* Homework Modal */}
       <AddHomeworkModal

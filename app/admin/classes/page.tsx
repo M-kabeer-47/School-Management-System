@@ -11,6 +11,7 @@ import { ClassSectionData } from "@/lib/admin/types/classes";
 import { clsx } from "clsx";
 
 import AddSectionModal from "@/components/admin/classes/AddSectionModal";
+import { PillTabs } from "@/components/ui/PillTabs";
 
 export default function ClassesPage() {
   const router = useRouter();
@@ -75,23 +76,15 @@ export default function ClassesPage() {
         </div>
       </div>
 
-      {/* Grade Filters (Pill Tabs) */}
-      <div className="flex flex-wrap gap-2 pb-2 overflow-x-auto no-scrollbar">
-        {grades.map((grade) => (
-          <button
-            key={grade}
-            onClick={() => setActiveGrade(grade)}
-            className={clsx(
-              "px-4 py-2 rounded-full text-sm font-medium transition-all",
-              activeGrade === grade
-                ? "bg-accent text-accent-foreground shadow-md"
-                : "bg-surface hover:bg-surface-hover text-text-secondary border border-border",
-            )}
-          >
-            {grade}
-          </button>
-        ))}
-      </div>
+      {/* Grade Filters (Responsive Tabs) */}
+      <PillTabs
+        value={activeGrade}
+        onValueChange={setActiveGrade}
+        options={grades.map((grade) => ({
+          value: grade,
+          label: grade,
+        }))}
+      />
 
       {/* Grouped Grid */}
       <div className="space-y-16">

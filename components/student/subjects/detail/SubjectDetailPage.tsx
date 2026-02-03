@@ -9,7 +9,7 @@ import { SubjectHeader } from "./SubjectHeader";
 import { TopicsList } from "./TopicsList";
 import { MaterialsList } from "./MaterialsList";
 import { TestsTable } from "./TestsTable";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
+import { ResponsiveTabs } from "@/components/ui/ResponsiveTabs";
 import { Icons, SubjectIcons } from "@/utils/student/icons";
 import { motion } from "framer-motion";
 
@@ -18,6 +18,26 @@ interface SubjectDetailPageProps {
 }
 
 export const SubjectDetailPage = ({ subject }: SubjectDetailPageProps) => {
+  const [activeTab, setActiveTab] = useState("topics");
+
+  const tabOptions = [
+    {
+      value: "topics",
+      label: "Topics",
+      icon: <SubjectIcons.Topics className="w-5 h-5" />,
+    },
+    {
+      value: "materials",
+      label: "Materials",
+      icon: <SubjectIcons.Materials className="w-5 h-5" />,
+    },
+    {
+      value: "tests",
+      label: "Tests",
+      icon: <SubjectIcons.Tests className="w-5 h-5" />,
+    },
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -27,37 +47,24 @@ export const SubjectDetailPage = ({ subject }: SubjectDetailPageProps) => {
       {/* Subject Header */}
       <SubjectHeader subject={subject} />
 
-      {/* Tabs using @coss/tabs - with horizontal scroll */}
-      <Tabs defaultValue="topics" className="w-full">
-        <div className=" pb-2 h-fit">
-          <TabsList className="overflow-x-auto overflow-y-hidden max-w-full md:w-[60%] mb-2">
-            <TabsTrigger value="topics" className="flex-1">
-              <SubjectIcons.Topics className="w-5 h-5" />
-              Topics
-            </TabsTrigger>
-            <TabsTrigger value="materials" className="flex-1">
-              <SubjectIcons.Materials className="w-5 h-5" />
-              Materials
-            </TabsTrigger>
-            <TabsTrigger value="tests" className="flex-1">
-              <SubjectIcons.Tests className="w-5 h-5" />
-              Tests
-            </TabsTrigger>
-          </TabsList>
-        </div>
+      {/* Responsive Navigation */}
+      <ResponsiveTabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        options={tabOptions}
+        className="mb-6"
+      />
 
-        <TabsContent value="topics">
+      {/* Content Panels */}
+      <div className="w-full">
+        {activeTab === "topics" && (
           <TopicsList topicUnits={subject.topicUnits} />
-        </TabsContent>
-
-        <TabsContent value="materials">
+        )}
+        {activeTab === "materials" && (
           <MaterialsList materials={subject.materials} />
-        </TabsContent>
-
-        <TabsContent value="tests">
-          <TestsTable tests={subject.tests} />
-        </TabsContent>
-      </Tabs>
+        )}
+        {activeTab === "tests" && <TestsTable tests={subject.tests} />}
+      </div>
     </motion.div>
   );
 };

@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Student } from "@/lib/instructor/types/class-detail";
 import {
   Table,
@@ -19,7 +17,17 @@ import {
   DrawerDescription,
 } from "@/components/ui/Drawer";
 import { Button } from "@/components/ui/Button";
-import { User, Phone, MessageCircle, Eye, MapPin, X } from "lucide-react";
+import {
+  User,
+  Phone,
+  MessageCircle,
+  Eye,
+  MapPin,
+  X,
+  Search,
+} from "lucide-react";
+import { SearchBar } from "@/components/ui/SearchBar";
+import { Pagination } from "@/components/ui/Pagination";
 
 interface StudentsTabProps {
   students: Student[];
@@ -31,16 +39,61 @@ export const StudentsTab = ({
   showAttendance = false,
 }: StudentsTabProps) => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
+
+  const filteredStudents = useMemo(() => {
+    const query = searchQuery.toLowerCase().trim();
+    if (!query) return students;
+
+    return students.filter(
+      (student) =>
+        student.name.toLowerCase().includes(query) ||
+        student.rollNo.toLowerCase().includes(query) ||
+        student.fatherName.toLowerCase().includes(query),
+    );
+  }, [students, searchQuery]);
+
+  // Calculate Paginated Data
+  const totalPages = Math.ceil(filteredStudents.length / ITEMS_PER_PAGE);
+  const paginatedStudents = filteredStudents.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
+  );
+
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val);
+    setCurrentPage(1);
+  };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold font-heading text-text-primary">
-          Students List
-        </h2>
-        <span className="text-sm text-text-muted bg-surface px-3 py-1 rounded-full border border-border">
-          Total: {students.length}
-        </span>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-bold font-heading text-text-primary">
+              Students List
+            </h2>
+            <span className="text-sm text-text-muted">
+              {filteredStudents.length}{" "}
+              {filteredStudents.length === 1 ? "student" : "students"} found
+            </span>
+          </div>
+          <span className="hidden sm:block text-sm text-text-muted bg-surface px-3 py-1 rounded-full border border-border">
+            Total Class: {students.length}
+          </span>
+        </div>
+
+        <div className="w-full">
+          <SearchBar
+            placeholder="Search by name, roll no, or father name..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+        </div>
       </div>
 
       <div className="rounded-2xl border border-border bg-surface overflow-hidden">
@@ -59,7 +112,7 @@ export const StudentsTab = ({
               </TableHeadRow>
             </TableHeader>
             <TableBody>
-              {students.map((student) => (
+              {paginatedStudents.map((student) => (
                 <TableRow
                   key={student.id}
                   className="group hover:bg-surface-hover"
@@ -132,6 +185,17 @@ export const StudentsTab = ({
           </Table>
         </div>
       </div>
+
+      {/* Pagination UI */}
+      {totalPages > 1 && (
+        <div className="flex justify-center pt-6 border-t border-border/50">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
 
       {/* Student Details Drawer */}
       <Drawer

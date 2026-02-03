@@ -13,6 +13,7 @@ import { StudentDetailDrawer } from "./StudentDetailDrawer";
 import { User, Phone, Search } from "lucide-react";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { ClassKPICards } from "./ClassKPICards";
+import { Pagination } from "@/components/ui/Pagination";
 
 interface StudentsTabProps {
   students: Student[];
@@ -25,6 +26,10 @@ export const StudentsTab = ({
 }: StudentsTabProps) => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 10;
 
   // KPI Calculations
   const metrics = useMemo(() => {
@@ -41,9 +46,9 @@ export const StudentsTab = ({
   }, [students]);
 
   const filteredStudents = useMemo(() => {
-    if (!searchQuery.trim()) return students;
-
     const query = searchQuery.toLowerCase().trim();
+    if (!query) return students;
+
     return students.filter(
       (student) =>
         student.name.toLowerCase().includes(query) ||
@@ -51,6 +56,18 @@ export const StudentsTab = ({
         student.fatherName.toLowerCase().includes(query),
     );
   }, [students, searchQuery]);
+
+  // Calculate Paginated Data
+  const totalPages = Math.ceil(filteredStudents.length / ITEMS_PER_PAGE);
+  const paginatedStudents = filteredStudents.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
+  );
+
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val);
+    setCurrentPage(1);
+  };
 
   return (
     <div className="space-y-8">
@@ -79,7 +96,7 @@ export const StudentsTab = ({
             <SearchBar
               placeholder="Search by name, roll no..."
               value={searchQuery}
-              onChange={setSearchQuery}
+              onChange={handleSearchChange}
             />
           </div>
         </div>
@@ -87,6 +104,7 @@ export const StudentsTab = ({
         <div className="rounded-2xl border border-border bg-surface overflow-hidden">
           <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-border hover:scrollbar-thumb-text-muted">
             <Table className="min-w-[1000px]">
+              {/* ... table content remains identical ... */}
               <TableHeader>
                 <TableHeadRow>
                   <TableHead className="w-[80px]">Roll No</TableHead>
@@ -100,8 +118,8 @@ export const StudentsTab = ({
                 </TableHeadRow>
               </TableHeader>
               <TableBody>
-                {filteredStudents.length > 0 ? (
-                  filteredStudents.map((student) => (
+                {paginatedStudents.length > 0 ? (
+                  paginatedStudents.map((student) => (
                     <TableRow
                       key={student.id}
                       className="group hover:bg-surface-hover"
@@ -189,6 +207,17 @@ export const StudentsTab = ({
             </Table>
           </div>
         </div>
+
+        {/* Pagination UI */}
+        {totalPages > 1 && (
+          <div className="flex justify-center pt-6 border-t border-border/50">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+        )}
 
         {/* Student Details Drawer */}
         <StudentDetailDrawer

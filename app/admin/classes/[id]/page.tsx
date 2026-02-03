@@ -1,17 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import {
-  ArrowLeft,
-  Users,
-  UserCircle,
-  Calendar,
-  Eye,
-  Upload,
-  Plus,
-} from "lucide-react";
+import { ArrowLeft, Users, UserCircle, Eye, Upload, Plus } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
+import { ResponsiveTabs } from "@/components/ui/ResponsiveTabs";
 import { useRouter } from "next/navigation";
 
 // Components
@@ -24,12 +16,17 @@ import { FeatureHero } from "@/components/ui/FeatureHero";
 import {
   MOCK_STUDENTS,
   MOCK_CLASS_SUBJECTS,
-  MOCK_CLASS_RESULTS,
 } from "@/lib/admin/mock-data/class-detail";
 
 export default function ClassDetailsPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("students");
+
+  const tabOptions = [
+    { value: "students", label: "Students" },
+    { value: "subjects", label: "Subjects" },
+    { value: "results", label: "Assessments" },
+  ];
 
   // Class-wide Syllabus Data
   const classSyllabusUrl = "/mock/class-syllabus.pdf"; // Mock URL for the entire class
@@ -92,47 +89,24 @@ export default function ClassDetailsPage() {
         />
       </div>
 
-      {/* KPI Cards */}
-
-      {/* Main Content Tabs */}
-      <Tabs
+      {/* Main Content Navigation */}
+      <ResponsiveTabs
         value={activeTab}
         onValueChange={setActiveTab}
-        className="space-y-6 "
-      >
-        <TabsList className="bg-surface border border-border p-1 rounded-xl w-[40%]">
-          <TabsTrigger
-            value="students"
-            className="rounded-lg data-[state=active]:bg-accent data-[state=active]:text-white"
-          >
-            Students
-          </TabsTrigger>
-          <TabsTrigger
-            value="subjects"
-            className="rounded-lg data-[state=active]:bg-accent data-[state=active]:text-white"
-          >
-            Subjects
-          </TabsTrigger>
-          <TabsTrigger
-            value="results"
-            className="rounded-lg data-[state=active]:bg-accent data-[state=active]:text-white"
-          >
-            Assessments
-          </TabsTrigger>
-        </TabsList>
+        options={tabOptions}
+        className="w-full lg:w-auto"
+      />
 
-        <TabsContent value="students">
+      {/* Content Panels */}
+      <div className="space-y-6">
+        {activeTab === "students" && (
           <StudentsTab students={MOCK_STUDENTS as any} showAttendance={true} />
-        </TabsContent>
-
-        <TabsContent value="subjects">
+        )}
+        {activeTab === "subjects" && (
           <ClassSubjectsTab subjects={MOCK_CLASS_SUBJECTS} />
-        </TabsContent>
-
-        <TabsContent value="results">
-          <ResultsTab />
-        </TabsContent>
-      </Tabs>
+        )}
+        {activeTab === "results" && <ResultsTab />}
+      </div>
     </div>
   );
 }

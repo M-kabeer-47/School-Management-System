@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/Tabs";
+import { ResponsiveTabs } from "@/components/ui/ResponsiveTabs";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { cn } from "@/lib/common/utils";
 
@@ -43,6 +43,53 @@ export function PaperFilters({
   uniqueSections,
   stats,
 }: PaperFiltersProps) {
+  const tabOptions = [
+    {
+      value: "all",
+      label: (
+        <span className="flex items-center gap-2">
+          All Papers
+          <span className="text-[10px] bg-slate-200 px-2 py-0.5 rounded-full text-slate-700">
+            {stats.total}
+          </span>
+        </span>
+      ),
+    },
+    {
+      value: "overdue",
+      label: (
+        <span className="flex items-center gap-2">
+          Overdue
+          <span className="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full ring-1 ring-red-200">
+            {stats.overdue}
+          </span>
+        </span>
+      ),
+    },
+    {
+      value: "pending",
+      label: (
+        <span className="flex items-center gap-2">
+          Pending
+          <span className="text-[10px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full ring-1 ring-orange-200">
+            {stats.pending - stats.overdue}
+          </span>
+        </span>
+      ),
+    },
+    {
+      value: "uploaded",
+      label: (
+        <span className="flex items-center gap-2">
+          Uploaded
+          <span className="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full ring-1 ring-emerald-200">
+            {stats.uploaded}
+          </span>
+        </span>
+      ),
+    },
+  ];
+
   return (
     <div className="space-y-6">
       {/* Row 1: Full-Width Search */}
@@ -102,50 +149,13 @@ export function PaperFilters({
         </div>
 
         {/* Status Tabs */}
-        <div className="w-full lg:w-auto overflow-x-auto pb-1 lg:pb-0 scrollbar-hide">
-          <Tabs
+        <div className="w-full lg:w-auto">
+          <ResponsiveTabs
             value={statusFilter}
-            onValueChange={(v) => onStatusChange(v as any)}
-          >
-            <TabsList className="bg-surface border-2 rounded-xl p-1 shadow-none h-12 w-full justify-start md:justify-center">
-              <TabsTrigger
-                value="all"
-                className="rounded-lg h-full px-4 text-xs font-semibold transition-all data-[state=active]:bg-white data-[state=active]:shadow-sm"
-              >
-                All Papers
-                <span className="ml-2 text-[10px] bg-slate-200 px-2 py-0.5 rounded-full text-slate-700">
-                  {stats.total}
-                </span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="overdue"
-                className="rounded-lg h-full px-4 text-xs font-semibold data-[state=active]:bg-red-600 data-[state=active]:text-white transition-all"
-              >
-                Overdue
-                <span className="ml-2 text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full ring-1 ring-red-200">
-                  {stats.overdue}
-                </span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="pending"
-                className="rounded-lg h-full px-4 text-xs font-semibold data-[state=active]:bg-orange-500 data-[state=active]:text-white transition-all"
-              >
-                Pending
-                <span className="ml-2 text-[10px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full ring-1 ring-orange-200">
-                  {stats.pending - stats.overdue}
-                </span>
-              </TabsTrigger>
-              <TabsTrigger
-                value="uploaded"
-                className="rounded-lg h-full px-4 text-xs font-semibold data-[state=active]:bg-emerald-600 data-[state=active]:text-white transition-all"
-              >
-                Uploaded
-                <span className="ml-2 text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full ring-1 ring-emerald-200">
-                  {stats.uploaded}
-                </span>
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+            onValueChange={onStatusChange}
+            options={tabOptions}
+            className="w-full lg:w-auto"
+          />
         </div>
       </div>
     </div>

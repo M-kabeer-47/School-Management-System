@@ -12,6 +12,8 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/Table";
+import { Pagination } from "@/components/ui/Pagination";
+import { useState, useMemo } from "react";
 import { GradebookRating } from "./GradebookRating";
 
 interface TestInfo {
@@ -43,11 +45,29 @@ export const GradebookMatrix = ({
   searchQuery,
   setSearchQuery,
 }: GradebookMatrixProps) => {
-  const filteredStudents = students.filter(
-    (s) =>
-      s.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      s.rollNo.toLowerCase().includes(searchQuery.toLowerCase()),
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 8; // Adjust based on density
+
+  const filteredStudents = useMemo(() => {
+    return students.filter(
+      (s) =>
+        s.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        s.rollNo.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+  }, [students, searchQuery]);
+
+  // Calculate Paginated Data
+  const totalPages = Math.ceil(filteredStudents.length / ITEMS_PER_PAGE);
+  const paginatedStudents = filteredStudents.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE,
   );
+
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val);
+    setCurrentPage(1);
+  };
 
   const totalPossible = tests.reduce((acc, t) => acc + t.totalMarks, 0);
 
@@ -71,7 +91,7 @@ export const GradebookMatrix = ({
             type="text"
             placeholder="Search students..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             className="w-full pl-10 pr-4 py-2 bg-surface-hover/30 border border-border rounded-xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all text-sm font-medium"
           />
         </div>
@@ -101,137 +121,155 @@ export const GradebookMatrix = ({
               </div>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableHeadRow>
-                  <TableHead className="min-w-[220px]">Student Name</TableHead>
-                  {tests.map((test) => (
-                    <TableHead
-                      key={test.id}
-                      className="text-center min-w-[120px]"
-                    >
-                      <div className="flex flex-col gap-0.5">
-                        <span className="text-white font-bold text-xs">
-                          {test.name}
-                        </span>
-                        <span className="text-[10px] text-white/70 font-medium">
-                          ({test.totalMarks} pts)
-                        </span>
-                      </div>
+            <>
+              <Table>
+                <TableHeader>
+                  <TableHeadRow>
+                    <TableHead className="min-w-[220px]">
+                      Student Name
                     </TableHead>
-                  ))}
-                  <TableHead className="text-center min-w-[100px]">
-                    Final %
-                  </TableHead>
-                  <TableHead className="text-right pr-6 min-w-[150px]">
-                    Award/Rating
-                  </TableHead>
-                </TableHeadRow>
-              </TableHeader>
-              <TableBody>
-                <AnimatePresence mode="popLayout">
-                  {filteredStudents.length > 0 ? (
-                    filteredStudents.map((student, i) => {
-                      const studentObtained = Object.values(
-                        student.marks,
-                      ).reduce((sum: number, m) => sum + Number(m || 0), 0);
-                      const studentPerc =
-                        totalPossible > 0
-                          ? (studentObtained / totalPossible) * 100
-                          : 0;
-
-                      return (
-                        <motion.tr
-                          key={student.studentId}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, scale: 0.95 }}
-                          transition={{ delay: i * 0.05 }}
-                          layout
-                          className="group hover:bg-surface-hover/30 border-b border-border last:border-0"
-                        >
-                          <TableCell>
-                            <div className="flex flex-col">
-                              <span className="font-bold text-text-primary text-sm">
-                                {student.studentName}
-                              </span>
-                              <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">
-                                {student.rollNo}
-                              </span>
-                            </div>
-                          </TableCell>
-
-                          {tests.map((test) => {
-                            const mark = student.marks[test.id];
-                            const markPerc =
-                              mark !== null
-                                ? (mark / test.totalMarks) * 100
-                                : 0;
-
-                            return (
-                              <TableCell key={test.id} className="text-center">
-                                <div className="flex flex-col items-center">
-                                  <span
-                                    className={cn(
-                                      "font-mono font-bold text-sm",
-                                      mark === null
-                                        ? "text-text-muted"
-                                        : markPerc < 40
-                                          ? "text-error"
-                                          : "text-text-primary",
-                                    )}
-                                  >
-                                    {mark ?? "--"}
-                                  </span>
-                                  {mark !== null && (
-                                    <span className="text-[10px] text-text-muted opacity-60 font-medium">
-                                      ({markPerc.toFixed(0)}%)
-                                    </span>
-                                  )}
-                                </div>
-                              </TableCell>
-                            );
-                          })}
-
-                          <TableCell className="text-center">
-                            <span
-                              className={cn(
-                                "font-bold text-sm",
-                                studentPerc >= 80
-                                  ? "text-success"
-                                  : studentPerc >= 50
-                                    ? "text-accent"
-                                    : "text-error",
-                              )}
-                            >
-                              {studentPerc.toFixed(1)}%
-                            </span>
-                          </TableCell>
-
-                          <TableCell className="text-right pr-6">
-                            <GradebookRating percentage={studentPerc} />
-                          </TableCell>
-                        </motion.tr>
-                      );
-                    })
-                  ) : (
-                    <TableRow>
-                      <TableCell
-                        colSpan={tests.length + 3}
-                        className="py-20 text-center"
+                    {tests.map((test) => (
+                      <TableHead
+                        key={test.id}
+                        className="text-center min-w-[120px]"
                       >
-                        <div className="flex flex-col items-center gap-3">
-                          <Search className="w-10 h-10 text-text-muted opacity-20" />
-                          <p className="text-text-muted font-medium">
-                            No students found matching your search.
-                          </p>
+                        <div className="flex flex-col gap-0.5">
+                          <span className="text-white font-bold text-xs">
+                            {test.name}
+                          </span>
+                          <span className="text-[10px] text-white/70 font-medium">
+                            ({test.totalMarks} pts)
+                          </span>
                         </div>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </AnimatePresence>
-              </TableBody>
-            </Table>
+                      </TableHead>
+                    ))}
+                    <TableHead className="text-center min-w-[100px]">
+                      Final %
+                    </TableHead>
+                    <TableHead className="text-right pr-6 min-w-[150px]">
+                      Award/Rating
+                    </TableHead>
+                  </TableHeadRow>
+                </TableHeader>
+                <TableBody>
+                  <AnimatePresence mode="popLayout">
+                    {paginatedStudents.length > 0 ? (
+                      paginatedStudents.map((student, i) => {
+                        const studentObtained = Object.values(
+                          student.marks,
+                        ).reduce((sum: number, m) => sum + Number(m || 0), 0);
+                        const studentPerc =
+                          totalPossible > 0
+                            ? (studentObtained / totalPossible) * 100
+                            : 0;
+
+                        return (
+                          <motion.tr
+                            key={student.studentId}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ delay: i * 0.05 }}
+                            layout
+                            className="group hover:bg-surface-hover/30 border-b border-border last:border-0"
+                          >
+                            <TableCell>
+                              <div className="flex flex-col">
+                                <span className="font-bold text-text-primary text-sm">
+                                  {student.studentName}
+                                </span>
+                                <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">
+                                  {student.rollNo}
+                                </span>
+                              </div>
+                            </TableCell>
+
+                            {tests.map((test) => {
+                              const mark = student.marks[test.id];
+                              const markPerc =
+                                mark !== null
+                                  ? (mark / test.totalMarks) * 100
+                                  : 0;
+
+                              return (
+                                <TableCell
+                                  key={test.id}
+                                  className="text-center"
+                                >
+                                  <div className="flex flex-col items-center">
+                                    <span
+                                      className={cn(
+                                        "font-mono font-bold text-sm",
+                                        mark === null
+                                          ? "text-text-muted"
+                                          : markPerc < 40
+                                            ? "text-error"
+                                            : "text-text-primary",
+                                      )}
+                                    >
+                                      {mark ?? "--"}
+                                    </span>
+                                    {mark !== null && (
+                                      <span className="text-[10px] text-text-muted opacity-60 font-medium">
+                                        ({markPerc.toFixed(0)}%)
+                                      </span>
+                                    )}
+                                  </div>
+                                </TableCell>
+                              );
+                            })}
+
+                            <TableCell className="text-center">
+                              <span
+                                className={cn(
+                                  "font-bold text-sm",
+                                  studentPerc >= 80
+                                    ? "text-success"
+                                    : studentPerc >= 50
+                                      ? "text-accent"
+                                      : "text-error",
+                                )}
+                              >
+                                {studentPerc.toFixed(1)}%
+                              </span>
+                            </TableCell>
+
+                            <TableCell className="text-right pr-6">
+                              <GradebookRating percentage={studentPerc} />
+                            </TableCell>
+                          </motion.tr>
+                        );
+                      })
+                    ) : (
+                      <TableRow>
+                        <TableCell
+                          colSpan={tests.length + 3}
+                          className="py-20 text-center"
+                        >
+                          <div className="flex flex-col items-center gap-3">
+                            <Search className="w-10 h-10 text-text-muted opacity-20" />
+                            <p className="text-text-muted font-medium">
+                              No students found matching your search.
+                            </p>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </AnimatePresence>
+                </TableBody>
+              </Table>
+
+              {/* Pagination UI */}
+              {totalPages > 1 && (
+                <div className="flex justify-center pt-6 border-t border-border/50">
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                </div>
+              )}
+            </>
           )}
         </motion.div>
       </AnimatePresence>
