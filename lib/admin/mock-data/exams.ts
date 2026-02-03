@@ -1,53 +1,83 @@
 import { Calendar, Users, FileCheck, AlertCircle } from "lucide-react";
 
-export const EXAM_STATS = {
-  activeExams: 2,
-  totalCandidates: 1250,
-  pendingResults: 15,
-  avgAttendance: 96,
-};
-
-export const ACTIVE_EXAM_SERIES = [
+export const EXAM_SERIES = [
   {
     id: "ser-1",
-    name: "Final Term 2025",
-    status: "Ongoing",
-    startDate: "2025-03-15",
-    endDate: "2025-03-30",
-    classes: [
-      "Class 5",
-      "Class 6",
-      "Class 7",
-      "Class 8",
-      "Class 9",
-      "Class 10",
-    ],
+    title: "Final Term 2025",
+    status: "Active",
+    dateRange: "Mar 15 - Mar 30, 2025",
+    stats: {
+      papersUploaded: 45,
+      totalPapers: 60,
+      timetableGenerated: true,
+      invigilationComplete: false,
+      seatingGenerated: false,
+      resultProgress: 0,
+    },
   },
   {
     id: "ser-2",
-    name: "Unit Test Cycle 2",
+    title: "Unit Test Cycle 1 2025",
     status: "Upcoming",
-    startDate: "2025-04-10",
-    endDate: "2025-04-15",
-    classes: ["Class 1", "Class 2", "Class 3", "Class 4"],
+    dateRange: "Apr 10 - Apr 15, 2025",
+    stats: {
+      papersUploaded: 0,
+      totalPapers: 24,
+      timetableGenerated: false,
+      invigilationComplete: false,
+      seatingGenerated: false,
+      resultProgress: 0,
+    },
   },
 ];
 
-export const PENDING_MARKS_SUBMISSIONS = [
-  {
-    id: "sub-1",
-    subject: "Mathematics",
-    class: "Class 9-A",
-    teacher: "Mr. Sarah Wilson",
-    dueDate: "2025-03-20",
-    status: "Overdue",
-  },
-  {
-    id: "sub-2",
-    subject: "Physics",
-    class: "Class 10-B",
-    teacher: "Mr. James Anderson",
-    dueDate: "2025-03-21",
-    status: "In Progress",
-  },
+// Helper to generate papers for a class
+const generateClassPapers = (
+  grade: number,
+  sections: string[],
+  subjects: string[],
+) => {
+  return sections.flatMap((section) =>
+    subjects.map((subject, idx) => ({
+      id: `p-${grade}-${section}-${subject}`,
+      grade: `Class ${grade}`,
+      section: section,
+      subject: subject,
+      teacher: `Teacher ${subject.substring(0, 3)}`,
+      isUploaded: Math.random() > 0.4, // Random status
+      deadline: "2025-03-12",
+    })),
+  );
+};
+
+// Data Structure: Flat list but rich enough to group
+export const PAPER_STATUS_DATA = [
+  ...generateClassPapers(
+    9,
+    ["A", "B", "C"],
+    ["Math", "English", "Physics", "Chemistry", "Bio", "Computer"],
+  ),
+  ...generateClassPapers(
+    10,
+    ["A", "B", "C", "D"],
+    ["Math", "English", "Physics", "Chemistry", "Bio"],
+  ),
+  ...generateClassPapers(
+    8,
+    ["A", "B"],
+    ["Math", "English", "Science", "History"],
+  ),
+  ...generateClassPapers(
+    7,
+    ["A", "B", "C"],
+    ["Math", "English", "Science", "History"],
+  ),
 ];
+
+export const EXAM_STATS = {
+  activeSeriesId: "ser-1",
+  activeExamsCount: 1,
+  totalCandidates: 1250,
+  pendingResults: 15,
+  pendingPaperUploads: PAPER_STATUS_DATA.filter((p) => !p.isUploaded).length,
+};

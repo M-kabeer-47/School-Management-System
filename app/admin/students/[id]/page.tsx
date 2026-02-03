@@ -16,7 +16,7 @@ import {
   Mail,
 } from "lucide-react";
 import { allStudents } from "@/lib/admin/mock-data/students";
-import { ParentCard } from "./ParentCard";
+import { ParentCard } from "@/components/admin/students/detail/ParentCard";
 import { ParentInfo } from "@/lib/admin/types/student-detail";
 import { InfoGridCard } from "@/components/admin/students/detail/InfoGridCard";
 import { StudentOverviewCard } from "@/components/admin/students/detail/StudentOverviewCard";
