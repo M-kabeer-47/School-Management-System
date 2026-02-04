@@ -115,6 +115,16 @@ export interface ClassFeeCollection {
     defaultersCount: number;
 }
 
+export type ExpenseStatus = "pending" | "approved" | "rejected";
+
+export interface ExpenseCategory {
+    id: string;
+    name: string;
+    icon: string;
+    color: string;
+    description?: string;
+}
+
 export interface Expense {
     id: string;
     date: string;
@@ -125,6 +135,8 @@ export interface Expense {
     vendor?: string;
     receiptNo?: string;
     addedBy: string;
+    approvedBy?: string;
+    status: ExpenseStatus;
     remarks?: string;
 }
 
