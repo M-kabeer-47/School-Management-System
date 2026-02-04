@@ -18,6 +18,7 @@ import {
   CalendarDays,
   Upload,
 } from "lucide-react";
+
 import Link from "next/link";
 import { cn } from "@/lib/common/utils";
 
@@ -101,15 +102,6 @@ export default function ExamsDashboardPage() {
     },
     {
       step: 5,
-      title: "Seating Plan",
-      description: "Map students to rooms automatically",
-      icon: Layout,
-      color: "bg-purple-500",
-      href: `/admin/exams/${currentSeries.id}/seating`,
-      status: currentSeries.stats.seatingGenerated ? "Ready" : "Pending",
-    },
-    {
-      step: 6,
       title: "Generate Assets",
       description: "Print admit cards and attendance sheets",
       icon: Printer,
@@ -118,7 +110,7 @@ export default function ExamsDashboardPage() {
       status: "Available",
     },
     {
-      step: 7,
+      step: 6,
       title: "Result Center",
       description: "Enter marks and publish results",
       icon: Trophy,
