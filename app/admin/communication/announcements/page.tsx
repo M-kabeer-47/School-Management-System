@@ -6,8 +6,6 @@ import {
     Megaphone,
     Plus,
     Pin,
-    Mail,
-    MessageSquare,
     Bell,
     BookOpen,
     PartyPopper,
@@ -20,10 +18,7 @@ import {
     CreateAnnouncementModal,
     DeleteConfirmModal,
 } from "@/components/admin/communication/announcements";
-import {
-    adminAnnouncements,
-    getAnnouncementStats,
-} from "@/lib/admin/mock-data/announcements";
+import { adminAnnouncements } from "@/lib/admin/mock-data/announcements";
 import { AdminAnnouncement, AnnouncementFormData } from "@/lib/admin/types/announcements";
 import { cn } from "@/lib/common/utils";
 
@@ -45,8 +40,6 @@ export default function AnnouncementsPage() {
     const [deleteTarget, setDeleteTarget] = useState<AdminAnnouncement | null>(null);
     const [activeFilter, setActiveFilter] = useState<FilterTab>("all");
     const [announcements, setAnnouncements] = useState(adminAnnouncements);
-
-    const stats = getAnnouncementStats();
 
     const filteredAnnouncements = useMemo(() => {
         let filtered = [...announcements];
@@ -141,37 +134,6 @@ export default function AnnouncementsPage() {
         setEditingAnnouncement(null);
     };
 
-    const statCards = [
-        {
-            title: "Total Announcements",
-            value: stats.total.toString(),
-            icon: Megaphone,
-            color: "text-accent",
-            bgColor: "bg-accent/10",
-        },
-        {
-            title: "Pinned",
-            value: stats.pinned.toString(),
-            icon: Pin,
-            color: "text-orange-600 dark:text-orange-400",
-            bgColor: "bg-orange-50 dark:bg-orange-900/30",
-        },
-        {
-            title: "Sent via SMS",
-            value: stats.sentViaSms.toString(),
-            icon: MessageSquare,
-            color: "text-green-600 dark:text-green-400",
-            bgColor: "bg-green-50 dark:bg-green-900/30",
-        },
-        {
-            title: "Sent via Email",
-            value: stats.sentViaEmail.toString(),
-            icon: Mail,
-            color: "text-blue-600 dark:text-blue-400",
-            bgColor: "bg-blue-50 dark:bg-blue-900/30",
-        },
-    ];
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -194,31 +156,6 @@ export default function AnnouncementsPage() {
                     <Plus className="w-4 h-4" />
                     Create Announcement
                 </Button>
-            </div>
-
-            {/* Stats Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {statCards.map((stat, index) => (
-                    <motion.div
-                        key={stat.title}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        className="bg-background rounded-2xl border border-border p-5 shadow-sm"
-                    >
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <p className="text-sm text-text-muted font-medium">{stat.title}</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">
-                                    {stat.value}
-                                </p>
-                            </div>
-                            <div className={cn("p-3 rounded-xl", stat.bgColor)}>
-                                <stat.icon className={cn("w-5 h-5", stat.color)} />
-                            </div>
-                        </div>
-                    </motion.div>
-                ))}
             </div>
 
             {/* Filter Tabs */}
