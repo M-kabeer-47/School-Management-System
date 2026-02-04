@@ -60,10 +60,10 @@ export function PaperStatusTable({
                   className={cn(
                     "group transition-colors",
                     isOverdue
-                      ? "bg-red-50/40 hover:bg-red-50"
+                      ? "bg-error-light/10 hover:bg-error-light/20"
                       : isPending
-                        ? "hover:bg-orange-50/20"
-                        : "hover:bg-slate-50",
+                        ? "bg-pending-light/10 hover:bg-pending-light/20"
+                        : "hover:bg-surface-hover",
                   )}
                 >
                   <TableCell>
@@ -86,15 +86,15 @@ export function PaperStatusTable({
                   </TableCell>
                   <TableCell>
                     {paper.isUploaded ? (
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold border border-emerald-200 uppercase tracking-tight">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-success-light text-success text-xs font-bold border border-success/20 uppercase tracking-tight">
                         <CheckCircle2 className="w-3.5 h-3.5" /> Uploaded
                       </div>
                     ) : isOverdue ? (
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold border border-red-200 uppercase tracking-tight">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-light text-error text-xs font-bold border border-error/20 uppercase tracking-tight">
                         <AlertCircle className="w-3.5 h-3.5" /> Overdue
                       </div>
                     ) : (
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orange-100 text-orange-700 text-xs font-bold border border-orange-200 uppercase tracking-tight">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-pending-light text-pending text-xs font-bold border border-pending/20 uppercase tracking-tight">
                         <Clock className="w-3.5 h-3.5" /> Pending
                       </div>
                     )}
@@ -115,8 +115,8 @@ export function PaperStatusTable({
                         className={cn(
                           "h-8 text-xs font-bold transition-all",
                           isOverdue
-                            ? "border-red-200 text-red-700 hover:bg-red-100 hover:border-red-300"
-                            : "border-orange-200 text-orange-700 hover:bg-orange-100 hover:border-orange-300",
+                            ? "border-error/20 text-error hover:bg-error-light hover:border-error/30"
+                            : "border-pending/20 text-pending hover:bg-pending-light hover:border-pending/30",
                         )}
                       >
                         Notify

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   ChevronLeft,
   ChevronRight,
@@ -37,6 +38,8 @@ interface DateTimePickerProps {
   showTime?: boolean;
   error?: string;
   inline?: boolean;
+  side?: "top" | "bottom";
+  align?: "left" | "right";
 }
 
 interface CalendarDay {
@@ -247,6 +250,8 @@ export default function DateTimePicker({
   showTime = true,
   error,
   inline = false,
+  side = "bottom",
+  align = "left",
 }: DateTimePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState<View>("calendar");
@@ -260,25 +265,64 @@ export default function DateTimePicker({
     value ? format(new Date(value), "HH:mm") : "23:59",
   );
   const containerRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
+    null,
+  );
+  const [coords, setCoords] = useState({ top: 0, left: 0, width: 0 });
+
+  useLayoutEffect(() => {
+    setPortalContainer(document.body);
+  }, []);
+
+  const updateCoords = () => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setCoords({
+        top: rect.top,
+        left: rect.left,
+        width: rect.width,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      updateCoords();
+      window.addEventListener("scroll", updateCoords, true);
+      window.addEventListener("resize", updateCoords);
+    }
+    return () => {
+      window.removeEventListener("scroll", updateCoords, true);
+      window.removeEventListener("resize", updateCoords);
+    };
+  }, [isOpen]);
 
   // Reset view when closing
   useEffect(() => {
-    if (!isOpen) setView("calendar");
+    if (!isOpen) {
+      setView("calendar");
+    }
   }, [isOpen]);
 
   // Close on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
       if (
         containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
+        !containerRef.current.contains(target) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(target)
       ) {
         setIsOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [isOpen]);
 
   // Generate calendar days
   const generateCalendarDays = (): CalendarDay[] => {
@@ -332,12 +376,23 @@ export default function DateTimePicker({
       )
     : "";
 
+  const handleToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (disabled) return;
+
+    if (!isOpen) {
+      updateCoords();
+    }
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div className="relative" ref={containerRef}>
       {/* Input Button */}
       <button
         type="button"
-        onClick={() => !disabled && setIsOpen(!isOpen)}
+        onClick={handleToggle}
         className={cn(
           "w-full flex items-center gap-3 px-4 py-2.5 rounded-xl border text-left transition-all",
           error
@@ -365,47 +420,82 @@ export default function DateTimePicker({
         </span>
       </button>
 
-      {/* Dropdown */}
-      {isOpen && (
-        <div
-          className={cn(
-            "min-w-[300px] bg-surface border border-border rounded-xl shadow-xl shadow-black/10 overflow-hidden animate-in fade-in zoom-in-95 duration-200 origin-top-left",
-            inline ? "relative mt-4 w-full shadow-none" : "absolute z-50 mt-2",
-          )}
-        >
-          {view === "calendar" ? (
-            <>
-              <CalendarHeader
-                currentMonth={currentMonth}
-                onPrevMonth={() => setCurrentMonth(subMonths(currentMonth, 1))}
-                onNextMonth={() => setCurrentMonth(addMonths(currentMonth, 1))}
-              />
-              <CalendarGrid
-                days={generateCalendarDays()}
+      {/* Dropdown with Portal */}
+      {isOpen &&
+        portalContainer &&
+        createPortal(
+          <div
+            ref={dropdownRef}
+            onClick={(e) => e.stopPropagation()}
+            className={cn(
+              "fixed bg-surface border border-border rounded-xl shadow-xl shadow-black/10 overflow-hidden animate-in fade-in zoom-in-95 duration-200",
+              inline ? "relative mt-4 w-full shadow-none" : "z-[9999]",
+            )}
+            style={
+              !inline
+                ? {
+                    width: Math.max(coords.width, 300),
+                    left:
+                      align === "right"
+                        ? coords.left +
+                          coords.width -
+                          Math.max(coords.width, 300)
+                        : coords.left,
+                    top:
+                      side === "top"
+                        ? coords.top - 8 // Offset for gap
+                        : coords.top + 48 + 8, // Button height + gap
+                    transform: side === "top" ? "translateY(-100%)" : "none",
+                    transformOrigin:
+                      side === "top"
+                        ? align === "right"
+                          ? "bottom right"
+                          : "bottom left"
+                        : align === "right"
+                          ? "top right"
+                          : "top left",
+                  }
+                : {}
+            }
+          >
+            {view === "calendar" ? (
+              <>
+                <CalendarHeader
+                  currentMonth={currentMonth}
+                  onPrevMonth={() =>
+                    setCurrentMonth(subMonths(currentMonth, 1))
+                  }
+                  onNextMonth={() =>
+                    setCurrentMonth(addMonths(currentMonth, 1))
+                  }
+                />
+                <CalendarGrid
+                  days={generateCalendarDays()}
+                  selectedDate={selectedDate}
+                  onDateClick={handleDateClick}
+                />
+                <div className="px-3 pb-3">
+                  <button
+                    type="button"
+                    onClick={() => setIsOpen(false)}
+                    className="w-full py-2 text-text-muted text-xs font-bold rounded-lg hover:bg-surface-active transition-colors border border-border"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            ) : (
+              <TimePickerView
                 selectedDate={selectedDate}
-                onDateClick={handleDateClick}
+                time={time}
+                onTimeChange={setTime}
+                onBack={() => setView("calendar")}
+                onConfirm={handleConfirm}
               />
-              <div className="px-3 pb-3">
-                <button
-                  type="button"
-                  onClick={() => setIsOpen(false)}
-                  className="w-full py-2 text-text-muted text-xs font-bold rounded-lg hover:bg-surface-active transition-colors border border-border"
-                >
-                  Cancel
-                </button>
-              </div>
-            </>
-          ) : (
-            <TimePickerView
-              selectedDate={selectedDate}
-              time={time}
-              onTimeChange={setTime}
-              onBack={() => setView("calendar")}
-              onConfirm={handleConfirm}
-            />
-          )}
-        </div>
-      )}
+            )}
+          </div>,
+          portalContainer,
+        )}
     </div>
   );
 }

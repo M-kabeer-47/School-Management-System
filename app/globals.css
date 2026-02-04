@@ -55,6 +55,14 @@
   --info-light: #e0f2fe;
   --info-foreground: #ffffff;
 
+  --pending: #ea580c;
+  --pending-light: #fff7ed;
+  --pending-foreground: #ffffff;
+
+  --neutral: #64748b;
+  --neutral-light: #f1f5f9;
+  --neutral-foreground: #ffffff;
+
   /* Interactive */
   --ring: #2563eb;
   --input-border: #cbd5e1;
@@ -101,6 +109,14 @@
   --info: #0ea5e9;
   --info-light: #0c4a6e;
   --info-foreground: #ffffff;
+
+  --pending: #f97316;
+  --pending-light: #431407;
+  --pending-foreground: #ffffff;
+
+  --neutral: #94a3b8;
+  --neutral-light: #0f172a;
+  --neutral-foreground: #ffffff;
 
   /* Interactive */
   --ring: #3b82f6;
@@ -152,6 +168,14 @@
     --info-light: #0c4a6e;
     --info-foreground: #ffffff;
 
+    --pending: #f97316;
+    --pending-light: #431407;
+    --pending-foreground: #ffffff;
+
+    --neutral: #94a3b8;
+    --neutral-light: #0f172a;
+    --neutral-foreground: #ffffff;
+
     /* Interactive */
     --ring: #3b82f6;
     --input-border: #334155;
@@ -201,6 +225,14 @@
   --color-info: var(--info);
   --color-info-light: var(--info-light);
   --color-info-foreground: var(--info-foreground);
+
+  --color-pending: var(--pending);
+  --color-pending-light: var(--pending-light);
+  --color-pending-foreground: var(--pending-foreground);
+
+  --color-neutral: var(--neutral);
+  --color-neutral-light: var(--neutral-light);
+  --color-neutral-foreground: var(--neutral-foreground);
 
   /* Interactive */
   --color-ring: var(--ring);

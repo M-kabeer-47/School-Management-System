@@ -1,5 +1,3 @@
-import { Calendar, Users, FileCheck, AlertCircle } from "lucide-react";
-
 export const EXAM_SERIES = [
   {
     id: "ser-1",

@@ -49,7 +49,7 @@ export function PaperFilters({
       label: (
         <span className="flex items-center gap-2">
           All Papers
-          <span className="text-[10px] bg-slate-200 px-2 py-0.5 rounded-full text-slate-700">
+          <span className="text-[10px] bg-neutral-light text-neutral px-2 py-0.5 rounded-full">
             {stats.total}
           </span>
         </span>
@@ -60,7 +60,7 @@ export function PaperFilters({
       label: (
         <span className="flex items-center gap-2">
           Overdue
-          <span className="text-[10px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full ring-1 ring-red-200">
+          <span className="text-[10px] bg-error-light text-error px-2 py-0.5 rounded-full ring-1 ring-error/20">
             {stats.overdue}
           </span>
         </span>
@@ -71,7 +71,7 @@ export function PaperFilters({
       label: (
         <span className="flex items-center gap-2">
           Pending
-          <span className="text-[10px] bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full ring-1 ring-orange-200">
+          <span className="text-[10px] bg-pending-light text-pending px-2 py-0.5 rounded-full ring-1 ring-pending/20">
             {stats.pending - stats.overdue}
           </span>
         </span>
@@ -82,7 +82,7 @@ export function PaperFilters({
       label: (
         <span className="flex items-center gap-2">
           Uploaded
-          <span className="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full ring-1 ring-emerald-200">
+          <span className="text-[10px] bg-success-light text-success px-2 py-0.5 rounded-full ring-1 ring-success/20">
             {stats.uploaded}
           </span>
         </span>

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArrowLeft, Bell, Download } from "lucide-react";
 
 import { Button } from "@/components/ui/Button";
+import { Pagination } from "@/components/ui/Pagination";
 import { PaperKPIs } from "@/components/admin/exams/papers/PaperKPIs";
 import { PaperFilters } from "@/components/admin/exams/papers/PaperFilters";
 import { PaperStatusTable } from "@/components/admin/exams/papers/PaperStatusTable";
@@ -27,6 +28,8 @@ export default function PaperStatusPage() {
   const [selectedSection, setSelectedSection] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   // Get sections based on selected grade
   const sectionsForGrade = useMemo(() => {
@@ -100,6 +103,19 @@ export default function PaperStatusPage() {
     });
   }, [selectedGrade, selectedSection, statusFilter, searchQuery]);
 
+  // Handle pagination logic
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredData.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredData, currentPage, itemsPerPage]);
+
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  // Reset to first page when any filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedGrade, selectedSection, statusFilter, searchQuery]);
+
   // Derived KPIs
   const kpis = useMemo(() => {
     let baseData = PAPER_STATUS_DATA;
@@ -152,18 +168,6 @@ export default function PaperStatusPage() {
             </span>
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <Button variant="outline" className="h-10 rounded-xl">
-            <Download className="w-4 h-4 mr-2" />
-            Export Status
-          </Button>
-          {kpis.overdue > 0 && (
-            <Button className="h-10 bg-red-600 hover:bg-red-700 text-white rounded-xl shadow-sm shadow-red-200 border-none transition-all">
-              <Bell className="w-4 h-4 mr-2" />
-              Nudge {kpis.overdue} Critical
-            </Button>
-          )}
-        </div>
       </div>
 
       {/* KPI CARDS - Modularized */}
@@ -188,7 +192,18 @@ export default function PaperStatusPage() {
       />
 
       {/* DATA TABLE - Modularized */}
-      <PaperStatusTable data={filteredData} onClearFilters={clearFilters} />
+      <div className="space-y-6">
+        <PaperStatusTable data={paginatedData} onClearFilters={clearFilters} />
+
+        {/* PAGINATION */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={filteredData.length}
+          itemsPerPage={itemsPerPage}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </div>
   );
 }

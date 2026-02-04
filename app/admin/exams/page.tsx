@@ -13,30 +13,62 @@ import {
   Trophy,
   ChevronDown,
   AlertCircle,
+  Plus,
+  CheckCircle2,
+  CalendarDays,
+  Upload,
 } from "lucide-react";
+import Link from "next/link";
 import { cn } from "@/lib/common/utils";
 
 import { Button } from "@/components/ui/Button";
+import { CreateSessionModal } from "@/components/admin/exams/CreateSessionModal";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
+import { format } from "date-fns";
 
 // Mock Data Import
 import { EXAM_SERIES, EXAM_STATS } from "@/lib/admin/mock-data/exams";
 
 export default function ExamsDashboardPage() {
+  const [allSeries, setAllSeries] = useState(EXAM_SERIES);
   const [selectedSeriesId, setSelectedSeriesId] = useState(EXAM_SERIES[0].id);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const currentSeries =
-    EXAM_SERIES.find((s) => s.id === selectedSeriesId) || EXAM_SERIES[0];
+    allSeries.find((s) => s.id === selectedSeriesId) || allSeries[0];
+
+  // Derived KPIs for the "Realistic" dashboard
+  const setupSteps = [
+    { label: "Timetable", done: currentSeries.stats.timetableGenerated },
+    { label: "Seating", done: currentSeries.stats.seatingGenerated },
+    { label: "Invigilation", done: currentSeries.stats.invigilationComplete },
+  ];
+
+  const setupCompletedCount = setupSteps.filter((s) => s.done).length;
+  const setupProgressPercentage =
+    (setupCompletedCount / setupSteps.length) * 100;
+
+  const paperPercentage =
+    (currentSeries.stats.papersUploaded / currentSeries.stats.totalPapers) *
+    100;
 
   // The 7-Step Workflow Actions
   const workflowActions = [
     {
       step: 1,
       title: "Configure Series",
-      description: "Manage exam dates and naming conventions",
+      description: "Setup exam name, terms, and core properties",
       icon: Settings,
       color: "bg-slate-500",
       href: `/admin/exams/${currentSeries.id}/configure`,
       status: "Done",
+      isCompleted: true,
     },
     {
       step: 2,
@@ -51,11 +83,12 @@ export default function ExamsDashboardPage() {
     {
       step: 3,
       title: "Date Sheet",
-      description: "Generate and publish exam timetable",
+      description: "Upload official exam timetable (PDF/Image)",
       icon: Calendar,
       color: "bg-indigo-500",
       href: `/admin/exams/${currentSeries.id}/datesheet`,
       status: currentSeries.stats.timetableGenerated ? "Ready" : "Pending",
+      isCompleted: currentSeries.stats.timetableGenerated,
     },
     {
       step: 4,
@@ -96,7 +129,7 @@ export default function ExamsDashboardPage() {
   ];
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto p-6 md:p-8">
+    <div className="space-y-8 max-w-7xl mx-auto pb-10">
       {/* Header & Series Switcher */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
@@ -109,91 +142,171 @@ export default function ExamsDashboardPage() {
         </div>
 
         {/* Series Context Switcher - The "Lens" for the dashboard */}
-        <div className="relative">
-          <div className="flex items-center gap-3 bg-surface border border-border p-1.5 pl-4 pr-2 rounded-2xl shadow-sm hover:shadow-md transition-all">
-            <div className="flex flex-col">
-              <span className="text-xs font-semibold text-text-muted uppercase tracking-wider">
-                Viewing Series
-              </span>
-              <span className="text-sm font-bold text-text-primary">
-                {currentSeries.title}
-              </span>
-            </div>
-            <div className="h-8 w-[1px] bg-border mx-2" />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9 rounded-xl hover:bg-background"
+        <div className="flex items-center gap-4">
+          <div className="min-w-[240px]">
+            <Select
+              value={selectedSeriesId}
+              onValueChange={setSelectedSeriesId}
             >
-              <ChevronDown className="w-5 h-5 text-text-secondary" />
-            </Button>
+              <SelectTrigger className="h-14">
+                <div className="flex flex-col items-start text-left">
+                  <SelectValue placeholder="Select Exam Series" />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                {allSeries.map((series) => (
+                  <SelectItem
+                    key={series.id}
+                    value={series.id}
+                    className="py-3"
+                  >
+                    <div className="flex flex-col">
+                      <span className="font-bold">{series.title}</span>
+                      <span className="text-xs text-text-muted">
+                        {series.dateRange}
+                      </span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
+
+          <Button onClick={() => setIsModalOpen(true)}>
+            <Plus className="w-5 h-5" />
+            New Session
+          </Button>
         </div>
       </div>
 
-      {/* Series Status Hero */}
+      {/* Realistic & Meaningful KPI Cards */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         className="grid grid-cols-1 md:grid-cols-3 gap-4"
       >
-        <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl p-6 text-white shadow-lg overflow-hidden relative group">
-          <div className="relative z-10">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm">
-                <Calendar className="w-5 h-5 text-white" />
+        {/* Card 1: Session Readiness (Hero) */}
+        <div className="bg-accent rounded-2xl p-6 text-white shadow-lg overflow-hidden relative group">
+          <div className="relative z-10 flex flex-col h-full justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="p-2 bg-white/10 rounded-lg backdrop-blur-sm">
+                  <Layout className="w-5 h-5 text-white" />
+                </div>
+                <span className="font-semibold text-white/80 uppercase tracking-wider text-xs">
+                  Readiness Score
+                </span>
               </div>
-              <span className="font-medium text-blue-100">Timeline</span>
+              <h3 className="text-3xl font-bold">
+                {Math.round(setupProgressPercentage)}%
+              </h3>
+              <p className="text-white/70 mt-1 text-sm">
+                Session: {currentSeries.title}
+              </p>
             </div>
-            <h3 className="text-2xl font-bold">{currentSeries.dateRange}</h3>
-            <p className="text-blue-200 mt-1 text-sm">
-              Status: {currentSeries.status}
-            </p>
+
+            <div className="mt-6 space-y-2">
+              <div className="flex justify-between text-xs font-bold text-white/90 uppercase">
+                <span>Setup Progress</span>
+                <span>{setupCompletedCount}/3 Tasks</span>
+              </div>
+              <div className="w-full bg-white/20 rounded-full h-1.5 overflow-hidden">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${setupProgressPercentage}%` }}
+                  className="bg-white h-full"
+                />
+              </div>
+            </div>
           </div>
           <div className="absolute right-0 top-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />
         </div>
 
-        <div className="bg-surface border border-border rounded-2xl p-6 shadow-sm flex flex-col justify-between">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-red-100 rounded-lg">
-              <AlertCircle className="w-5 h-5 text-red-600" />
+        {/* Card 2: Paper Submission Pipeline */}
+        <div className="bg-surface border border-border rounded-2xl p-6 shadow-sm flex flex-col justify-between group hover:border-accent transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-accent/5 rounded-lg">
+                <FileText className="w-5 h-5 text-accent" />
+              </div>
+              <span className="font-bold text-text-primary text-sm uppercase tracking-tight">
+                Paper Collection
+              </span>
             </div>
-            <span className="font-semibold text-text-primary">
-              Action Required
-            </span>
+            {paperPercentage < 100 && (
+              <span className="text-[10px] font-bold px-2 py-1 bg-error/10 text-error rounded-full">
+                Action Needed
+              </span>
+            )}
           </div>
+
           <div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-text-secondary">
-                Pending Papers
-              </span>
-              <span className="text-xl font-bold text-red-600">
-                {EXAM_STATS.pendingPaperUploads}
+            <div className="flex items-end justify-between mb-2">
+              <div className="flex flex-col">
+                <span className="text-2xl font-black text-text-primary">
+                  {currentSeries.stats.papersUploaded}
+                  <span className="text-sm font-medium text-text-muted ml-1">
+                    / {currentSeries.stats.totalPapers}
+                  </span>
+                </span>
+                <span className="text-[11px] font-semibold text-text-muted uppercase">
+                  Papers Received
+                </span>
+              </div>
+              <span className="text-lg font-bold text-accent">
+                {Math.round(paperPercentage)}%
               </span>
             </div>
-            <div className="w-full bg-slate-100 rounded-full h-2">
-              <div
-                className="bg-red-500 h-2 rounded-full"
-                style={{ width: "35%" }}
-              ></div>
+            <div className="w-full bg-secondary/10 rounded-full h-2.5 overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${paperPercentage}%` }}
+                className={cn(
+                  "h-full rounded-full",
+                  paperPercentage === 100 ? "bg-success" : "bg-accent",
+                )}
+              />
             </div>
           </div>
         </div>
 
-        <div className="bg-surface border border-border rounded-2xl p-6 shadow-sm flex flex-col justify-between">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-emerald-100 rounded-lg">
-              <Users className="w-5 h-5 text-emerald-600" />
+        {/* Card 3: Logistics Checklist */}
+        <div className="bg-surface border border-border rounded-2xl p-6 shadow-sm flex flex-col group hover:border-accent transition-all">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-accent/5 rounded-lg">
+              <Users className="w-5 h-5 text-accent" />
             </div>
-            <span className="font-semibold text-text-primary">Candidates</span>
-          </div>
-          <div>
-            <span className="text-3xl font-bold text-text-primary">
-              {EXAM_STATS.totalCandidates}
+            <span className="font-bold text-text-primary text-sm uppercase tracking-tight">
+              Logistics Readiness
             </span>
-            <p className="text-sm text-text-muted mt-1">
-              Students enrolled for this series
-            </p>
+          </div>
+
+          <div className="space-y-4">
+            {setupSteps.map((step) => (
+              <div
+                key={step.label}
+                className="flex items-center justify-between"
+              >
+                <span className="text-sm font-medium text-text-secondary">
+                  {step.label}
+                </span>
+                <div
+                  className={cn(
+                    "flex items-center gap-1.5 text-xs font-bold px-2 py-0.5 rounded-lg w-[85px] justify-center",
+                    step.done
+                      ? "text-success bg-success/10"
+                      : "text-text-muted bg-secondary/10",
+                  )}
+                >
+                  {step.done ? (
+                    <CheckCircle2 className="w-3 h-3" />
+                  ) : (
+                    <div className="w-3 h-3 rounded-full border-2 border-slate-300" />
+                  )}
+                  {step.done ? "Ready" : "Pending"}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </motion.div>
@@ -209,59 +322,104 @@ export default function ExamsDashboardPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {workflowActions.map((action, index) => (
-            <motion.div
-              key={action.title}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              className="bg-surface rounded-2xl p-1 border border-border shadow-sm hover:shadow-md hover:border-blue-400/50 transition-all cursor-pointer group"
-            >
-              <div className="bg-background rounded-xl p-5 h-full flex flex-col relative overflow-hidden">
-                {/* Step Badge */}
-                <div className="absolute top-4 right-4 text-xs font-bold text-text-muted/30 text-[40px] leading-none pointer-events-none">
-                  {action.step}
-                </div>
-
-                {/* Icon */}
-                <div
-                  className={cn(
-                    "w-12 h-12 rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-105 transition-transform",
-                    action.color,
-                  )}
-                >
-                  <action.icon className="w-6 h-6 text-white" />
-                </div>
-
-                {/* Content */}
-                <h3 className="font-bold text-lg text-text-primary mb-1 group-hover:text-blue-600 transition-colors">
-                  {action.title}
-                </h3>
-                <p className="text-sm text-text-secondary leading-relaxed mb-6">
-                  {action.description}
-                </p>
-
-                {/* Status Indicator */}
-                <div className="mt-auto flex items-center justify-between pt-4 border-t border-border/50">
-                  <div className="flex items-center gap-2">
-                    {action.alert && (
-                      <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                    )}
-                    <span
-                      className={cn(
-                        "text-xs font-semibold",
-                        action.alert ? "text-red-600" : "text-text-muted",
-                      )}
-                    >
-                      {action.status}
-                    </span>
+            <Link key={action.title} href={action.href} className="group">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="bg-surface rounded-2xl p-1 border border-border shadow-sm hover:shadow-md hover:border-blue-400/50 transition-all h-full"
+              >
+                <div className="bg-background rounded-xl p-5 h-full flex flex-col relative overflow-hidden">
+                  {/* Step Badge */}
+                  <div className="absolute top-4 right-4 text-xs font-bold text-text-muted/30 text-[40px] leading-none pointer-events-none">
+                    {action.step}
                   </div>
-                  <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+
+                  {/* Icon */}
+                  <div
+                    className={cn(
+                      "w-12 h-12 rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-105 transition-transform",
+                      action.isCompleted ? "bg-success" : action.color,
+                    )}
+                  >
+                    {action.isCompleted ? (
+                      <CheckCircle2 className="w-6 h-6 text-white" />
+                    ) : (
+                      <action.icon className="w-6 h-6 text-white" />
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="font-bold text-lg text-text-primary mb-1 group-hover:text-blue-600 transition-colors">
+                    {action.title}
+                  </h3>
+                  <p className="text-sm text-text-secondary leading-relaxed mb-6">
+                    {action.description}
+                  </p>
+
+                  {/* Status Indicator */}
+                  <div className="mt-auto flex items-center justify-between pt-4 border-t border-border/50">
+                    <div className="flex items-center gap-2">
+                      {action.isCompleted ? (
+                        <CheckCircle2 className="w-4 h-4 text-success" />
+                      ) : (
+                        action.alert && (
+                          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                        )
+                      )}
+                      <span
+                        className={cn(
+                          "text-xs font-semibold",
+                          action.isCompleted
+                            ? "text-success"
+                            : action.alert
+                              ? "text-red-600"
+                              : "text-text-muted",
+                        )}
+                      >
+                        {action.isCompleted ? "Completed" : action.status}
+                      </span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-text-muted group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </Link>
           ))}
         </div>
       </div>
+
+      {/* NEW SESSION MODAL */}
+      <CreateSessionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onCreate={(session) => {
+          const newId = `ser-${allSeries.length + 1}`;
+
+          // Format date range: "MMM d - MMM d, yyyy"
+          const start = new Date(session.startDate);
+          const end = new Date(session.endDate);
+          const range = `${format(start, "MMM d")} - ${format(end, "MMM d, yyyy")}`;
+
+          const newSeriesItem = {
+            id: newId,
+            title: `${session.type} ${format(start, "yyyy")}`,
+            status: "Upcoming",
+            dateRange: range,
+            stats: {
+              papersUploaded: 0,
+              totalPapers: 0,
+              timetableGenerated: false,
+              invigilationComplete: false,
+              seatingGenerated: false,
+              resultProgress: 0,
+            },
+          };
+          setAllSeries([...allSeries, newSeriesItem]);
+          setSelectedSeriesId(newId);
+          setIsModalOpen(false);
+        }}
+      />
     </div>
   );
 }
