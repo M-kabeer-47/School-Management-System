@@ -2,30 +2,28 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Download, Filter, X } from "lucide-react";
+import { Download, Users } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/admin/PageHeader";
-import { SearchBar } from "@/components/ui/SearchBar";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/Select";
 import { Pagination } from "@/components/admin/students/Pagination";
-import { StaffSalaryTable, SalaryDetailsDrawer } from "@/components/admin/finance/salary";
+import {
+    StaffSalaryTable,
+    SalaryDetailsDrawer,
+    StaffSalaryFilters,
+    SalaryFilters,
+} from "@/components/admin/finance/salary";
 import { staffSalaries, getDepartments } from "@/lib/admin/mock-data/salary";
 import { StaffSalary } from "@/lib/admin/types/salary";
 
 const ITEMS_PER_PAGE = 10;
 
 export default function StaffSalariesPage() {
-    const [filters, setFilters] = useState({
+    const [filters, setFilters] = useState<SalaryFilters>({
         search: "",
         department: "all",
         staffType: "all",
     });
+    const [showFilters, setShowFilters] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedStaff, setSelectedStaff] = useState<StaffSalary | null>(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -56,10 +54,14 @@ export default function StaffSalariesPage() {
         currentPage * ITEMS_PER_PAGE
     );
 
-    const hasActiveFilters =
-        filters.search !== "" ||
-        filters.department !== "all" ||
-        filters.staffType !== "all";
+    // Stats
+    const totalNetSalary = filteredStaff.reduce((sum, s) => sum + s.netSalary, 0);
+    const totalBaseSalary = filteredStaff.reduce((sum, s) => sum + s.baseSalary, 0);
+
+    const handleFilterChange = (key: keyof SalaryFilters, value: string) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
+        setCurrentPage(1);
+    };
 
     const clearFilters = () => {
         setFilters({ search: "", department: "all", staffType: "all" });
@@ -88,79 +90,37 @@ export default function StaffSalariesPage() {
                 </Button>
             </PageHeader>
 
+            {/* Summary Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="bg-background rounded-2xl border border-border p-5 shadow-sm">
+                    <p className="text-sm text-text-muted font-medium">Total Staff</p>
+                    <p className="text-2xl font-bold text-text-primary mt-1">
+                        {filteredStaff.length}
+                    </p>
+                </div>
+                <div className="bg-background rounded-2xl border border-border p-5 shadow-sm">
+                    <p className="text-sm text-text-muted font-medium">Total Base Salary</p>
+                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1">
+                        Rs. {totalBaseSalary.toLocaleString()}
+                    </p>
+                </div>
+                <div className="bg-background rounded-2xl border border-border p-5 shadow-sm">
+                    <p className="text-sm text-text-muted font-medium">Total Net Salary</p>
+                    <p className="text-2xl font-bold text-accent mt-1">
+                        Rs. {totalNetSalary.toLocaleString()}
+                    </p>
+                </div>
+            </div>
+
             {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex-1">
-                    <SearchBar
-                        placeholder="Search by name, department, or designation..."
-                        value={filters.search}
-                        onChange={(value) => {
-                            setFilters((prev) => ({ ...prev, search: value }));
-                            setCurrentPage(1);
-                        }}
-                    />
-                </div>
-                <div className="flex gap-3">
-                    <Select
-                        value={filters.department}
-                        onValueChange={(value) => {
-                            setFilters((prev) => ({ ...prev, department: value }));
-                            setCurrentPage(1);
-                        }}
-                    >
-                        <SelectTrigger className="w-[160px]">
-                            <SelectValue placeholder="Department" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All Departments</SelectItem>
-                            {departments.map((dept) => (
-                                <SelectItem key={dept} value={dept}>
-                                    {dept}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-
-                    <Select
-                        value={filters.staffType}
-                        onValueChange={(value) => {
-                            setFilters((prev) => ({ ...prev, staffType: value }));
-                            setCurrentPage(1);
-                        }}
-                    >
-                        <SelectTrigger className="w-[150px]">
-                            <SelectValue placeholder="Staff Type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All Types</SelectItem>
-                            <SelectItem value="teaching">Teaching</SelectItem>
-                            <SelectItem value="non-teaching">Non-Teaching</SelectItem>
-                            <SelectItem value="admin">Admin</SelectItem>
-                        </SelectContent>
-                    </Select>
-
-                    {hasActiveFilters && (
-                        <Button variant="ghost" onClick={clearFilters}>
-                            <X className="w-4 h-4" />
-                            Clear
-                        </Button>
-                    )}
-                </div>
-            </div>
-
-            {/* Summary */}
-            <div className="flex items-center justify-between text-sm">
-                <p className="text-text-secondary">
-                    Showing <span className="font-medium text-text-primary">{paginatedStaff.length}</span> of{" "}
-                    <span className="font-medium text-text-primary">{filteredStaff.length}</span> staff members
-                </p>
-                <p className="text-text-secondary">
-                    Total Net Salary:{" "}
-                    <span className="font-semibold text-accent">
-                        Rs. {filteredStaff.reduce((sum, s) => sum + s.netSalary, 0).toLocaleString()}
-                    </span>
-                </p>
-            </div>
+            <StaffSalaryFilters
+                filters={filters}
+                onFilterChange={handleFilterChange}
+                onClearFilters={clearFilters}
+                departments={departments}
+                showFilters={showFilters}
+                onToggleFilters={() => setShowFilters(!showFilters)}
+            />
 
             {/* Table */}
             <StaffSalaryTable staff={paginatedStaff} onSelectStaff={handleSelectStaff} />
@@ -173,6 +133,14 @@ export default function StaffSalariesPage() {
                 itemsPerPage={ITEMS_PER_PAGE}
                 onPageChange={setCurrentPage}
             />
+
+            {/* Empty State */}
+            {filteredStaff.length === 0 && (
+                <div className="text-center py-12">
+                    <Users className="w-12 h-12 text-text-muted mx-auto mb-3" />
+                    <p className="text-text-secondary">No staff members found</p>
+                </div>
+            )}
 
             {/* Salary Details Drawer */}
             <SalaryDetailsDrawer
