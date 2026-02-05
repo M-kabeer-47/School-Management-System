@@ -14,7 +14,7 @@ export const adminAnnouncements: AdminAnnouncement[] = [
         createdAt: "2026-01-02T09:00:00",
         delivery: {
             sms: { sent: true, sentAt: "2026-01-02T09:05:00", recipientCount: 450 },
-            email: { sent: true, sentAt: "2026-01-02T09:05:00", recipientCount: 420 },
+            whatsapp: { sent: true, sentAt: "2026-01-02T09:05:00", recipientCount: 420 },
         },
     },
     {
@@ -30,7 +30,7 @@ export const adminAnnouncements: AdminAnnouncement[] = [
         createdAt: "2026-01-18T10:30:00",
         delivery: {
             sms: { sent: true, sentAt: "2026-01-18T10:35:00", recipientCount: 450 },
-            email: { sent: false },
+            whatsapp: { sent: false },
         },
     },
     {
@@ -45,7 +45,7 @@ export const adminAnnouncements: AdminAnnouncement[] = [
         createdAt: "2026-01-20T11:00:00",
         delivery: {
             sms: { sent: false },
-            email: { sent: true, sentAt: "2026-01-20T11:10:00", recipientCount: 380 },
+            whatsapp: { sent: true, sentAt: "2026-01-20T11:10:00", recipientCount: 380 },
         },
     },
     {
@@ -60,7 +60,7 @@ export const adminAnnouncements: AdminAnnouncement[] = [
         createdAt: "2026-01-19T08:00:00",
         delivery: {
             sms: { sent: true, sentAt: "2026-01-19T08:05:00", recipientCount: 450 },
-            email: { sent: true, sentAt: "2026-01-19T08:05:00", recipientCount: 420 },
+            whatsapp: { sent: true, sentAt: "2026-01-19T08:05:00", recipientCount: 420 },
         },
     },
     {
@@ -76,7 +76,7 @@ export const adminAnnouncements: AdminAnnouncement[] = [
         createdAt: "2026-01-15T09:00:00",
         delivery: {
             sms: { sent: true, sentAt: "2026-01-15T09:10:00", recipientCount: 450 },
-            email: { sent: true, sentAt: "2026-01-15T09:10:00", recipientCount: 420 },
+            whatsapp: { sent: true, sentAt: "2026-01-15T09:10:00", recipientCount: 420 },
         },
     },
     {
@@ -91,7 +91,7 @@ export const adminAnnouncements: AdminAnnouncement[] = [
         createdAt: "2026-01-12T10:00:00",
         delivery: {
             sms: { sent: true, sentAt: "2026-01-12T10:05:00", recipientCount: 450 },
-            email: { sent: false },
+            whatsapp: { sent: false },
         },
     },
     {
@@ -107,7 +107,7 @@ export const adminAnnouncements: AdminAnnouncement[] = [
         createdAt: "2026-01-26T08:00:00",
         delivery: {
             sms: { sent: false },
-            email: { sent: false },
+            whatsapp: { sent: false },
         },
     },
     {
@@ -122,7 +122,7 @@ export const adminAnnouncements: AdminAnnouncement[] = [
         createdAt: "2026-01-08T14:00:00",
         delivery: {
             sms: { sent: false },
-            email: { sent: false },
+            whatsapp: { sent: false },
         },
     },
 ];
@@ -132,14 +132,14 @@ export function getAnnouncementStats() {
     const total = adminAnnouncements.length;
     const pinned = adminAnnouncements.filter((a) => a.isPinned).length;
     const sentViaSms = adminAnnouncements.filter((a) => a.delivery?.sms.sent).length;
-    const sentViaEmail = adminAnnouncements.filter((a) => a.delivery?.email.sent).length;
+    const sentViaWhatsapp = adminAnnouncements.filter((a) => a.delivery?.whatsapp.sent).length;
     const thisMonth = adminAnnouncements.filter((a) => {
         const date = new Date(a.date);
         const now = new Date();
         return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
     }).length;
 
-    return { total, pinned, sentViaSms, sentViaEmail, thisMonth };
+    return { total, pinned, sentViaSms, sentViaWhatsapp, thisMonth };
 }
 
 export function getRecentAnnouncements(limit: number = 5): AdminAnnouncement[] {

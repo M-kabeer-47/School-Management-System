@@ -1,4 +1,4 @@
-export type MessageChannel = "sms" | "email" | "both";
+export type MessageChannel = "sms" | "whatsapp" | "both";
 
 export interface MessageRecipient {
     id: string;
@@ -6,9 +6,9 @@ export interface MessageRecipient {
     class: string;
     section: string;
     phone?: string;
-    email?: string;
+    whatsapp?: string;
     guardianPhone?: string;
-    guardianEmail?: string;
+    guardianWhatsapp?: string;
 }
 
 export interface MessageDeliveryStatus {
@@ -17,7 +17,7 @@ export interface MessageDeliveryStatus {
         delivered?: boolean;
         sentAt?: string;
     };
-    email?: {
+    whatsapp?: {
         sent: boolean;
         delivered?: boolean;
         sentAt?: string;

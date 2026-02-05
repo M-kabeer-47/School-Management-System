@@ -73,7 +73,7 @@ export const adminMenuItems: SidebarItem[] = [
         icon: Icons.Megaphone,
       },
       {
-        label: "Messages (SMS / Email)",
+        label: "Messages",
         href: "/admin/communication/messages",
         icon: Icons.MessageSquare,
       }

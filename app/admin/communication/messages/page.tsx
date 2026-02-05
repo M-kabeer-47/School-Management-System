@@ -49,7 +49,6 @@ export default function MessagesPage() {
         // Add new message to history
         const newMessage: SentMessage = {
             id: `msg-${Date.now()}`,
-            subject: channel === "sms" ? undefined : subject,
             content,
             channel,
             recipientType: sendToAll ? "all" : "selected",
@@ -59,7 +58,7 @@ export default function MessagesPage() {
             sentAt: new Date().toISOString(),
             delivery: {
                 sms: channel === "sms" || channel === "both" ? { sent: true, delivered: true, sentAt: new Date().toISOString() } : undefined,
-                email: channel === "email" || channel === "both" ? { sent: true, delivered: true, sentAt: new Date().toISOString() } : undefined,
+                whatsapp: channel === "whatsapp" || channel === "both" ? { sent: true, delivered: true, sentAt: new Date().toISOString() } : undefined,
             },
         };
 

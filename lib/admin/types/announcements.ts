@@ -5,14 +5,14 @@ export type { Attachment };
 export type AnnouncementCategory = "general" | "academic" | "event" | "holiday" | "urgent";
 export type AnnouncementAudience = "all" | "student" | "instructor";
 
-// Delivery status for SMS/Email
+// Delivery status for SMS/WhatsApp
 export interface DeliveryStatus {
     sms: {
         sent: boolean;
         sentAt?: string;
         recipientCount?: number;
     };
-    email: {
+    whatsapp: {
         sent: boolean;
         sentAt?: string;
         recipientCount?: number;
@@ -36,7 +36,7 @@ export interface AnnouncementFormData {
     audience: AnnouncementAudience;
     isPinned: boolean;
     sendSms: boolean;
-    sendEmail: boolean;
+    sendWhatsapp: boolean;
     attachment?: {
         name: string;
         type: "pdf" | "image" | "document" | "other";
