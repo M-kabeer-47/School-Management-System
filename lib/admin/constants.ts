@@ -66,6 +66,18 @@ export const adminMenuItems: SidebarItem[] = [
     label: "Communication",
     href: "/admin/communication",
     icon: Icons.Megaphone,
+    subItems: [
+      {
+        label: "Announcements",
+        href: "/admin/communication/announcements",
+        icon: Icons.Megaphone,
+      },
+      {
+        label: "Messages (SMS / Email)",
+        href: "/admin/communication/messages",
+        icon: Icons.MessageSquare,
+      }
+    ],
   },
   {
     label: "Library",
