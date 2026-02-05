@@ -1,7 +1,12 @@
 "use client";
 
-import { AdminIcons } from "@/utils/admin/icons";
-import { StatCard } from "@/components/admin/ui/StatCard";
+import { StatCard } from "@/components/ui/StatCard";
+import {
+  BookFilledIcon,
+  ClockFilledIcon,
+  AlertFilledIcon,
+  CalendarFilledIcon,
+} from "@/components/ui/icons/FilledIcons";
 
 interface PaperKPIsProps {
   total: number;
@@ -20,28 +25,28 @@ export function PaperKPIs({
     {
       label: "Total Papers",
       value: total,
-      icon: AdminIcons.Paper,
+      icon: BookFilledIcon,
       color: "text-info",
       bg: "bg-info/10",
     },
     {
       label: "Papers Pending",
       value: pending,
-      icon: AdminIcons.Pending,
+      icon: ClockFilledIcon,
       color: "text-pending",
       bg: "bg-pending/10",
     },
     {
       label: "Critical Overdue",
       value: overdue,
-      icon: AdminIcons.Overdue,
+      icon: AlertFilledIcon,
       color: "text-error",
       bg: "bg-error/10",
     },
     {
       label: "Upcoming Deadline",
       value: "Mar 12", // In real app, this would be dynamic
-      icon: AdminIcons.Deadline,
+      icon: CalendarFilledIcon,
       color: "text-accent",
       bg: "bg-accent/10",
     },

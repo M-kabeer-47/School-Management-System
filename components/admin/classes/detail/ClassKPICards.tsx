@@ -1,5 +1,5 @@
 import { KPIIcons } from "@/utils/admin/icons";
-import { StatCard } from "@/components/admin/ui/StatCard";
+import { StatCard } from "@/components/ui/StatCard";
 
 interface ClassKPICardsProps {
   totalStudents: number;
