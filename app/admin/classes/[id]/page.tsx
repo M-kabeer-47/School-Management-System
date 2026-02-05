@@ -56,7 +56,7 @@ export default function ClassDetailsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="gap-2 bg-surface hover:bg-surface-hover border-border text-text-secondary font-semibold"
+                  className=""
                   onClick={() => window.open(classSyllabusUrl, "_blank")}
                 >
                   <Eye className="w-4 h-4" /> View Syllabus
