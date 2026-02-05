@@ -29,6 +29,18 @@ export const adminMenuItems: SidebarItem[] = [
     label: "Staff",
     href: "/admin/staff",
     icon: Icons.User,
+    subItems: [
+      {
+        label: "Teaching",
+        href: "/admin/staff/teachers",
+        icon: Icons.User,
+      },
+      {
+        label: "Non-Teaching",
+        href: "/admin/staff/non-teaching",
+        icon: Icons.User,
+      },
+    ],
   },
   {
     label: "Academics",
