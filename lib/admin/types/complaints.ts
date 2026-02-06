@@ -36,6 +36,7 @@ export interface ComplaintsFilters {
     status: ComplaintStatus | "all";
     source: ComplaintSource | "all";
     category: ComplaintCategory | "all";
+    month: string; // "all" or "YYYY-MM" format
 }
 
 export const statusConfig: Record<ComplaintStatus, { label: string; color: string; bg: string }> = {

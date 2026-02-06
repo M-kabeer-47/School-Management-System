@@ -1,4 +1,10 @@
-import { CheckCircle2, Clock, AlertCircle, MinusCircle } from "lucide-react";
+import {
+  CheckCircle2,
+  Clock,
+  AlertCircle,
+  MinusCircle,
+  XCircle,
+} from "lucide-react";
 import { cn } from "@/lib/common/utils";
 
 // ==========================================
@@ -7,6 +13,18 @@ import { cn } from "@/lib/common/utils";
 
 export type ResultStatus = "complete" | "in-progress" | "not-started";
 export type StudentStatus = "checked" | "unchecked" | "absent";
+export type PaymentStatus = "paid" | "pending" | "overdue";
+export type UploadStatus = "uploaded" | "pending" | "overdue";
+export type HomeworkStatus = "checked" | "not-checked";
+export type GeneralStatus =
+  | "active"
+  | "inactive"
+  | "approved"
+  | "rejected"
+  | "success"
+  | "warning"
+  | "error";
+export type ComplaintStatus = "pending" | "in-progress" | "resolved";
 
 /**
  * Determine result status based on completion percentage
@@ -80,6 +98,164 @@ export const studentStatusConfig = {
 } as const;
 
 // ==========================================
+// PAYMENT STATUS CONFIGURATION
+// ==========================================
+
+export const paymentStatusConfig = {
+  paid: {
+    icon: CheckCircle2,
+    label: "Paid",
+    bgLight: "bg-success/10",
+    text: "text-success",
+    border: "border-success/20",
+  },
+  pending: {
+    icon: Clock,
+    label: "Pending",
+    bgLight: "bg-pending/10",
+    text: "text-pending",
+    border: "border-pending/20",
+  },
+  overdue: {
+    icon: AlertCircle,
+    label: "Overdue",
+    bgLight: "bg-error/10",
+    text: "text-error",
+    border: "border-error/20",
+  },
+} as const;
+
+// ==========================================
+// UPLOAD/PAPER STATUS CONFIGURATION
+// ==========================================
+
+export const uploadStatusConfig = {
+  uploaded: {
+    icon: CheckCircle2,
+    label: "Uploaded",
+    bgLight: "bg-success/10",
+    text: "text-success",
+    border: "border-success/20",
+  },
+  pending: {
+    icon: Clock,
+    label: "Pending",
+    bgLight: "bg-pending/10",
+    text: "text-pending",
+    border: "border-pending/20",
+  },
+  overdue: {
+    icon: AlertCircle,
+    label: "Overdue",
+    bgLight: "bg-error/10",
+    text: "text-error",
+    border: "border-error/20",
+  },
+} as const;
+
+// ==========================================
+// HOMEWORK STATUS CONFIGURATION
+// ==========================================
+
+export const homeworkStatusConfig = {
+  checked: {
+    icon: CheckCircle2,
+    label: "Checked",
+    bgLight: "bg-success/10",
+    text: "text-success",
+    border: "border-success/20",
+  },
+  "not-checked": {
+    icon: Clock,
+    label: "Not Checked",
+    bgLight: "bg-pending/10",
+    text: "text-pending",
+    border: "border-pending/20",
+  },
+} as const;
+
+// ==========================================
+// GENERAL STATUS CONFIGURATION
+// ==========================================
+
+export const generalStatusConfig = {
+  active: {
+    icon: CheckCircle2,
+    label: "Active",
+    bgLight: "bg-success/10",
+    text: "text-success",
+    border: "border-success/20",
+  },
+  inactive: {
+    icon: MinusCircle,
+    label: "Inactive",
+    bgLight: "bg-neutral/10",
+    text: "text-neutral",
+    border: "border-neutral/20",
+  },
+  approved: {
+    icon: CheckCircle2,
+    label: "Approved",
+    bgLight: "bg-success/10",
+    text: "text-success",
+    border: "border-success/20",
+  },
+  rejected: {
+    icon: XCircle,
+    label: "Rejected",
+    bgLight: "bg-error/10",
+    text: "text-error",
+    border: "border-error/20",
+  },
+  success: {
+    icon: CheckCircle2,
+    label: "Success",
+    bgLight: "bg-success/10",
+    text: "text-success",
+    border: "border-success/20",
+  },
+  warning: {
+    icon: AlertCircle,
+    label: "Warning",
+    bgLight: "bg-pending/10",
+    text: "text-pending",
+    border: "border-pending/20",
+  },
+  error: {
+    icon: XCircle,
+    label: "Error",
+    bgLight: "bg-error/10",
+    text: "text-error",
+    border: "border-error/20",
+  },
+} as const;
+
+// ==========================================
+// COMPLAINT STATUS CONFIGURATION
+// ==========================================
+
+export const complaintStatusConfig = {
+  pending: {
+    icon: Clock,
+    label: "Pending",
+    bgLight: "bg-pending/10",
+    text: "text-pending",
+  },
+  "in-progress": {
+    icon: AlertCircle,
+    label: "In Progress",
+    bgLight: "bg-info/10",
+    text: "text-info",
+  },
+  resolved: {
+    icon: CheckCircle2,
+    label: "Resolved",
+    bgLight: "bg-success/10",
+    text: "text-success",
+  },
+} as const;
+
+// ==========================================
 // REUSABLE STATUS COMPONENTS
 // ==========================================
 
@@ -113,7 +289,7 @@ export function ResultStatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full font-semibold border",
+        "inline-flex items-center rounded-lg font-semibold border",
         sizeClasses[size],
         config.bgLight,
         config.text,
@@ -170,6 +346,181 @@ export function StudentStatusBadge({
   );
 }
 
+interface PaymentStatusBadgeProps {
+  status: PaymentStatus;
+  size?: "sm" | "md";
+  className?: string;
+}
+
+/**
+ * Status badge for payment/fee status
+ */
+export function PaymentStatusBadge({
+  status,
+  size = "sm",
+  className,
+}: PaymentStatusBadgeProps) {
+  const config = paymentStatusConfig[status];
+  const Icon = config.icon;
+
+  const sizeClasses = {
+    sm: "px-2.5 py-1 text-xs gap-1.5 min-w-[80px] justify-center",
+    md: "px-3 py-1.5 text-sm gap-2 min-w-[100px] justify-center",
+  };
+
+  const iconSizes = {
+    sm: "w-3.5 h-3.5",
+    md: "w-4 h-4",
+  };
+
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-lg font-semibold",
+        sizeClasses[size],
+        config.bgLight,
+        config.text,
+        className,
+      )}
+    >
+      <Icon className={iconSizes[size]} />
+      {config.label}
+    </span>
+  );
+}
+
+interface UploadStatusBadgeProps {
+  status: UploadStatus;
+  size?: "sm" | "md";
+  className?: string;
+}
+
+/**
+ * Status badge for upload/paper submission status
+ */
+export function UploadStatusBadge({
+  status,
+  size = "sm",
+  className,
+}: UploadStatusBadgeProps) {
+  const config = uploadStatusConfig[status];
+  const Icon = config.icon;
+
+  const sizeClasses = {
+    sm: "px-2.5 py-1 text-xs gap-1.5 min-w-[90px] justify-center",
+    md: "px-3 py-1.5 text-sm gap-2 min-w-[110px] justify-center",
+  };
+
+  const iconSizes = {
+    sm: "w-3.5 h-3.5",
+    md: "w-4 h-4",
+  };
+
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full font-semibold border",
+        sizeClasses[size],
+        config.bgLight,
+        config.text,
+        config.border,
+        className,
+      )}
+    >
+      <Icon className={iconSizes[size]} />
+      {config.label}
+    </span>
+  );
+}
+
+interface HomeworkStatusBadgeProps {
+  status: HomeworkStatus;
+  size?: "sm" | "md";
+  className?: string;
+}
+
+/**
+ * Status badge for homework check status
+ */
+export function HomeworkStatusBadge({
+  status,
+  size = "sm",
+  className,
+}: HomeworkStatusBadgeProps) {
+  const config = homeworkStatusConfig[status];
+  const Icon = config.icon;
+
+  const sizeClasses = {
+    sm: "px-2.5 py-1 text-xs gap-1.5",
+    md: "px-3 py-1.5 text-sm gap-2",
+  };
+
+  const iconSizes = {
+    sm: "w-3.5 h-3.5",
+    md: "w-4 h-4",
+  };
+
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-lg font-semibold",
+        sizeClasses[size],
+        config.bgLight,
+        config.text,
+        className,
+      )}
+    >
+      <Icon className={iconSizes[size]} />
+      {config.label}
+    </span>
+  );
+}
+
+interface GeneralStatusBadgeProps {
+  status: GeneralStatus;
+  size?: "sm" | "md";
+  className?: string;
+  showIcon?: boolean;
+}
+
+/**
+ * General purpose status badge for various statuses
+ */
+export function GeneralStatusBadge({
+  status,
+  size = "sm",
+  className,
+  showIcon = true,
+}: GeneralStatusBadgeProps) {
+  const config = generalStatusConfig[status];
+  const Icon = config.icon;
+
+  const sizeClasses = {
+    sm: "px-2.5 py-1 text-xs gap-1.5",
+    md: "px-3 py-1.5 text-sm gap-2",
+  };
+
+  const iconSizes = {
+    sm: "w-3.5 h-3.5",
+    md: "w-4 h-4",
+  };
+
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-lg font-semibold",
+        sizeClasses[size],
+        config.bgLight,
+        config.text,
+        className,
+      )}
+    >
+      {showIcon && <Icon className={iconSizes[size]} />}
+      {config.label}
+    </span>
+  );
+}
+
 interface StatusDotProps {
   status: ResultStatus;
   size?: "sm" | "md";
@@ -212,4 +563,48 @@ export function StatusDot({
 export function getProgressBarColor(percent: number): string {
   const status = getResultStatus(percent);
   return resultStatusConfig[status].progressBar;
+}
+
+interface ComplaintStatusBadgeProps {
+  status: ComplaintStatus;
+  size?: "sm" | "md";
+  className?: string;
+}
+
+/**
+ * Status badge for complaint/issue status
+ */
+export function ComplaintStatusBadge({
+  status,
+  size = "sm",
+  className,
+}: ComplaintStatusBadgeProps) {
+  const config = complaintStatusConfig[status];
+  const Icon = config.icon;
+
+  const sizeClasses = {
+    sm: "px-2.5 py-1 text-xs gap-1.5 min-w-[100px] justify-center",
+    md: "px-3 py-1.5 text-sm gap-2 min-w-[120px] justify-center",
+  };
+
+  const iconSizes = {
+    sm: "w-3.5 h-3.5",
+    md: "w-4 h-4",
+  };
+
+  return (
+    <span
+      className={cn(
+        "flex items-center rounded-lg font-semibold max-w-[110px]",
+        sizeClasses[size],
+        config.bgLight,
+        config.text,
+
+        className,
+      )}
+    >
+      <Icon className={iconSizes[size]} />
+      {config.label}
+    </span>
+  );
 }

@@ -9,10 +9,10 @@ import {
     TableRow,
     TableCell,
 } from "@/components/ui/Table";
-import { Eye, Check, CheckCircle, Clock, AlertTriangle } from "lucide-react";
+import { Eye, Check } from "lucide-react";
 import { clsx } from "clsx";
-import { cn } from "@/lib/common/utils";
 import { StudentFeeRecord } from "@/lib/admin/types/finance";
+import { PaymentStatusBadge, PaymentStatus } from "@/utils/status-styles";
 
 // Re-export for convenience
 export type { StudentFeeRecord };
@@ -37,30 +37,10 @@ export function FeeCollectionTable({
         records.length > 0 && records.every((r) => selectedIds.includes(r.id));
     const someSelected = records.some((r) => selectedIds.includes(r.id));
 
-    const getStatusIcon = (status: string) => {
-        switch (status) {
-            case "paid":
-                return <CheckCircle className="w-4 h-4" />;
-            case "pending":
-                return <Clock className="w-4 h-4" />;
-            case "overdue":
-                return <AlertTriangle className="w-4 h-4" />;
-            default:
-                return null;
-        }
-    };
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case "paid":
-                return "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400";
-            case "pending":
-                return "bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400";
-            case "overdue":
-                return "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400";
-            default:
-                return "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400";
-        }
+    const getPaymentStatus = (status: string): PaymentStatus => {
+        if (status === "paid") return "paid";
+        if (status === "overdue") return "overdue";
+        return "pending";
     };
 
     return (
@@ -141,15 +121,10 @@ export function FeeCollectionTable({
                                 </div>
                             </TableCell>
                             <TableCell className="text-center">
-                                <span
-                                    className={cn(
-                                        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold capitalize",
-                                        getStatusColor(record.status)
-                                    )}
-                                >
-                                    {getStatusIcon(record.status)}
-                                    {record.status}
-                                </span>
+                                <PaymentStatusBadge
+                                    status={getPaymentStatus(record.status)}
+                                    size="sm"
+                                />
                             </TableCell>
                             <TableCell className="text-center">
                                 <button

@@ -8,12 +8,10 @@ import {
   BookOpen,
   ChevronRight,
   Clock,
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
 } from "lucide-react";
 import { MarksEntryStatus } from "@/lib/instructor/types/exams";
 import { cn } from "@/lib/common/utils";
+import { ResultStatusBadge, ResultStatus, getResultStatus, getProgressBarColor } from "@/utils/status-styles";
 
 interface MarksStatusCardProps {
   status: MarksEntryStatus;
@@ -26,37 +24,7 @@ export const MarksStatusCard = ({ status, index }: MarksStatusCardProps) => {
     (status.submittedCount / status.totalStudents) * 100,
   );
 
-  const getStatusConfig = () => {
-    switch (status.status) {
-      case "submitted":
-        return {
-          icon: CheckCircle2,
-          label: "Submitted",
-          color: "text-green-600",
-          bg: "bg-green-50",
-          border: "border-green-100",
-        };
-      case "in-progress":
-        return {
-          icon: Loader2,
-          label: "In Progress",
-          color: "text-orange-600",
-          bg: "bg-orange-50",
-          border: "border-orange-100",
-        };
-      default:
-        return {
-          icon: AlertCircle,
-          label: "Pending",
-          color: "text-red-600",
-          bg: "bg-red-50",
-          border: "border-red-100",
-        };
-    }
-  };
-
-  const statusConfig = getStatusConfig();
-  const StatusIcon = statusConfig.icon;
+  const resultStatus = getResultStatus(progress);
 
   const isDeadlineSoon = () => {
     const deadline = new Date(status.deadline);
@@ -86,17 +54,7 @@ export const MarksStatusCard = ({ status, index }: MarksStatusCardProps) => {
               {status.subject}
             </p>
           </div>
-          <span
-            className={cn(
-              "px-2.5 py-1 rounded-full text-xs font-bold border flex items-center gap-1",
-              statusConfig.bg,
-              statusConfig.color,
-              statusConfig.border,
-            )}
-          >
-            <StatusIcon className="w-3 h-3" />
-            {statusConfig.label}
-          </span>
+          <ResultStatusBadge status={resultStatus} size="sm" />
         </div>
 
         {/* Exam Name */}
@@ -114,11 +72,7 @@ export const MarksStatusCard = ({ status, index }: MarksStatusCardProps) => {
             <div
               className={cn(
                 "h-full rounded-full transition-all duration-500",
-                status.status === "submitted"
-                  ? "bg-green-500"
-                  : status.status === "in-progress"
-                    ? "bg-orange-500"
-                    : "bg-gray-300",
+                getProgressBarColor(progress)
               )}
               style={{ width: `${progress}%` }}
             />

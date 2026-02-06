@@ -2,7 +2,6 @@
 
 import { TopicUnit, TopicStatus } from "@/lib/student/types/subjectDetail";
 import { motion } from "framer-motion";
-import { clsx } from "clsx";
 import {
   Table,
   TableHeader,
@@ -12,33 +11,16 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/Table";
+import { ResultStatusBadge, ResultStatus } from "@/utils/status-styles";
 
 interface TopicsListProps {
   topicUnits: TopicUnit[];
 }
 
-const getStatusConfig = (status: TopicStatus) => {
-  switch (status) {
-    case "Completed":
-      return {
-        textColor: "text-success",
-        bgColor: "bg-success/10",
-        borderColor: "border-success/30",
-      };
-    case "In progress":
-      return {
-        textColor: "text-warning",
-        bgColor: "bg-warning/10",
-        borderColor: "border-warning/30",
-      };
-    case "Not started":
-    default:
-      return {
-        textColor: "text-text-muted",
-        bgColor: "bg-surface-active",
-        borderColor: "border-border",
-      };
-  }
+const getResultStatusFromTopic = (status: TopicStatus): ResultStatus => {
+  if (status === "Completed") return "complete";
+  if (status === "In progress") return "in-progress";
+  return "not-started"; // Not started
 };
 
 const container = {
@@ -83,8 +65,6 @@ export const TopicsList = ({ topicUnits }: TopicsListProps) => {
             </TableHeader>
             <TableBody>
               {unit.topics.map((topic, topicIndex) => {
-                const config = getStatusConfig(topic.status);
-
                 return (
                   <TableRow key={topicIndex}>
                     <TableCell className="text-center font-semibold text-text-secondary">
@@ -94,16 +74,10 @@ export const TopicsList = ({ topicUnits }: TopicsListProps) => {
                       {topic.name}
                     </TableCell>
                     <TableCell className="text-center">
-                      <span
-                        className={clsx(
-                          "inline-block px-2.5 py-1 rounded-lg text-[11px] font-bold uppercase tracking-wide border whitespace-nowrap",
-                          config.bgColor,
-                          config.textColor,
-                          config.borderColor,
-                        )}
-                      >
-                        {topic.status}
-                      </span>
+                      <ResultStatusBadge
+                        status={getResultStatusFromTopic(topic.status)}
+                        size="sm"
+                      />
                     </TableCell>
                   </TableRow>
                 );

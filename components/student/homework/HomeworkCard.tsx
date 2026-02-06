@@ -1,31 +1,17 @@
 "use client";
 
 import { Homework } from "@/lib/student/types/homework";
-import { clsx } from "clsx";
-import { Calendar, CheckCircle2 } from "lucide-react";
+import { Calendar } from "lucide-react";
+import { HomeworkStatusBadge, HomeworkStatus } from "@/utils/status-styles";
 
 interface HomeworkCardProps {
   homework: Homework;
 }
 
 export const HomeworkCard = ({ homework }: HomeworkCardProps) => {
-  const getStatusBadge = (status: Homework["status"]) => {
-    const styles = {
-      "Not checked": "bg-warning-light text-warning",
-      Checked: "bg-success-light text-success",
-    };
-
-    return (
-      <span
-        className={clsx(
-          "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold",
-          styles[status],
-        )}
-      >
-        {status === "Checked" && <CheckCircle2 className="w-3.5 h-3.5" />}
-        {status}
-      </span>
-    );
+  // Map homework status to our centralized status type
+  const getHomeworkStatus = (status: Homework["status"]): HomeworkStatus => {
+    return status === "Checked" ? "checked" : "not-checked";
   };
 
   return (
@@ -39,7 +25,7 @@ export const HomeworkCard = ({ homework }: HomeworkCardProps) => {
             {homework.subject}
           </h3>
         </div>
-        {getStatusBadge(homework.status)}
+        <HomeworkStatusBadge status={getHomeworkStatus(homework.status)} size="sm" />
       </div>
 
       {/* Description - renders HTML from rich text editor */}

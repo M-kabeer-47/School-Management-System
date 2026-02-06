@@ -9,25 +9,19 @@ import {
     TableRow,
     TableCell,
 } from "@/components/ui/Table";
-import { Eye, AlertCircle, Clock, CheckCircle } from "lucide-react";
+import { Eye, AlertCircle } from "lucide-react";
 import {
     AdminComplaint,
-    statusConfig,
     categoryLabels,
     sourceConfig,
 } from "@/lib/admin/types/complaints";
+import { ComplaintStatusBadge } from "@/utils/status-styles";
 import { cn } from "@/lib/common/utils";
 
 interface ComplaintsTableProps {
     complaints: AdminComplaint[];
     onViewComplaint: (complaint: AdminComplaint) => void;
 }
-
-const StatusIcon = {
-    pending: AlertCircle,
-    "in-progress": Clock,
-    resolved: CheckCircle,
-};
 
 export default function ComplaintsTable({
     complaints,
@@ -71,9 +65,7 @@ export default function ComplaintsTable({
                 </TableHeader>
                 <TableBody>
                     {complaints.map((complaint) => {
-                        const status = statusConfig[complaint.status];
                         const source = sourceConfig[complaint.source];
-                        const Icon = StatusIcon[complaint.status];
 
                         return (
                             <TableRow
@@ -115,16 +107,7 @@ export default function ComplaintsTable({
 
                                 {/* Status */}
                                 <TableCell>
-                                    <span
-                                        className={cn(
-                                            "px-2 py-1 text-xs font-medium rounded-lg whitespace-nowrap inline-flex items-center gap-1",
-                                            status.bg,
-                                            status.color
-                                        )}
-                                    >
-                                        <Icon className="w-3 h-3" />
-                                        {status.label}
-                                    </span>
+                                    <ComplaintStatusBadge status={complaint.status} size="sm" />
                                 </TableCell>
 
                                 {/* Date */}

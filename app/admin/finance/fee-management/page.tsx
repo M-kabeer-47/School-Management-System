@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -15,6 +16,7 @@ import {
     CreditCard,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { StatCard } from "@/components/ui/StatCard";
 import {
     feeDefaulters,
     discountedStudents,
@@ -22,43 +24,19 @@ import {
 } from "@/lib/admin/mock-data/finance";
 import { cn } from "@/lib/common/utils";
 
+type Period = "this-month" | "overall";
+
 export default function FeeManagementPage() {
+    const [period, setPeriod] = useState<Period>("overall");
     const stats = getFinanceStats();
 
-    const statCards = [
-        {
-            title: "Total Collected",
-            value: `Rs. ${stats.totalCollected.toLocaleString()}`,
-            subtext: "This month",
-            icon: CircleDollarSign,
-            color: "text-green-600 dark:text-green-400",
-            bgColor: "bg-green-50 dark:bg-green-900/30",
-        },
-        {
-            title: "Pending Amount",
-            value: `Rs. ${stats.totalPending.toLocaleString()}`,
-            subtext: "Outstanding dues",
-            icon: Receipt,
-            color: "text-orange-600 dark:text-orange-400",
-            bgColor: "bg-orange-50 dark:bg-orange-900/30",
-        },
-        {
-            title: "Defaulters",
-            value: stats.totalDefaulters.toString(),
-            subtext: "Students with overdue",
-            icon: AlertTriangle,
-            color: "text-red-600 dark:text-red-400",
-            bgColor: "bg-red-50 dark:bg-red-900/30",
-        },
-        {
-            title: "Discounted",
-            value: discountedStudents.length.toString(),
-            subtext: "Students with discounts",
-            icon: Percent,
-            color: "text-blue-600 dark:text-blue-400",
-            bgColor: "bg-blue-50 dark:bg-blue-900/30",
-        },
-    ];
+    // For "this-month", use the thisMonthCollected value; for "overall", use total
+    const displayStats = {
+        collected: period === "this-month" ? stats.thisMonthCollected : stats.totalCollected,
+        pending: stats.totalPending,
+        defaulters: stats.totalDefaulters,
+        discounted: discountedStudents.length,
+    };
 
     const quickActions = [
         {
@@ -138,27 +116,70 @@ export default function FeeManagementPage() {
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {statCards.map((stat, index) => (
-                    <motion.div
-                        key={stat.title}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                        className="bg-background rounded-2xl border border-border p-5 shadow-sm"
-                    >
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <p className="text-sm text-text-muted font-medium">{stat.title}</p>
-                                <p className="text-2xl font-bold text-text-primary mt-1">{stat.value}</p>
-                                <p className="text-xs text-text-muted mt-1">{stat.subtext}</p>
-                            </div>
-                            <div className={cn("p-3 rounded-xl", stat.bgColor)}>
-                                <stat.icon className={cn("w-6 h-6", stat.color)} />
-                            </div>
-                        </div>
-                    </motion.div>
-                ))}
+            <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-sm font-semibold text-text-muted uppercase tracking-wider">
+                        Overview
+                    </h2>
+                    <div className="flex items-center bg-surface border border-border rounded-lg p-0.5">
+                        <button
+                            onClick={() => setPeriod("this-month")}
+                            className={cn(
+                                "px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+                                period === "this-month"
+                                    ? "bg-accent text-white shadow-sm"
+                                    : "text-text-secondary hover:text-text-primary",
+                            )}
+                        >
+                            This Month
+                        </button>
+                        <button
+                            onClick={() => setPeriod("overall")}
+                            className={cn(
+                                "px-3 py-1.5 text-xs font-medium rounded-md transition-all",
+                                period === "overall"
+                                    ? "bg-accent text-white shadow-sm"
+                                    : "text-text-secondary hover:text-text-primary",
+                            )}
+                        >
+                            Overall
+                        </button>
+                    </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <StatCard
+                        label="Total Collected"
+                        value={`Rs. ${displayStats.collected.toLocaleString()}`}
+                        icon={CircleDollarSign}
+                        color="text-green-600"
+                        bg="bg-green-500/10"
+                        delay={0}
+                    />
+                    <StatCard
+                        label="Pending Amount"
+                        value={`Rs. ${displayStats.pending.toLocaleString()}`}
+                        icon={Receipt}
+                        color="text-orange-600"
+                        bg="bg-orange-500/10"
+                        delay={0.05}
+                    />
+                    <StatCard
+                        label="Defaulters"
+                        value={displayStats.defaulters}
+                        icon={AlertTriangle}
+                        color="text-red-600"
+                        bg="bg-red-500/10"
+                        delay={0.1}
+                    />
+                    <StatCard
+                        label="Discounted"
+                        value={displayStats.discounted}
+                        icon={Percent}
+                        color="text-blue-600"
+                        bg="bg-blue-500/10"
+                        delay={0.15}
+                    />
+                </div>
             </div>
 
             {/* Quick Actions */}

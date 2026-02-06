@@ -8,13 +8,14 @@ import {
     ComplaintsTable,
     ComplaintDetailDrawer,
 } from "@/components/admin/complaints";
-import { Pagination } from "@/components/admin/students/Pagination";
+import { Pagination } from "@/components/admin/complaints/Pagination";
 import {
     AdminComplaint,
     ComplaintsFilters as FiltersType,
     ComplaintStatus,
 } from "@/lib/admin/types/complaints";
 import { mockComplaints } from "@/lib/admin/mock-data/complaints";
+import ComplaintKPICards from "@/components/admin/complaints/ComplaintKPICards";
 
 export default function ComplaintsPage() {
     const [filters, setFilters] = useState<FiltersType>({
@@ -22,6 +23,7 @@ export default function ComplaintsPage() {
         status: "all",
         source: "all",
         category: "all",
+        month: "all",
     });
 
     const [showFilters, setShowFilters] = useState(false);
@@ -51,8 +53,10 @@ export default function ComplaintsPage() {
                 filters.source === "all" || complaint.source === filters.source;
             const categoryMatch =
                 filters.category === "all" || complaint.category === filters.category;
+            const monthMatch =
+                filters.month === "all" || complaint.submittedAt.startsWith(filters.month);
 
-            return searchMatch && statusMatch && sourceMatch && categoryMatch;
+            return searchMatch && statusMatch && sourceMatch && categoryMatch && monthMatch;
         });
     }, [complaints, filters]);
 
@@ -70,7 +74,7 @@ export default function ComplaintsPage() {
     };
 
     const clearFilters = () => {
-        setFilters({ search: "", status: "all", source: "all", category: "all" });
+        setFilters({ search: "", status: "all", source: "all", category: "all", month: "all" });
         setCurrentPage(1);
     };
 
@@ -138,6 +142,7 @@ export default function ComplaintsPage() {
                     </p>
                 </div>
             </div>
+            <ComplaintKPICards complaints={complaints} />
 
             {/* Filters */}
             <ComplaintsFilters

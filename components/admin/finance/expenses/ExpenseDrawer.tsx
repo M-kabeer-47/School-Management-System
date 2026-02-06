@@ -33,6 +33,7 @@ import {
 import { cn } from "@/lib/common/utils";
 import { Expense } from "@/lib/admin/types/finance";
 import { expenseCategories } from "@/lib/admin/mock-data/expenses";
+import { GeneralStatusBadge, GeneralStatus } from "@/utils/status-styles";
 
 interface ExpenseDrawerProps {
     expense: Expense | null;
@@ -114,17 +115,10 @@ export function ExpenseDrawer({
         setIsEditing(false);
     };
 
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case "approved":
-                return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
-            case "pending":
-                return "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400";
-            case "rejected":
-                return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
-            default:
-                return "bg-gray-100 text-gray-700";
-        }
+    const getGeneralStatus = (status: string): GeneralStatus => {
+        if (status === "approved") return "success";
+        if (status === "rejected") return "error";
+        return "warning"; // pending
     };
 
     const formatDate = (dateStr: string) => {
@@ -164,14 +158,10 @@ export function ExpenseDrawer({
                             {!isEditing && (
                                 <div className="flex items-center justify-between pb-6 border-b border-border">
                                     <div>
-                                        <span
-                                            className={cn(
-                                                "px-3 py-1 rounded-full text-sm font-medium capitalize",
-                                                getStatusColor(expense.status)
-                                            )}
-                                        >
-                                            {expense.status}
-                                        </span>
+                                        <GeneralStatusBadge
+                                            status={getGeneralStatus(expense.status)}
+                                            size="sm"
+                                        />
                                     </div>
                                     <div className="text-right">
                                         <p className="text-sm text-text-muted">Amount</p>

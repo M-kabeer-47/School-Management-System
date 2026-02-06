@@ -25,6 +25,7 @@ import {
 import { Pagination } from "@/components/admin/students/Pagination";
 import { salaryPayments, getDepartments } from "@/lib/admin/mock-data/salary";
 import { cn } from "@/lib/common/utils";
+import { PaymentStatusBadge, PaymentStatus, GeneralStatusBadge } from "@/utils/status-styles";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -75,19 +76,6 @@ export default function PaymentHistoryPage() {
     const clearFilters = () => {
         setFilters({ search: "", department: "all", status: "all", month: "all" });
         setCurrentPage(1);
-    };
-
-    const getStatusBadge = (status: string) => {
-        switch (status) {
-            case "paid":
-                return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
-            case "pending":
-                return "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400";
-            case "partial":
-                return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
-            default:
-                return "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400";
-        }
     };
 
     return (
@@ -236,12 +224,14 @@ export default function PaymentHistoryPage() {
                                     Rs. {payment.paidAmount.toLocaleString()}
                                 </TableCell>
                                 <TableCell>
-                                    <span className={cn(
-                                        "px-2 py-1 rounded-full text-xs font-medium capitalize",
-                                        getStatusBadge(payment.status)
-                                    )}>
-                                        {payment.status}
-                                    </span>
+                                    {payment.status === "partial" ? (
+                                        <GeneralStatusBadge status="warning" size="sm" />
+                                    ) : (
+                                        <PaymentStatusBadge
+                                            status={payment.status as PaymentStatus}
+                                            size="sm"
+                                        />
+                                    )}
                                 </TableCell>
                                 <TableCell className="text-text-secondary text-sm">
                                     {payment.paidDate

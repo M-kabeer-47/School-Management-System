@@ -23,15 +23,13 @@ import {
     CreditCard,
     Printer,
     CheckCircle,
-    Clock,
-    AlertTriangle,
     User,
     Calendar,
     Phone,
     FileText,
 } from "lucide-react";
-import { cn } from "@/lib/common/utils";
 import { StudentFeeRecord } from "@/lib/admin/types/finance";
+import { PaymentStatusBadge, PaymentStatus } from "@/utils/status-styles";
 
 interface FeeDetailsDrawerProps {
     record: StudentFeeRecord | null;
@@ -74,30 +72,10 @@ export function FeeDetailsDrawer({
         onPaymentComplete?.();
     };
 
-    const getStatusIcon = (status: string) => {
-        switch (status) {
-            case "paid":
-                return <CheckCircle className="w-4 h-4" />;
-            case "pending":
-                return <Clock className="w-4 h-4" />;
-            case "overdue":
-                return <AlertTriangle className="w-4 h-4" />;
-            default:
-                return null;
-        }
-    };
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case "paid":
-                return "bg-green-100 text-green-700";
-            case "pending":
-                return "bg-yellow-100 text-yellow-700";
-            case "overdue":
-                return "bg-red-100 text-red-700";
-            default:
-                return "bg-gray-100 text-gray-700";
-        }
+    const getPaymentStatus = (status: string): PaymentStatus => {
+        if (status === "paid") return "paid";
+        if (status === "overdue") return "overdue";
+        return "pending";
     };
 
     return (
@@ -137,15 +115,10 @@ export function FeeDetailsDrawer({
                                     <p className="text-text-secondary">
                                         {record.admissionNo} • Grade {record.class}-{record.section}
                                     </p>
-                                    <span
-                                        className={cn(
-                                            "inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-xs font-medium capitalize",
-                                            getStatusColor(record.status)
-                                        )}
-                                    >
-                                        {getStatusIcon(record.status)}
-                                        {record.status}
-                                    </span>
+                                    <PaymentStatusBadge
+                                        status={getPaymentStatus(record.status)}
+                                        size="sm"
+                                    />
                                 </div>
                             </div>
 

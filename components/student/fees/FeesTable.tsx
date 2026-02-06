@@ -10,8 +10,8 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/Table";
-import { FileText } from "lucide-react";
 import { clsx } from "clsx";
+import { PaymentStatusBadge, PaymentStatus } from "@/utils/status-styles";
 
 interface FeesTableProps {
   challans: Challan[];
@@ -23,23 +23,11 @@ export const FeesTable = ({ challans, showPaid = false }: FeesTableProps) => {
     return `Rs. ${amount.toLocaleString()}`;
   };
 
-  const getStatusBadge = (status: Challan["status"]) => {
-    const styles = {
-      Pending: "bg-warning-light text-warning",
-      Overdue: "bg-error-light text-error",
-      Paid: "bg-success-light text-success",
-    };
-
-    return (
-      <span
-        className={clsx(
-          "inline-flex px-2.5 py-1 rounded-lg text-xs font-semibold",
-          styles[status],
-        )}
-      >
-        {status}
-      </span>
-    );
+  // Map challan status to our centralized payment status type
+  const getPaymentStatus = (status: Challan["status"]): PaymentStatus => {
+    if (status === "Paid") return "paid";
+    if (status === "Overdue") return "overdue";
+    return "pending";
   };
 
   const handleView = (pdfUrl: string, title: string) => {
@@ -93,7 +81,9 @@ export const FeesTable = ({ challans, showPaid = false }: FeesTableProps) => {
                     >
                       {formatAmount(challan.amount)}
                     </TableCell>
-                    <TableCell>{getStatusBadge(challan.status)}</TableCell>
+                    <TableCell>
+                      <PaymentStatusBadge status={getPaymentStatus(challan.status)} size="sm" />
+                    </TableCell>
                     <TableCell className="text-center">
                       <button
                         onClick={() =>

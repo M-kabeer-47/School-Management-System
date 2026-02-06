@@ -1,44 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Clock,
-  CheckCircle,
-  AlertCircle,
   MessageSquare,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
 import { Complaint } from "@/lib/student/types/contact";
-import { cn } from "@/lib/common/utils";
-import { useState } from "react";
+import { GeneralStatusBadge, GeneralStatus } from "@/utils/status-styles";
 
 interface ComplaintCardProps {
   complaint: Complaint;
   index?: number;
 }
-
-const statusConfig = {
-  pending: {
-    icon: AlertCircle,
-    label: "Pending",
-    color: "text-warning",
-    bg: "bg-warning-light",
-  },
-  "in-progress": {
-    icon: Clock,
-    label: "In Progress",
-    color: "text-info",
-    bg: "bg-info-light",
-  },
-  resolved: {
-    icon: CheckCircle,
-    label: "Resolved",
-    color: "text-success",
-    bg: "bg-success-light",
-  },
-};
 
 const categoryLabels: Record<string, string> = {
   academic: "Academic",
@@ -51,8 +26,13 @@ const categoryLabels: Record<string, string> = {
 
 export const ComplaintCard = ({ complaint, index = 0 }: ComplaintCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const status = statusConfig[complaint.status];
-  const StatusIcon = status.icon;
+
+  // Map complaint status to general status
+  const getGeneralStatus = (status: Complaint["status"]): GeneralStatus => {
+    if (status === "resolved") return "success";
+    if (status === "in-progress") return "warning";
+    return "warning"; // pending
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -79,16 +59,10 @@ export const ComplaintCard = ({ complaint, index = 0 }: ComplaintCardProps) => {
       >
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1.5">
-            <span
-              className={cn(
-                "text-xs font-medium px-2 py-0.5 rounded-full",
-                status.bg,
-                status.color,
-              )}
-            >
-              <StatusIcon className="w-3 h-3 inline mr-1" />
-              {status.label}
-            </span>
+            <GeneralStatusBadge
+              status={getGeneralStatus(complaint.status)}
+              size="sm"
+            />
             <span className="text-xs text-text-muted bg-surface-active px-2 py-0.5 rounded-full">
               {categoryLabels[complaint.category]}
             </span>

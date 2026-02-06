@@ -22,11 +22,18 @@ import {
     expenseCategories,
 } from "@/lib/admin/mock-data/expenses";
 import { cn } from "@/lib/common/utils";
+import { GeneralStatusBadge, GeneralStatus } from "@/utils/status-styles";
 
 export default function ExpensesPage() {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const stats = getExpenseStats();
     const recentExpenses = getRecentExpenses(5);
+
+    const getGeneralStatus = (status: string): GeneralStatus => {
+        if (status === "approved") return "success";
+        if (status === "rejected") return "error";
+        return "warning"; // pending
+    };
 
     const statCards = [
         {
@@ -92,19 +99,6 @@ export default function ExpensesPage() {
             day: "2-digit",
             month: "short",
         });
-    };
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case "approved":
-                return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
-            case "pending":
-                return "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400";
-            case "rejected":
-                return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400";
-            default:
-                return "bg-gray-100 text-gray-700";
-        }
     };
 
     return (
@@ -239,14 +233,10 @@ export default function ExpensesPage() {
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <span
-                                        className={cn(
-                                            "px-2 py-0.5 rounded-full text-xs font-medium capitalize",
-                                            getStatusColor(expense.status)
-                                        )}
-                                    >
-                                        {expense.status}
-                                    </span>
+                                    <GeneralStatusBadge
+                                        status={getGeneralStatus(expense.status)}
+                                        size="sm"
+                                    />
                                     <span className="font-semibold text-text-primary text-sm">
                                         Rs. {expense.amount.toLocaleString()}
                                     </span>
