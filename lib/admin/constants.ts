@@ -92,9 +92,9 @@ export const adminMenuItems: SidebarItem[] = [
     ],
   },
   {
-    label: "Library",
-    href: "/admin/library",
-    icon: Icons.Library,
+    label: "Complaints",
+    href: "/admin/complaints",
+    icon: Icons.MessageSquare,
   },
   {
     label: "Settings",
