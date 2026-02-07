@@ -86,16 +86,79 @@ export const EXAM_STATS = {
 
 // Realistic Pakistani student names
 const STUDENT_FIRST_NAMES = [
-  "Ahmed", "Ali", "Hassan", "Usman", "Bilal", "Zain", "Omar", "Hamza", "Ibrahim", "Arslan",
-  "Fatima", "Ayesha", "Zara", "Hira", "Mariam", "Sana", "Aliza", "Laiba", "Iqra", "Mahnoor",
-  "Saad", "Fahad", "Talha", "Daniyal", "Shayan", "Owais", "Kamran", "Imran", "Junaid", "Nauman",
-  "Amna", "Bushra", "Nida", "Rabia", "Samia", "Tahira", "Uzma", "Warda", "Yumna", "Zunaira",
+  "Ahmed",
+  "Ali",
+  "Hassan",
+  "Usman",
+  "Bilal",
+  "Zain",
+  "Omar",
+  "Hamza",
+  "Ibrahim",
+  "Arslan",
+  "Fatima",
+  "Ayesha",
+  "Zara",
+  "Hira",
+  "Mariam",
+  "Sana",
+  "Aliza",
+  "Laiba",
+  "Iqra",
+  "Mahnoor",
+  "Saad",
+  "Fahad",
+  "Talha",
+  "Daniyal",
+  "Shayan",
+  "Owais",
+  "Kamran",
+  "Imran",
+  "Junaid",
+  "Nauman",
+  "Amna",
+  "Bushra",
+  "Nida",
+  "Rabia",
+  "Samia",
+  "Tahira",
+  "Uzma",
+  "Warda",
+  "Yumna",
+  "Zunaira",
 ];
 
 const STUDENT_LAST_NAMES = [
-  "Khan", "Ahmed", "Ali", "Malik", "Shah", "Raza", "Hassan", "Hussain", "Siddiqui", "Qureshi",
-  "Butt", "Chaudhry", "Awan", "Mirza", "Sheikh", "Abbasi", "Bhatti", "Javed", "Khalid", "Rashid",
-  "Akhtar", "Aslam", "Farooq", "Iqbal", "Mahmood", "Nawaz", "Riaz", "Saeed", "Tariq", "Yousaf",
+  "Khan",
+  "Ahmed",
+  "Ali",
+  "Malik",
+  "Shah",
+  "Raza",
+  "Hassan",
+  "Hussain",
+  "Siddiqui",
+  "Qureshi",
+  "Butt",
+  "Chaudhry",
+  "Awan",
+  "Mirza",
+  "Sheikh",
+  "Abbasi",
+  "Bhatti",
+  "Javed",
+  "Khalid",
+  "Rashid",
+  "Akhtar",
+  "Aslam",
+  "Farooq",
+  "Iqbal",
+  "Mahmood",
+  "Nawaz",
+  "Riaz",
+  "Saeed",
+  "Tariq",
+  "Yousaf",
 ];
 
 // Deterministic name generator based on index
@@ -108,6 +171,7 @@ const getStudentName = (index: number): string => {
 export interface StudentMarkStatus {
   studentId: string;
   studentName: string;
+  fatherName: string;
   rollNumber: string;
   status: "checked" | "unchecked" | "absent";
   marksObtained?: number;
@@ -168,7 +232,12 @@ const generateStudentMarks = (
 
     students.push({
       studentId: `stu-${classGrade}-${section}-${i}`,
-      studentName: getStudentName(i + classGrade.charCodeAt(6) + section.charCodeAt(0)),
+      studentName: getStudentName(
+        i + classGrade.charCodeAt(6) + section.charCodeAt(0),
+      ),
+      fatherName: getStudentName(
+        i + classGrade.charCodeAt(6) + section.charCodeAt(0) + 100,
+      ),
       rollNumber: `${classGrade.replace("Class ", "")}-${section}-${String(i).padStart(3, "0")}`,
       status,
       marksObtained,
@@ -202,7 +271,14 @@ export const RESULT_CHECKING_PROGRESS: ResultCheckingProgress[] = [
         absentCount: 2,
         uncheckedCount: 0,
         completionPercent: 100,
-        students: generateStudentMarks("Class 9", "A", "Mathematics", 35, 33, 2),
+        students: generateStudentMarks(
+          "Class 9",
+          "A",
+          "Mathematics",
+          35,
+          33,
+          2,
+        ),
       },
       {
         id: "assign-2",
@@ -214,7 +290,14 @@ export const RESULT_CHECKING_PROGRESS: ResultCheckingProgress[] = [
         absentCount: 1,
         uncheckedCount: 11,
         completionPercent: 64.5,
-        students: generateStudentMarks("Class 9", "B", "Mathematics", 32, 20, 1),
+        students: generateStudentMarks(
+          "Class 9",
+          "B",
+          "Mathematics",
+          32,
+          20,
+          1,
+        ),
       },
       {
         id: "assign-3",
@@ -226,7 +309,14 @@ export const RESULT_CHECKING_PROGRESS: ResultCheckingProgress[] = [
         absentCount: 0,
         uncheckedCount: 0,
         completionPercent: 100,
-        students: generateStudentMarks("Class 10", "A", "Mathematics", 30, 30, 0),
+        students: generateStudentMarks(
+          "Class 10",
+          "A",
+          "Mathematics",
+          30,
+          30,
+          0,
+        ),
       },
       {
         id: "assign-20",
@@ -238,7 +328,14 @@ export const RESULT_CHECKING_PROGRESS: ResultCheckingProgress[] = [
         absentCount: 1,
         uncheckedCount: 0,
         completionPercent: 100,
-        students: generateStudentMarks("Class 10", "B", "Mathematics", 28, 27, 1),
+        students: generateStudentMarks(
+          "Class 10",
+          "B",
+          "Mathematics",
+          28,
+          27,
+          1,
+        ),
       },
     ],
   },

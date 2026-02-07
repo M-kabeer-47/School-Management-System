@@ -333,7 +333,7 @@ export function StudentStatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded font-medium",
+        "flex justify-center items-center rounded-lg max-w-[100px]  font-medium",
         sizeClasses[size],
         config.bgLight,
         config.text,
@@ -376,7 +376,7 @@ export function PaymentStatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-lg font-semibold",
+        "flex items-center justify-center rounded-lg font-semibold max-w-[100px]",
         sizeClasses[size],
         config.bgLight,
         config.text,
@@ -419,7 +419,7 @@ export function UploadStatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full font-semibold border",
+        "flex items-center justify-center rounded-lg font-semibold max-w-[100px]",
         sizeClasses[size],
         config.bgLight,
         config.text,

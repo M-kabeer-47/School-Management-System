@@ -2,13 +2,7 @@
 
 import { RefObject, useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  CheckCircle2,
-  Send,
-  Sparkles,
-  Eye,
-  Printer,
-} from "lucide-react";
+import { CheckCircle2, Send, Sparkles, Eye, Printer } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/common/utils";
 import {
@@ -43,7 +37,9 @@ export function AdmitCardsTab({
   // Instructions state
   const [customInstructions, setCustomInstructions] = useState<string[]>([]);
   const [newInstruction, setNewInstruction] = useState("");
-  const [savedTemplates, setSavedTemplates] = useState<SavedInstructionTemplate[]>([]);
+  const [savedTemplates, setSavedTemplates] = useState<
+    SavedInstructionTemplate[]
+  >([]);
   const [templateName, setTemplateName] = useState("");
   const [showSavedTemplates, setShowSavedTemplates] = useState(false);
 
@@ -61,7 +57,10 @@ export function AdmitCardsTab({
 
   // Save templates to localStorage
   const saveTemplatesToStorage = (templates: SavedInstructionTemplate[]) => {
-    localStorage.setItem(SAVED_INSTRUCTIONS_STORAGE_KEY, JSON.stringify(templates));
+    localStorage.setItem(
+      SAVED_INSTRUCTIONS_STORAGE_KEY,
+      JSON.stringify(templates),
+    );
     setSavedTemplates(templates);
   };
 
@@ -205,7 +204,7 @@ export function AdmitCardsTab({
                 "relative p-4 rounded-xl border-2 transition-all text-left group overflow-hidden",
                 selectedTemplate === template.id
                   ? "border-accent ring-2 ring-accent/20"
-                  : "border-border hover:border-accent/50"
+                  : "border-border hover:border-accent/50",
               )}
             >
               {/* Thumbnail Preview */}
@@ -275,7 +274,9 @@ export function AdmitCardsTab({
               data={{
                 ...SAMPLE_ADMIT_CARD_DATA,
                 instructions:
-                  customInstructions.length > 0 ? customInstructions : undefined,
+                  customInstructions.length > 0
+                    ? customInstructions
+                    : undefined,
               }}
               variant={selectedTemplate}
             />

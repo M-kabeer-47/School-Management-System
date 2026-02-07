@@ -55,24 +55,24 @@ export function InstructionsManager({
       )}
 
       {/* Add New Instruction */}
-      <div className="mb-6">
-        <label className="text-sm font-medium text-text-primary mb-2 block">
-          Add Instruction
-        </label>
-        <div className="flex gap-2">
-          <Input
-            type="text"
-            value={newInstruction}
-            onChange={(e) => onNewInstructionChange(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && onAddInstruction()}
-            placeholder="Enter instruction text..."
-            className="flex-1"
-          />
-          <Button onClick={onAddInstruction} disabled={!newInstruction.trim()}>
-            <Plus className="w-4 h-4" />
-            Add
-          </Button>
-        </div>
+
+      <div className="flex gap-2 mb-6 items-end">
+        <Input
+          type="text"
+          label="Add Instruction"
+          value={newInstruction}
+          onChange={(e) => onNewInstructionChange(e.target.value)}
+          onKeyPress={(e) => e.key === "Enter" && onAddInstruction()}
+          placeholder="Enter instruction text..."
+        />
+        <Button
+          onClick={onAddInstruction}
+          disabled={!newInstruction.trim()}
+          className="relative top-[-3px]"
+        >
+          <Plus className="w-4 h-4" />
+          Add
+        </Button>
       </div>
 
       {/* Current Instructions List */}
@@ -94,7 +94,9 @@ export function InstructionsManager({
                 <span className="text-sm font-medium text-text-secondary shrink-0">
                   {index + 1}.
                 </span>
-                <p className="flex-1 text-sm text-text-primary">{instruction}</p>
+                <p className="flex-1 text-sm text-text-primary">
+                  {instruction}
+                </p>
                 <button
                   onClick={() => onRemoveInstruction(index)}
                   className="opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-600 p-1"
@@ -127,6 +129,7 @@ export function InstructionsManager({
           <Button
             onClick={onSaveAsTemplate}
             disabled={!templateName.trim() || customInstructions.length === 0}
+            className="relative top-[2px]"
           >
             <Save className="w-4 h-4" />
             Save

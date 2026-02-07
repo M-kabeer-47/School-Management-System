@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
@@ -14,12 +15,18 @@ import {
   Building,
   Hash,
   Mail,
+  Globe,
+  BookHeart,
+  FileText,
+  ArrowRightLeft,
+  School,
 } from "lucide-react";
 import { allStudents } from "@/lib/admin/mock-data/students";
 import { ParentCard } from "@/components/admin/students/detail/ParentCard";
 import { ParentInfo } from "@/lib/admin/types/student-detail";
 import { InfoGridCard } from "@/components/admin/students/detail/InfoGridCard";
 import { StudentOverviewCard } from "@/components/admin/students/detail/StudentOverviewCard";
+import { SiblingsCard } from "@/components/admin/students/detail/SiblingsCard";
 
 export default function StudentDetailPage() {
   const params = useParams();
@@ -28,6 +35,16 @@ export default function StudentDetailPage() {
 
   // Find student by ID (using mock data for now)
   const student = allStudents.find((s) => s.id === id) || allStudents[0];
+
+  // Find siblings by matching father's CNIC
+  const siblings = useMemo(() => {
+    if (!student) return [];
+    return allStudents.filter(
+      (s) =>
+        s.id !== student.id &&
+        s.fatherNicNo === student.fatherNicNo,
+    );
+  }, [student]);
 
   if (!student) {
     return <div>Student not found</div>;
@@ -51,11 +68,11 @@ export default function StudentDetailPage() {
     cnic: student.fatherNicNo,
     email: student.fatherEmail,
     phone: student.fatherWhatsapp,
-    occupation: "Business", // Mock
+    occupation: "Business",
   };
 
   const motherInfo: ParentInfo = {
-    name: "Mrs. " + student.fatherName.split(" ")[0], // Mock name based on father
+    name: "Mrs. " + student.fatherName.split(" ")[0],
     cnic: "00000-0000000-0",
     email: "mother@example.com",
     phone: "0000-0000000",
@@ -68,10 +85,9 @@ export default function StudentDetailPage() {
       animate={{ opacity: 1, y: 0 }}
       className="space-y-8 max-w-7xl mx-auto pb-10"
     >
-      {/* Page Header (Navigation) */}
+      {/* Page Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center w-full sm:w-auto gap-3">
-          {/* Compact Back Button */}
           <Button
             variant="ghost"
             className="p-1 min-w-[30px] h-auto w-auto hover:bg-accent/10 text-text-secondary hover:text-text-primary -ml-1 sm:ml-0"
@@ -97,7 +113,7 @@ export default function StudentDetailPage() {
         onSave={(data) => console.log("Save Overview", data)}
       />
 
-      {/* Row 2: Personal (Left) + Contact (Right) */}
+      {/* Row 2: Personal + Identity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <InfoGridCard
           title="PERSONAL INFORMATION"
@@ -132,6 +148,33 @@ export default function StudentDetailPage() {
         />
 
         <InfoGridCard
+          title="IDENTITY & BACKGROUND"
+          icon={FileText}
+          data={student}
+          fields={[
+            {
+              key: "bFormNo",
+              label: "B-Form (NADRA)",
+              icon: FileText,
+            },
+            {
+              key: "nationality",
+              label: "Nationality",
+              icon: Globe,
+            },
+            {
+              key: "religion",
+              label: "Religion",
+              icon: BookHeart,
+            },
+          ]}
+          onSave={(data) => console.log("Save Identity", data)}
+        />
+      </div>
+
+      {/* Row 3: Contact + Transfer */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <InfoGridCard
           title="CONTACT INFORMATION"
           icon={Phone}
           data={student}
@@ -152,19 +195,57 @@ export default function StudentDetailPage() {
           ]}
           onSave={(data) => console.log("Save Contact", data)}
         />
+
+        {student.isTransfer && (
+          <InfoGridCard
+            title="TRANSFER DETAILS"
+            icon={ArrowRightLeft}
+            data={student}
+            fields={[
+              {
+                key: "previousSchool",
+                label: "Previous School",
+                icon: School,
+                editable: false,
+              },
+              {
+                key: "previousClass",
+                label: "Previous Class",
+                icon: Hash,
+                editable: false,
+                format: () => student.previousClass ? `Class ${student.previousClass}` : "N/A",
+              },
+              {
+                key: "reasonForLeaving",
+                label: "Reason for Leaving",
+                icon: FileText,
+                editable: false,
+              },
+            ]}
+            onSave={(data) => console.log("Save Transfer", data)}
+          />
+        )}
       </div>
 
-      {/* 3. Parent / Guardian Section */}
+      {/* Siblings */}
+      <SiblingsCard
+        currentStudent={student}
+        siblings={siblings}
+        onApplyDiscount={() => {
+          console.log("Apply sibling discount for:", student.studentName);
+          console.log("Siblings:", siblings.map((s) => s.studentName));
+        }}
+      />
+
+      {/* Parent / Guardian */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-bold text-text-primary font-heading uppercase tracking-wider">
             Parent / Guardian Information
           </h3>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="relative">
-            {/* Visual indicator for primary */}
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-accent rounded-l-2xl z-10"></div>
             <ParentCard
               title="Father"
@@ -184,7 +265,7 @@ export default function StudentDetailPage() {
         </div>
       </section>
 
-      {/* 4. Address Only (Additional Info removed) */}
+      {/* Address */}
       <div className="grid grid-cols-1 gap-6">
         <InfoGridCard
           title="ADDRESS"

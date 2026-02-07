@@ -8,26 +8,13 @@ import { ArrowLeft, User } from "lucide-react";
 
 import { Pagination } from "@/components/ui/Pagination";
 import { StatCard } from "@/components/ui/StatCard";
-import {
-  Table,
-  TableHeader,
-  TableHeadRow,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@/components/ui/Table";
-import {
-  StudentStatusBadge,
-  ResultStatusBadge,
-  getResultStatus,
-  StudentStatus,
-} from "@/utils/status-styles";
+import { ResultStatusBadge, getResultStatus } from "@/utils/status-styles";
 import {
   CheckCircleFilledIcon,
   ClockFilledIcon,
   AbsentFilledIcon,
 } from "@/components/ui/icons/FilledIcons";
+import { StudentMarksTable } from "@/components/admin/exams/results/StudentMarksTable";
 
 import { RESULT_CHECKING_PROGRESS } from "@/lib/admin/mock-data/exams";
 
@@ -73,7 +60,8 @@ export default function StudentDetailsPage() {
     if (!assignment) return { checked: 0, unchecked: 0, absent: 0 };
     return {
       checked: assignment.students.filter((s) => s.status === "checked").length,
-      unchecked: assignment.students.filter((s) => s.status === "unchecked").length,
+      unchecked: assignment.students.filter((s) => s.status === "unchecked")
+        .length,
       absent: assignment.students.filter((s) => s.status === "absent").length,
     };
   }, [assignment]);
@@ -144,7 +132,8 @@ export default function StudentDetailsPage() {
           <div className="flex flex-col items-start md:items-end gap-2">
             <ResultStatusBadge status={status} size="md" />
             <p className="text-sm text-text-secondary">
-              {assignment.checkedCount} / {eligibleStudents} checked ({assignment.completionPercent.toFixed(0)}%)
+              {assignment.checkedCount} / {eligibleStudents} checked (
+              {assignment.completionPercent.toFixed(0)}%)
             </p>
           </div>
         </div>
@@ -179,41 +168,7 @@ export default function StudentDetailsPage() {
       </div>
 
       {/* STUDENTS TABLE */}
-      <Table>
-        <TableHeader>
-          <TableHeadRow>
-            <TableHead>Student Name</TableHead>
-            <TableHead className="text-center">Status</TableHead>
-            <TableHead className="text-center">Marks</TableHead>
-          </TableHeadRow>
-        </TableHeader>
-        <TableBody>
-          {paginatedStudents.map((student) => (
-            <TableRow key={student.studentId}>
-              <TableCell>
-                <span className="font-medium">{student.studentName}</span>
-              </TableCell>
-              <TableCell className="text-center">
-                <StudentStatusBadge status={student.status as StudentStatus} />
-              </TableCell>
-              <TableCell className="text-center">
-                {student.status === "checked" ? (
-                  <span className="font-semibold">
-                    {student.marksObtained}
-                    <span className="text-text-muted font-normal">
-                      {" "}/ {student.totalMarks}
-                    </span>
-                  </span>
-                ) : student.status === "absent" ? (
-                  <span className="text-text-muted">—</span>
-                ) : (
-                  <span className="text-text-muted">Pending</span>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <StudentMarksTable students={paginatedStudents} />
 
       {/* PAGINATION */}
       <Pagination

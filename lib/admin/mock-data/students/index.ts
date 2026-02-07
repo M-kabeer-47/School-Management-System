@@ -72,10 +72,12 @@ const lastNames = [
   "Taqui",
 ];
 
-const classes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+const classes = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const sections = ["A", "B", "C"];
 const regions = ["North", "South", "East", "West", "Central"];
 const statuses = ["Active", "Inactive", "Graduated", "Transferred"] as const;
+const nationalities = ["Pakistani", "Pakistani", "Pakistani", "Pakistani", "Afghan", "Pakistani", "Pakistani", "Pakistani"];
+const religions = ["Islam", "Islam", "Islam", "Islam", "Islam", "Christianity", "Islam", "Hinduism"];
 
 const generateStudent = (index: number): Student => {
   const firstName = firstNames[(seededRandom(index) * firstNames.length) | 0];
@@ -90,10 +92,13 @@ const generateStudent = (index: number): Student => {
     seededRandom(index + 2) * 28 + 1,
   );
   const birthDate = new Date(
-    2005 + seededRandom(index + 3) * 8,
+    2012 + seededRandom(index + 3) * 8,
     seededRandom(index + 4) * 12,
     seededRandom(index + 5) * 28 + 1,
   );
+
+  const isTransfer = seededRandom(index + 30) > 0.8;
+  const fatherCnic = `${String((seededRandom(index + 8) * 99999 + 10000) | 0)}-${String((seededRandom(index + 9) * 9999999 + 1000000) | 0)}-${seededRandom(index + 10) > 0.5 ? "1" : "2"}`;
 
   return {
     id: `student-${index + 1}`,
@@ -104,7 +109,7 @@ const generateStudent = (index: number): Student => {
     fatherName,
     dateOfBirth: birthDate.toISOString().split("T")[0],
     phoneNo: `0${(300 + seededRandom(index + 6) * 100) | 0}${String((seededRandom(index + 7) * 10000000) | 0).padStart(7, "0")}`,
-    fatherNicNo: `${String((seededRandom(index + 8) * 99999 + 10000) | 0)}-${String((seededRandom(index + 9) * 9999999 + 1000000) | 0)}-${seededRandom(index + 10) > 0.5 ? "1" : "2"}`,
+    fatherNicNo: fatherCnic,
     monthlyFee: (2000 + seededRandom(index + 11) * 8000) | 0,
     gender: seededRandom(index + 12) > 0.5 ? "Male" : "Female",
     region: regions[(seededRandom(index + 13) * regions.length) | 0],
@@ -122,6 +127,28 @@ const generateStudent = (index: number): Student => {
         : (statuses[
             (seededRandom(index + 25) * statuses.length) | 0
           ] as Student["status"]),
+
+    // New fields
+    nationality: nationalities[(seededRandom(index + 26) * nationalities.length) | 0],
+    religion: religions[(seededRandom(index + 27) * religions.length) | 0],
+    bFormNo: `${String((seededRandom(index + 28) * 99999 + 10000) | 0)}-${String((seededRandom(index + 29) * 9999999 + 1000000) | 0)}-${seededRandom(index + 10) > 0.5 ? "1" : "2"}`,
+    isTransfer,
+    previousSchool: isTransfer
+      ? ["City Grammar School", "Al-Huda Academy", "Pak Model School", "Green Valley School", "Scholars Academy"][
+          (seededRandom(index + 31) * 5) | 0
+        ]
+      : undefined,
+    previousClass: isTransfer
+      ? classes[(seededRandom(index + 32) * classes.length) | 0]
+      : undefined,
+    reasonForLeaving: isTransfer
+      ? ["Family relocation", "Seeking better education", "Transfer of father's job", "Financial reasons", "Closer to home"][
+          (seededRandom(index + 33) * 5) | 0
+        ]
+      : undefined,
+    documents: [],
+    siblingIds: [],
+    hasSiblingDiscount: false,
   };
 };
 

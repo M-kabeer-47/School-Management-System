@@ -9,6 +9,7 @@ import {
   User,
   GraduationCap,
   MapPin,
+  FileCheck,
   Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -20,19 +21,31 @@ import FormStepper from "./FormStepper";
 import AcademicInfoStep from "./steps/AcademicInfoStep";
 import PersonalDetailsStep from "./steps/PersonalDetailsStep";
 import GuardianInfoStep from "./steps/GuardianInfoStep";
+import DocumentsStep from "./steps/DocumentsStep";
 
 // Schemas & Types
 import {
   academicInfoSchema,
   personalDetailsSchema,
   guardianInfoSchema,
+  documentsSchema,
   AcademicInfoInput,
   PersonalDetailsInput,
   GuardianInfoInput,
+  DocumentsInput,
 } from "@/components/admin/schemas/student-schemas";
 
 // Mock Data
-const GRADES = ["Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5"];
+const GRADES = [
+  "Grade 1",
+  "Grade 2",
+  "Grade 3",
+  "Grade 4",
+  "Grade 5",
+  "Grade 6",
+  "Grade 7",
+  "Grade 8",
+];
 const SECTIONS = ["Section A", "Section B", "Section C"];
 
 const STEPS = [
@@ -42,11 +55,12 @@ const STEPS = [
     subtitle: "Class & Roll No",
     icon: GraduationCap,
   },
-  { id: 2, title: "Personal Details", subtitle: "Bio & Contact", icon: User },
+  { id: 2, title: "Personal Details", subtitle: "Bio & Identity", icon: User },
   { id: 3, title: "Guardians", subtitle: "Parents Info", icon: MapPin },
+  { id: 4, title: "Documents", subtitle: "Upload Files", icon: FileCheck },
 ];
 
-const LOCAL_STORAGE_KEY = "add-student-form-v1";
+const LOCAL_STORAGE_KEY = "add-student-form-v2";
 
 export default function StudentForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -56,15 +70,31 @@ export default function StudentForm() {
   const academicForm = useForm<AcademicInfoInput>({
     resolver: zodResolver(academicInfoSchema),
     mode: "onBlur",
+    defaultValues: {
+      isTransfer: false,
+      previousSchool: "",
+      previousClass: "",
+      reasonForLeaving: "",
+    },
   });
 
   const personalForm = useForm<PersonalDetailsInput>({
     resolver: zodResolver(personalDetailsSchema),
     mode: "onBlur",
+    defaultValues: {
+      nationality: "",
+      religion: "",
+      bFormNo: "",
+    },
   });
 
   const guardianForm = useForm<GuardianInfoInput>({
     resolver: zodResolver(guardianInfoSchema),
+    mode: "onBlur",
+  });
+
+  const documentsForm = useForm<DocumentsInput>({
+    resolver: zodResolver(documentsSchema),
     mode: "onBlur",
   });
 
@@ -77,6 +107,7 @@ export default function StudentForm() {
         if (parsed.academic) academicForm.reset(parsed.academic);
         if (parsed.personal) personalForm.reset(parsed.personal);
         if (parsed.guardian) guardianForm.reset(parsed.guardian);
+        if (parsed.documents) documentsForm.reset(parsed.documents);
       } catch (e) {
         console.error("Failed to parse saved form data", e);
       }
@@ -92,7 +123,7 @@ export default function StudentForm() {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [academicForm, personalForm, guardianForm]);
+  }, [academicForm, personalForm, guardianForm, documentsForm]);
 
   // 3. Save to LocalStorage on Change
   useEffect(() => {
@@ -107,15 +138,19 @@ export default function StudentForm() {
     const subscription3 = guardianForm.watch((data) =>
       saveToStorage({ guardian: data }),
     );
+    const subscription4 = documentsForm.watch((data) =>
+      saveToStorage({ documents: data }),
+    );
 
     return () => {
       subscription1.unsubscribe();
       subscription2.unsubscribe();
       subscription3.unsubscribe();
+      subscription4.unsubscribe();
     };
-  }, [isLoaded, academicForm, personalForm, guardianForm]);
+  }, [isLoaded, academicForm, personalForm, guardianForm, documentsForm]);
 
-  const saveToStorage = (partialData: any) => {
+  const saveToStorage = (partialData: Record<string, unknown>) => {
     const current = localStorage.getItem(LOCAL_STORAGE_KEY)
       ? JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)!)
       : {};
@@ -132,6 +167,8 @@ export default function StudentForm() {
       isValid = await academicForm.trigger();
     } else if (currentStep === 2) {
       isValid = await personalForm.trigger();
+    } else if (currentStep === 3) {
+      isValid = await guardianForm.trigger();
     }
 
     if (isValid) {
@@ -148,7 +185,15 @@ export default function StudentForm() {
   const handleReset = () => {
     if (confirm("Are you sure you want to clear the form?")) {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
-      academicForm.reset({ rollNo: "", grade: "", section: "" });
+      academicForm.reset({
+        rollNo: "",
+        grade: "",
+        section: "",
+        isTransfer: false,
+        previousSchool: "",
+        previousClass: "",
+        reasonForLeaving: "",
+      });
       personalForm.reset({
         firstName: "",
         lastName: "",
@@ -156,6 +201,9 @@ export default function StudentForm() {
         dob: "",
         email: "",
         phone: "",
+        nationality: "",
+        religion: "",
+        bFormNo: "",
       });
       guardianForm.reset({
         fatherName: "",
@@ -167,24 +215,23 @@ export default function StudentForm() {
         city: "",
         postalCode: "",
       });
+      documentsForm.reset({ documents: {} });
       setCurrentStep(1);
     }
   };
 
   const handleSubmit = async () => {
-    const isValid = await guardianForm.trigger();
-    if (isValid) {
-      const finalData = {
-        academic: academicForm.getValues(),
-        personal: personalDetailsSchema.parse(personalForm.getValues()), // Parse ensures format
-        guardian: guardianForm.getValues(),
-      };
+    const finalData = {
+      academic: academicForm.getValues(),
+      personal: personalForm.getValues(),
+      guardian: guardianForm.getValues(),
+      documents: documentsForm.getValues(),
+    };
 
-      console.log("FINAL SUBMISSION:", finalData);
-      alert("Student Saved! Check console for data.");
-      // Clear storage after successful save
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
-    }
+    console.log("FINAL SUBMISSION:", finalData);
+    alert("Student Saved! Check console for data.");
+    // Clear storage after successful save
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
   };
 
   const stepVariants = {
@@ -206,6 +253,8 @@ export default function StudentForm() {
 
   if (!isLoaded) return null; // Prevent hydration mismatch
 
+  const isLastStep = currentStep === STEPS.length;
+
   return (
     <div className="space-y-8">
       {/* 1. Stepper */}
@@ -216,10 +265,6 @@ export default function StudentForm() {
           // Allow jumping back, but validate before jumping forward
           if (stepId < currentStep) {
             setCurrentStep(stepId);
-          } else {
-            // validate current step before allowing forward jump via stepper?
-            // For now, let's strictly enforce linear progression via Next/Back buttons
-            // or allow clicking previous steps only.
           }
         }}
       />
@@ -274,6 +319,15 @@ export default function StudentForm() {
                   <GuardianInfoStep />
                 </FormProvider>
               )}
+
+              {currentStep === 4 && (
+                <FormProvider {...documentsForm}>
+                  <DocumentsStep
+                    isTransfer={academicForm.getValues("isTransfer")}
+                    grade={academicForm.getValues("grade")}
+                  />
+                </FormProvider>
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -290,7 +344,7 @@ export default function StudentForm() {
           </Button>
 
           <div className="flex gap-2">
-            {currentStep < 3 ? (
+            {!isLastStep ? (
               <Button
                 onClick={handleNext}
                 className="bg-accent hover:bg-accent-hover text-white gap-2 min-w-[120px]"

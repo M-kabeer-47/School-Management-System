@@ -10,8 +10,9 @@ import {
   TableCell,
 } from "@/components/ui/Table";
 import { Student } from "@/lib/admin/types/student";
-import { Eye, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { clsx } from "clsx";
+import { ViewButton } from "@/components/ui/ViewButton";
 
 interface StudentTableProps {
   students: Student[];
@@ -129,13 +130,9 @@ export function StudentTable({
                   </div>
                 </TableCell>
                 <TableCell className="text-center">
-                  <button
+                  <ViewButton
                     onClick={() => onStudentAction("view", student)}
-                    className="inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-surface-hover text-text-secondary hover:text-accent hover:bg-accent/10 transition-all font-medium text-sm"
-                  >
-                    <Eye className="w-4 h-4" />
-                    View
-                  </button>
+                  />
                 </TableCell>
               </TableRow>
             );

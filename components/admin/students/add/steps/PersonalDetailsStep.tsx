@@ -8,10 +8,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
-import { User, Calendar, Phone, Mail, Upload } from "lucide-react";
+import { User, Calendar, Phone, Mail, Upload, Globe, BookHeart, FileText } from "lucide-react";
 import { clsx } from "clsx";
 import { PersonalDetailsInput } from "@/components/admin/schemas/student-schemas";
 import { ChangeEvent } from "react";
+
+const NATIONALITIES = [
+  "Pakistani",
+  "Afghan",
+  "Bangladeshi",
+  "Indian",
+  "Iranian",
+  "Chinese",
+  "Other",
+];
+
+const RELIGIONS = [
+  "Islam",
+  "Christianity",
+  "Hinduism",
+  "Sikhism",
+  "Other",
+];
 
 export default function PersonalDetailsStep() {
   const {
@@ -148,6 +166,92 @@ export default function PersonalDetailsStep() {
           </div>
         </div>
 
+        {/* Nationality, Religion, B-Form */}
+        <div className="pt-6 border-t border-border/50 grid grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-text-secondary flex items-center gap-2">
+              <Globe className="w-3.5 h-3.5" /> Nationality
+            </label>
+            <Controller
+              name="nationality"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="bg-background">
+                    <SelectValue placeholder="Select Nationality" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {NATIONALITIES.map((n) => (
+                      <SelectItem key={n} value={n}>
+                        {n}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.nationality && (
+              <p className="text-xs text-error font-medium">
+                {errors.nationality.message}
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-text-secondary flex items-center gap-2">
+              <BookHeart className="w-3.5 h-3.5" /> Religion
+            </label>
+            <Controller
+              name="religion"
+              control={control}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="bg-background">
+                    <SelectValue placeholder="Select Religion" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {RELIGIONS.map((r) => (
+                      <SelectItem key={r} value={r}>
+                        {r}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.religion && (
+              <p className="text-xs text-error font-medium">
+                {errors.religion.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-text-secondary flex items-center gap-2">
+              <FileText className="w-3.5 h-3.5" /> B-Form Number (NADRA)
+            </label>
+            <Input
+              {...register("bFormNo", {
+                onChange: (e) => {
+                  let val = e.target.value.replace(/\D/g, "");
+                  if (val.length > 13) val = val.slice(0, 13);
+                  if (val.length > 5)
+                    val = val.slice(0, 5) + "-" + val.slice(5);
+                  if (val.length > 13)
+                    val = val.slice(0, 13) + "-" + val.slice(13);
+                  setValue("bFormNo", val);
+                },
+              })}
+              placeholder="XXXXX-XXXXXXX-X"
+              maxLength={15}
+              error={errors.bFormNo?.message}
+              className="bg-background"
+            />
+          </div>
+        </div>
+
+        {/* Contact Info */}
         <div className="pt-6 border-t border-border/50 grid grid-cols-2 gap-6">
           <div className="space-y-2">
             <label className="text-sm font-semibold text-text-secondary flex items-center gap-2">
