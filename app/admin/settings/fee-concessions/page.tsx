@@ -87,7 +87,7 @@ export default function FeeConcessionsPage() {
         ) : (
           <div className="flex gap-2">
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
               onClick={() => {
                 setConcessions(initialData);

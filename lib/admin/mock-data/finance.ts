@@ -13,10 +13,10 @@ import {
     BulkGenerationPreview,
 } from "@/lib/admin/types/finance";
 import { allStudents } from "./students";
-import { feeHeads, feeConcessions } from "./settings";
+import { feeHeads, feeConcessions, classGroups } from "./settings";
 
 
-// Fee Structures by Class
+// Fee Structures by Class (aligned with feeHeads + group-based amounts)
 export const feeStructures: FeeStructure[] = [
     {
         id: "fs-1",
@@ -24,12 +24,9 @@ export const feeStructures: FeeStructure[] = [
         academicYear: "2025-2026",
         items: [
             { id: "f1", name: "Tuition Fee", amount: 3000 },
-            { id: "f2", name: "Computer Lab", amount: 500 },
-            { id: "f3", name: "Library Fee", amount: 200 },
-            { id: "f4", name: "Sports Fee", amount: 300 },
-            { id: "f5", name: "Transport Fee", amount: 1500, isOptional: true },
+            { id: "f2", name: "Sports Fee", amount: 1000 },
         ],
-        totalAmount: 5500,
+        totalAmount: 4000,
     },
     {
         id: "fs-2",
@@ -37,28 +34,22 @@ export const feeStructures: FeeStructure[] = [
         academicYear: "2025-2026",
         items: [
             { id: "f1", name: "Tuition Fee", amount: 4000 },
-            { id: "f2", name: "Computer Lab", amount: 600 },
-            { id: "f3", name: "Library Fee", amount: 300 },
-            { id: "f4", name: "Science Lab", amount: 400 },
-            { id: "f5", name: "Sports Fee", amount: 300 },
-            { id: "f6", name: "Transport Fee", amount: 1500, isOptional: true },
+            { id: "f2", name: "Computer Lab Fee", amount: 400 },
+            { id: "f3", name: "Sports Fee", amount: 1000 },
         ],
-        totalAmount: 7100,
+        totalAmount: 5400,
     },
     {
         id: "fs-3",
-        className: "10",
+        className: "8",
         academicYear: "2025-2026",
         items: [
-            { id: "f1", name: "Tuition Fee", amount: 5500 },
-            { id: "f2", name: "Computer Lab", amount: 800 },
-            { id: "f3", name: "Library Fee", amount: 400 },
-            { id: "f4", name: "Science Lab", amount: 600 },
-            { id: "f5", name: "Board Exam Fee", amount: 2000 },
-            { id: "f6", name: "Sports Fee", amount: 300 },
-            { id: "f7", name: "Transport Fee", amount: 1800, isOptional: true },
+            { id: "f1", name: "Tuition Fee", amount: 5000 },
+            { id: "f2", name: "Computer Lab Fee", amount: 600 },
+            { id: "f3", name: "Science Lab Fee", amount: 500 },
+            { id: "f4", name: "Sports Fee", amount: 1000 },
         ],
-        totalAmount: 11400,
+        totalAmount: 7100,
     },
 ];
 
@@ -323,12 +314,8 @@ export const generateFeeRecords = (): StudentFeeRecord[] => {
         const challan = feeChallans.find((c) => c.studentName === student.studentName);
         const statuses: ("paid" | "pending" | "overdue")[] = ["paid", "pending", "overdue"];
         const status = (challan?.status as "paid" | "pending" | "overdue") || statuses[index % 3];
-        const structure = feeStructures[index % feeStructures.length];
-        const feeItems = structure.items.filter((i) => !i.isOptional).map((i) => ({
-            name: i.name,
-            amount: i.amount,
-        }));
-        const totalDue = feeItems.reduce((sum, i) => sum + i.amount, 0);
+        const feeCalc = calculateStudentFee(student.class);
+        const totalDue = feeCalc.total;
         const paidAmount = status === "paid" ? totalDue : 0;
 
         return {
@@ -347,7 +334,7 @@ export const generateFeeRecords = (): StudentFeeRecord[] => {
             lastPaymentDate: status === "paid" ? "2026-01-15" : undefined,
             challanNo: `CH-2026-${String(index + 1).padStart(3, "0")}`,
             dueDate: "2026-02-10",
-            feeItems,
+            feeItems: feeCalc.items,
         };
     });
 };
@@ -355,14 +342,7 @@ export const generateFeeRecords = (): StudentFeeRecord[] => {
 // Generate Challan Data for Print Challan page
 export const generateChallans = (): ChallanData[] => {
     return allStudents.map((student, index) => {
-        const structure = feeStructures[index % feeStructures.length];
-        const items = structure.items
-            .filter((i) => !i.isOptional)
-            .map((i) => ({
-                name: i.name,
-                amount: i.amount,
-            }));
-        const total = items.reduce((sum, i) => sum + i.amount, 0);
+        const feeCalc = calculateStudentFee(student.class);
 
         return {
             id: student.id,
@@ -374,8 +354,8 @@ export const generateChallans = (): ChallanData[] => {
             challanNo: `CH-2026-${String(index + 1).padStart(3, "0")}`,
             month: "February 2026",
             dueDate: "2026-02-10",
-            items,
-            total,
+            items: feeCalc.items,
+            total: feeCalc.total,
         };
     });
 };
@@ -386,11 +366,28 @@ export const challanData = generateChallans();
 
 // ─── Bulk Challan Generation Helpers ────────────────────────
 
+/** Find the class group for a given class number */
+function getClassGroup(studentClass: string): string | undefined {
+    const group = classGroups.find((g) => g.classes.includes(studentClass));
+    return group?.id;
+}
+
+/** Get the correct amount for a fee head based on the student's class group */
+function getFeeAmount(fh: typeof feeHeads[number], groupId: string | undefined): number {
+    if (!groupId || !fh.amountByGroup || fh.amountByGroup.length === 0) {
+        return fh.amount;
+    }
+    const groupEntry = fh.amountByGroup.find((g) => g.groupId === groupId);
+    return groupEntry?.amount ?? fh.amount;
+}
+
 /** Calculate monthly fee for a student based on their class using feeHeads from settings */
 export function calculateStudentFee(studentClass: string): {
     items: { name: string; amount: number }[];
     total: number;
 } {
+    const groupId = getClassGroup(studentClass);
+
     const applicableFees = feeHeads.filter((fh) => {
         if (!fh.isActive) return false;
         if (fh.frequency !== "monthly") return false;
@@ -402,7 +399,10 @@ export function calculateStudentFee(studentClass: string): {
         );
     });
 
-    const items = applicableFees.map((fh) => ({ name: fh.name, amount: fh.amount }));
+    const items = applicableFees.map((fh) => ({
+        name: fh.name,
+        amount: getFeeAmount(fh, groupId),
+    }));
     const total = items.reduce((sum, i) => sum + i.amount, 0);
 
     return { items, total };
@@ -456,6 +456,25 @@ export function generateBulkPreview(
     };
 }
 
+/** Check if an extra charge applies to a given student */
+function doesExtraChargeApply(
+    charge: import("@/lib/admin/types/finance").ExtraCharge,
+    student: { id: string; class: string; section: string }
+): boolean {
+    switch (charge.targetType) {
+        case "all":
+            return true;
+        case "class":
+            return charge.targetClasses.includes(student.class);
+        case "section":
+            return charge.targetSections.includes(`${student.class}-${student.section}`);
+        case "student":
+            return charge.targetStudentIds.includes(student.id);
+        default:
+            return false;
+    }
+}
+
 /** Generate bulk challans for all target students */
 export function generateBulkChallans(
     config: BulkGenerationConfig
@@ -466,9 +485,31 @@ export function generateBulkChallans(
         return config.selectedClasses.includes(s.class);
     });
 
+    const extraCharges = config.extraCharges || [];
+
     return targetStudents.map((student, index) => {
         const feeCalc = calculateStudentFee(student.class);
         const challanNo = `CH-2026-B${String(index + 1).padStart(4, "0")}`;
+
+        // Build line items from default fees
+        const lineItems = feeCalc.items.map((item, i) => ({
+            id: `li-${index}-${i}`,
+            name: item.name,
+            amount: item.amount,
+        }));
+
+        // Add applicable extra charges
+        extraCharges.forEach((charge, ci) => {
+            if (doesExtraChargeApply(charge, student)) {
+                lineItems.push({
+                    id: `li-${index}-extra-${ci}`,
+                    name: charge.name,
+                    amount: charge.amount,
+                });
+            }
+        });
+
+        const totalAmount = lineItems.reduce((sum, li) => sum + li.amount, 0);
 
         return {
             id: `bulk-${Date.now()}-${index}`,
@@ -483,14 +524,10 @@ export function generateBulkChallans(
             academicYear: "2025-2026",
             issueDate: new Date().toISOString().split("T")[0],
             dueDate: config.dueDate,
-            lineItems: feeCalc.items.map((item, i) => ({
-                id: `li-${index}-${i}`,
-                name: item.name,
-                amount: item.amount,
-            })),
-            totalAmount: feeCalc.total,
+            lineItems,
+            totalAmount,
             discountAmount: 0,
-            netAmount: feeCalc.total,
+            netAmount: totalAmount,
             status: "pending" as const,
         };
     });

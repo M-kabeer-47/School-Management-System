@@ -55,10 +55,17 @@ export interface SubjectDefinition {
   name: string;
 }
 
+export interface FeeGroupAmount {
+  groupId: string;
+  groupName: string;
+  amount: number;
+}
+
 export interface FeeHead {
   id: string;
   name: string;
   amount: number;
+  amountByGroup?: FeeGroupAmount[];
   frequency: "monthly" | "quarterly" | "biannual" | "annual" | "one-time";
   applicableTo: "all" | string[];
   isActive: boolean;

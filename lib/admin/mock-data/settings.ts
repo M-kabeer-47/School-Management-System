@@ -152,7 +152,12 @@ export const feeHeads: FeeHead[] = [
   {
     id: "fee-1",
     name: "Tuition Fee",
-    amount: 5000,
+    amount: 3000,
+    amountByGroup: [
+      { groupId: "group-1", groupName: "Junior", amount: 3000 },
+      { groupId: "group-2", groupName: "Middle", amount: 4000 },
+      { groupId: "group-3", groupName: "Senior", amount: 5000 },
+    ],
     frequency: "monthly",
     applicableTo: "all",
     isActive: true,
@@ -160,7 +165,12 @@ export const feeHeads: FeeHead[] = [
   {
     id: "fee-2",
     name: "Admission Fee",
-    amount: 15000,
+    amount: 10000,
+    amountByGroup: [
+      { groupId: "group-1", groupName: "Junior", amount: 10000 },
+      { groupId: "group-2", groupName: "Middle", amount: 12000 },
+      { groupId: "group-3", groupName: "Senior", amount: 15000 },
+    ],
     frequency: "one-time",
     applicableTo: "all",
     isActive: true,
@@ -168,7 +178,12 @@ export const feeHeads: FeeHead[] = [
   {
     id: "fee-3",
     name: "Exam Fee",
-    amount: 2000,
+    amount: 1500,
+    amountByGroup: [
+      { groupId: "group-1", groupName: "Junior", amount: 1500 },
+      { groupId: "group-2", groupName: "Middle", amount: 2000 },
+      { groupId: "group-3", groupName: "Senior", amount: 2500 },
+    ],
     frequency: "biannual",
     applicableTo: "all",
     isActive: true,
@@ -177,6 +192,10 @@ export const feeHeads: FeeHead[] = [
     id: "fee-4",
     name: "Computer Lab Fee",
     amount: 500,
+    amountByGroup: [
+      { groupId: "group-2", groupName: "Middle", amount: 400 },
+      { groupId: "group-3", groupName: "Senior", amount: 600 },
+    ],
     frequency: "monthly",
     applicableTo: ["Grade 5", "Grade 6", "Grade 7", "Grade 8"],
     isActive: true,
@@ -185,6 +204,9 @@ export const feeHeads: FeeHead[] = [
     id: "fee-5",
     name: "Science Lab Fee",
     amount: 500,
+    amountByGroup: [
+      { groupId: "group-3", groupName: "Senior", amount: 500 },
+    ],
     frequency: "monthly",
     applicableTo: ["Grade 6", "Grade 7", "Grade 8"],
     isActive: true,
@@ -208,7 +230,12 @@ export const feeHeads: FeeHead[] = [
   {
     id: "fee-8",
     name: "Annual Charges",
-    amount: 5000,
+    amount: 4000,
+    amountByGroup: [
+      { groupId: "group-1", groupName: "Junior", amount: 4000 },
+      { groupId: "group-2", groupName: "Middle", amount: 5000 },
+      { groupId: "group-3", groupName: "Senior", amount: 6000 },
+    ],
     frequency: "annual",
     applicableTo: "all",
     isActive: true,

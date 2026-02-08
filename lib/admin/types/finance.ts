@@ -186,12 +186,25 @@ export interface ChallanData {
 
 export type BulkGenerationScope = "entire-school" | "specific-classes";
 
+export type ExtraChargeTarget = "all" | "class" | "section" | "student";
+
+export interface ExtraCharge {
+    id: string;
+    name: string;
+    amount: number;
+    targetType: ExtraChargeTarget;
+    targetClasses: string[];
+    targetSections: string[];       // "6-A", "7-B" format
+    targetStudentIds: string[];
+}
+
 export interface BulkGenerationConfig {
     scope: BulkGenerationScope;
     selectedClasses: string[];
     month: string;
     dueDate: string;
     includeArrears: boolean;
+    extraCharges?: ExtraCharge[];
 }
 
 export interface BulkGenerationPreview {
