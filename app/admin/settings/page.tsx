@@ -91,7 +91,7 @@ const settingsCategories: SettingsCategory[] = [
         icon: Receipt,
       },
       {
-        title: "Fee Concessions",
+        title: "Fee Discounts",
         description:
           "Sibling discount, staff child, scholarships, auto-apply rules",
         href: "/admin/settings/fee-concessions",
@@ -99,8 +99,7 @@ const settingsCategories: SettingsCategory[] = [
       },
       {
         title: "Late Fee Rules",
-        description:
-          "Due dates, grace periods, and late fee penalties",
+        description: "Due dates, grace periods, and late fee penalties",
         href: "/admin/settings/late-fee",
         icon: Clock,
       },

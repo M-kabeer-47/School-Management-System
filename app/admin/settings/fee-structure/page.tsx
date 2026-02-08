@@ -1,16 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
-import {
-  Save,
-  Plus,
-  Trash2,
-  Pencil,
-  ToggleLeft,
-  ToggleRight,
-  Info,
-} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Save, Plus, Trash2, Pencil, Info } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { PageHeader } from "@/components/admin/PageHeader";
@@ -23,6 +15,8 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/Table";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/Tabs";
+import { AddFeeHeadModal } from "@/components/admin/settings/AddFeeHeadModal";
 import {
   feeHeads as initialData,
   classGroups,
@@ -31,31 +25,46 @@ import { FeeHead } from "@/lib/admin/types/settings";
 
 export default function FeeStructurePage() {
   const [isEditing, setIsEditing] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [feeHeads, setFeeHeads] = useState<FeeHead[]>(initialData);
+  const [activeTab, setActiveTab] = useState(classGroups[0]?.id || "group-1");
 
-  const activeFees = feeHeads.filter((f) => f.isActive);
-  const inactiveFees = feeHeads.filter((f) => !f.isActive);
+  const currentWing = classGroups.find((g) => g.id === activeTab);
+
+  // Filter fee heads for the current wing
+  const wingFees = useMemo(() => {
+    return feeHeads.filter((f) => {
+      // Show if it's explicitly assigned to this wing
+      if (f.wingId === activeTab) return true;
+      // OR if it's a global fee (no wingId) - optional, depending on requirement.
+      // For this refactor, let's assume global fees show everywhere or are separate.
+      // Based on user request, we want distinct lists.
+      // Let's show global fees in all tabs for now, but editable only if we decide.
+      // Actually, purely wing-specific is cleaner. Let's filter by wingId.
+      // New items will strictly have wingId.
+      // Legacy global items (no wingId) = show in all?
+      // Let's stick to strict wingId check for simplicity of "deletion".
+      // If a fee has no wingId, it's global.
+      return !f.wingId || f.wingId === activeTab;
+    });
+  }, [feeHeads, activeTab]);
 
   const handleSave = () => {
     console.log("Save Fee Structure:", feeHeads);
     setIsEditing(false);
   };
 
-  const addFeeHead = () => {
+  const handleAddFeeHead = (data: { name: string; amount: number }) => {
     setFeeHeads([
       ...feeHeads,
       {
         id: `fee-${Date.now()}`,
-        name: "",
-        amount: 0,
-        amountByGroup: classGroups.map((g) => ({
-          groupId: g.id,
-          groupName: g.name,
-          amount: 0,
-        })),
+        name: data.name,
+        amount: data.amount,
         frequency: "monthly",
         applicableTo: "all",
         isActive: true,
+        wingId: activeTab, // Assign to current wing
       },
     ]);
   };
@@ -70,51 +79,9 @@ export default function FeeStructurePage() {
     );
   };
 
-  const updateGroupAmount = (
-    feeId: string,
-    groupId: string,
-    amount: number,
-  ) => {
-    setFeeHeads(
-      feeHeads.map((f) => {
-        if (f.id !== feeId) return f;
-        const groups = f.amountByGroup || [];
-        const existing = groups.find((g) => g.groupId === groupId);
-        if (existing) {
-          return {
-            ...f,
-            amountByGroup: groups.map((g) =>
-              g.groupId === groupId ? { ...g, amount } : g,
-            ),
-          };
-        }
-        const group = classGroups.find((g) => g.id === groupId);
-        return {
-          ...f,
-          amountByGroup: [
-            ...groups,
-            { groupId, groupName: group?.name || "", amount },
-          ],
-        };
-      }),
-    );
-  };
-
-  const getGroupAmount = (fee: FeeHead, groupId: string): number => {
-    const entry = fee.amountByGroup?.find((g) => g.groupId === groupId);
-    return entry?.amount ?? fee.amount;
-  };
-
-  // Calculate totals per wing (all active fees)
-  const wingTotals = useMemo(() => {
-    return classGroups.map((group) => {
-      const total = activeFees.reduce(
-        (sum, f) => sum + getGroupAmount(f, group.id),
-        0,
-      );
-      return { groupId: group.id, total };
-    });
-  }, [feeHeads]);
+  const totalMonthly = wingFees
+    .filter((f) => f.frequency === "monthly" && f.isActive)
+    .reduce((sum, f) => sum + f.amount, 0);
 
   return (
     <motion.div
@@ -125,213 +92,207 @@ export default function FeeStructurePage() {
       {/* Header */}
       <PageHeader
         title="Fee Structure"
-        subtitle="Default fee heads and amounts per wing"
-      >
-        {!isEditing ? (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsEditing(true)}
-            className="gap-2"
-          >
-            <Pencil className="w-3.5 h-3.5" /> Edit
-          </Button>
-        ) : (
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setFeeHeads(initialData);
-                setIsEditing(false);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              size="sm"
-              onClick={handleSave}
-              className="bg-accent hover:bg-accent-hover text-white gap-2"
-            >
-              <Save className="w-3.5 h-3.5" /> Save
-            </Button>
-          </div>
-        )}
-      </PageHeader>
+        subtitle="Manage fee heads and amounts for each wing"
+      />
 
-      {/* Info Banner */}
-      <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-4 flex items-start gap-3">
-        <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
-        <p className="text-sm text-blue-700 dark:text-blue-300">
-          These are <strong>default charges</strong> per wing. During challan
-          generation, admins can add or modify charges for specific
-          classes, sections, or students.
-        </p>
-      </div>
-
-      {/* Fee Matrix Table */}
-      <Table>
-        <TableHeader>
-          <TableHeadRow>
-            <TableHead className="w-[220px]">Fee Head</TableHead>
+      {/* Tabs Interface */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="">
+        <div className="flex items-center justify-between">
+          <TabsList className="bg-surface border border-border p-1 h-auto w-[60%]">
             {classGroups.map((group) => (
-              <TableHead key={group.id} className="text-right">
-                <div>{group.name}</div>
-                <div className="text-[10px] font-normal opacity-75">
-                  Class {group.classes.join(", ")}
-                </div>
-              </TableHead>
-            ))}
-            {isEditing && (
-              <TableHead className="w-[80px] text-center">Actions</TableHead>
-            )}
-          </TableHeadRow>
-        </TableHeader>
-        <TableBody>
-          {activeFees.map((fee) => (
-            <TableRow key={fee.id} isClickable={false}>
-              <TableCell>
-                {isEditing ? (
-                  <Input
-                    value={fee.name}
-                    onChange={(e) =>
-                      updateFeeHead(fee.id, "name", e.target.value)
-                    }
-                    placeholder="Fee head name"
-                    className="h-8 text-sm"
-                  />
-                ) : (
-                  <span className="font-medium text-text-primary">
-                    {fee.name}
-                  </span>
-                )}
-              </TableCell>
-              {classGroups.map((group) => (
-                <TableCell key={group.id} className="text-right">
-                  {isEditing ? (
-                    <Input
-                      type="number"
-                      value={getGroupAmount(fee, group.id)}
-                      onChange={(e) =>
-                        updateGroupAmount(
-                          fee.id,
-                          group.id,
-                          Number(e.target.value),
-                        )
-                      }
-                      className="h-8 text-sm text-right"
-                    />
-                  ) : (
-                    <span className="font-semibold text-text-primary">
-                      {getGroupAmount(fee, group.id) > 0
-                        ? `Rs. ${getGroupAmount(fee, group.id).toLocaleString()}`
-                        : "—"}
-                    </span>
-                  )}
-                </TableCell>
-              ))}
-              {isEditing && (
-                <TableCell className="text-center">
-                  <div className="flex items-center justify-center gap-1">
-                    <button
-                      onClick={() =>
-                        updateFeeHead(fee.id, "isActive", false)
-                      }
-                      title="Disable"
-                      className="p-1.5 rounded-lg hover:bg-surface-hover text-text-muted hover:text-orange-500 transition-colors"
-                    >
-                      <ToggleRight className="w-4 h-4 text-accent" />
-                    </button>
-                    <button
-                      onClick={() => removeFeeHead(fee.id)}
-                      title="Delete"
-                      className="p-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/20 text-text-muted hover:text-red-500 transition-colors"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </TableCell>
-              )}
-            </TableRow>
-          ))}
-
-          {/* Totals Row */}
-          <TableRow isClickable={false} className="bg-surface-hover">
-            <TableCell>
-              <span className="font-bold text-text-primary">Total</span>
-            </TableCell>
-            {classGroups.map((group) => {
-              const total =
-                wingTotals.find((t) => t.groupId === group.id)?.total || 0;
-              return (
-                <TableCell key={group.id} className="text-right">
-                  <span className="font-bold text-accent text-base">
-                    Rs. {total.toLocaleString()}
-                  </span>
-                </TableCell>
-              );
-            })}
-            {isEditing && <TableCell />}
-          </TableRow>
-        </TableBody>
-      </Table>
-
-      {/* Add Fee Head Button */}
-      {isEditing && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <Button
-            variant="outline"
-            onClick={addFeeHead}
-            className="w-full gap-2 border-dashed border-2 hover:border-accent hover:bg-accent/5"
-          >
-            <Plus className="w-4 h-4" /> Add Fee Head
-          </Button>
-        </motion.div>
-      )}
-
-      {/* Inactive Fee Heads */}
-      {inactiveFees.length > 0 && (
-        <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-text-muted uppercase tracking-wider">
-            Inactive Fee Heads
-          </h3>
-          <div className="space-y-2">
-            {inactiveFees.map((fee) => (
-              <div
-                key={fee.id}
-                className="bg-surface rounded-xl border border-border p-4 opacity-60 flex items-center justify-between"
+              <TabsTrigger
+                key={group.id}
+                value={group.id}
+                className="px-4 py-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary"
               >
-                <span className="font-medium text-text-secondary">
-                  {fee.name}
-                </span>
-                {isEditing && (
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() =>
-                        updateFeeHead(fee.id, "isActive", true)
-                      }
-                      title="Enable"
-                      className="p-1.5 rounded-lg hover:bg-surface-hover text-text-muted hover:text-accent transition-colors"
-                    >
-                      <ToggleLeft className="w-5 h-5" />
-                    </button>
-                    <button
-                      onClick={() => removeFeeHead(fee.id)}
-                      title="Delete"
-                      className="p-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/20 text-text-muted hover:text-red-500 transition-colors"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                )}
-              </div>
+                {group.name} Wing
+              </TabsTrigger>
             ))}
-          </div>
+          </TabsList>
+
+          {/* Info Hint */}
+          {isEditing && (
+            <div className="text-sm text-text-muted flex items-center gap-2 animate-in fade-in slide-in-from-right-4">
+              <Info className="w-4 h-4 text-accent" />
+              <span>
+                Adding fees to <strong>{currentWing?.name} Wing</strong>
+              </span>
+            </div>
+          )}
         </div>
-      )}
+
+        {classGroups.map((group) => (
+          <TabsContent
+            key={group.id}
+            value={group.id}
+            className="space-y-4 outline-none active:outline-none focus:outline-none"
+          >
+            {/* Wing Controls */}
+            <div className="flex justify-end gap-2 mb-4">
+              {!isEditing ? (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setIsEditing(true);
+                    }}
+                    className="gap-2"
+                  >
+                    <Pencil className="w-3.5 h-3.5" /> Edit
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setIsAddModalOpen(true);
+                    }}
+                    className="bg-accent hover:bg-accent-hover text-white gap-2"
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Add Fee Head
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setFeeHeads(initialData);
+                      setIsEditing(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={handleSave}
+                    className="bg-accent hover:bg-accent-hover text-white gap-2"
+                  >
+                    <Save className="w-3.5 h-3.5" /> Save Changes
+                  </Button>
+                </>
+              )}
+            </div>
+
+            {/* Wing Summary Cards (Optional, maybe for later) */}
+
+            <div className="bg-surface border border-border rounded-xl overflow-hidden shadow-sm">
+              <Table>
+                <TableHeader>
+                  <TableHeadRow>
+                    <TableHead className="w-[60%]">Fee Head</TableHead>
+                    <TableHead className="text-right">Amount (Rs.)</TableHead>
+                    {isEditing && (
+                      <TableHead className="w-[80px] text-center">
+                        Actions
+                      </TableHead>
+                    )}
+                  </TableHeadRow>
+                </TableHeader>
+                <TableBody>
+                  {wingFees.length === 0 ? (
+                    <TableRow isClickable={false}>
+                      <TableCell
+                        colSpan={isEditing ? 3 : 2}
+                        className="h-24 text-center text-text-muted"
+                      >
+                        No fee heads defined for this wing.
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    wingFees.map((fee) => (
+                      <TableRow key={fee.id} isClickable={false}>
+                        <TableCell>
+                          {isEditing ? (
+                            <Input
+                              value={fee.name}
+                              onChange={(e) =>
+                                updateFeeHead(fee.id, "name", e.target.value)
+                              }
+                              placeholder="e.g. Tuition Fee"
+                              className="h-9"
+                              autoFocus={fee.name === ""}
+                            />
+                          ) : (
+                            <div>
+                              <div className="font-medium text-text-primary">
+                                {fee.name}
+                              </div>
+                              {!fee.wingId && (
+                                <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">
+                                  Global
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {isEditing ? (
+                            <div className="flex justify-end items-center gap-2">
+                              <span className="text-muted-foreground text-sm">
+                                Rs.
+                              </span>
+                              <Input
+                                type="number"
+                                value={fee.amount}
+                                onChange={(e) =>
+                                  updateFeeHead(
+                                    fee.id,
+                                    "amount",
+                                    Number(e.target.value),
+                                  )
+                                }
+                                className="h-9 w-28 text-right"
+                              />
+                            </div>
+                          ) : (
+                            <span className="font-semibold text-text-primary">
+                              {fee.amount.toLocaleString()}
+                            </span>
+                          )}
+                        </TableCell>
+                        {isEditing && (
+                          <TableCell className="text-center">
+                            <button
+                              onClick={() => removeFeeHead(fee.id)}
+                              title="Delete"
+                              className="p-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/20 text-text-muted hover:text-red-500 transition-colors"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    ))
+                  )}
+
+                  {/* Summary Footer */}
+                  {!isEditing && wingFees.length > 0 && (
+                    <TableRow
+                      className="bg-surface-hover/50 hover:bg-surface-hover/50"
+                      isClickable={false}
+                    >
+                      <TableCell className="font-medium">
+                        Total (Monthly)
+                      </TableCell>
+                      <TableCell className="text-right font-bold text-accent">
+                        Rs. {totalMonthly.toLocaleString()}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </TabsContent>
+        ))}
+      </Tabs>
+
+      <AddFeeHeadModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAdd={handleAddFeeHead}
+        wingName={currentWing?.name}
+      />
     </motion.div>
   );
 }

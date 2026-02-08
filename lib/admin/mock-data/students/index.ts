@@ -76,8 +76,26 @@ const classes = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const sections = ["A", "B", "C"];
 const regions = ["North", "South", "East", "West", "Central"];
 const statuses = ["Active", "Inactive", "Graduated", "Transferred"] as const;
-const nationalities = ["Pakistani", "Pakistani", "Pakistani", "Pakistani", "Afghan", "Pakistani", "Pakistani", "Pakistani"];
-const religions = ["Islam", "Islam", "Islam", "Islam", "Islam", "Christianity", "Islam", "Hinduism"];
+const nationalities = [
+  "Pakistani",
+  "Pakistani",
+  "Pakistani",
+  "Pakistani",
+  "Afghan",
+  "Pakistani",
+  "Pakistani",
+  "Pakistani",
+];
+const religions = [
+  "Islam",
+  "Islam",
+  "Islam",
+  "Islam",
+  "Islam",
+  "Christianity",
+  "Islam",
+  "Hinduism",
+];
 
 const generateStudent = (index: number): Student => {
   const firstName = firstNames[(seededRandom(index) * firstNames.length) | 0];
@@ -129,22 +147,31 @@ const generateStudent = (index: number): Student => {
           ] as Student["status"]),
 
     // New fields
-    nationality: nationalities[(seededRandom(index + 26) * nationalities.length) | 0],
+    nationality:
+      nationalities[(seededRandom(index + 26) * nationalities.length) | 0],
     religion: religions[(seededRandom(index + 27) * religions.length) | 0],
     bFormNo: `${String((seededRandom(index + 28) * 99999 + 10000) | 0)}-${String((seededRandom(index + 29) * 9999999 + 1000000) | 0)}-${seededRandom(index + 10) > 0.5 ? "1" : "2"}`,
     isTransfer,
     previousSchool: isTransfer
-      ? ["City Grammar School", "Al-Huda Academy", "Pak Model School", "Green Valley School", "Scholars Academy"][
-          (seededRandom(index + 31) * 5) | 0
-        ]
+      ? [
+          "City Grammar School",
+          "Al-Huda Academy",
+          "Pak Model School",
+          "Green Valley School",
+          "Scholars Academy",
+        ][(seededRandom(index + 31) * 5) | 0]
       : undefined,
     previousClass: isTransfer
       ? classes[(seededRandom(index + 32) * classes.length) | 0]
       : undefined,
     reasonForLeaving: isTransfer
-      ? ["Family relocation", "Seeking better education", "Transfer of father's job", "Financial reasons", "Closer to home"][
-          (seededRandom(index + 33) * 5) | 0
-        ]
+      ? [
+          "Family relocation",
+          "Seeking better education",
+          "Transfer of father's job",
+          "Financial reasons",
+          "Closer to home",
+        ][(seededRandom(index + 33) * 5) | 0]
       : undefined,
     documents: [],
     siblingIds: [],

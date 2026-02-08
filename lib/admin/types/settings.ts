@@ -65,10 +65,10 @@ export interface FeeHead {
   id: string;
   name: string;
   amount: number;
-  amountByGroup?: FeeGroupAmount[];
   frequency: "monthly" | "quarterly" | "biannual" | "annual" | "one-time";
   applicableTo: "all" | string[];
   isActive: boolean;
+  wingId?: string; // Optional: if set, this fee head belongs to a specific wing
 }
 
 export interface FeeConcession {

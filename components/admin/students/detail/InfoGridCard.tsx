@@ -155,7 +155,7 @@ export function InfoGridCard({
                           value={formData[field.key]}
                           onValueChange={(val) => handleChange(field.key, val)}
                         >
-                          <SelectTrigger className="h-9 w-full">
+                          <SelectTrigger className="w-full">
                             <SelectValue
                               placeholder={field.placeholder || "Select..."}
                             />
@@ -180,7 +180,7 @@ export function InfoGridCard({
                           onChange={(e) =>
                             handleChange(field.key, e.target.value)
                           }
-                          className="h-9 text-sm min-w-fit"
+                          className="text-sm min-w-fit"
                           type={field.type || "text"}
                         />
                       )}
