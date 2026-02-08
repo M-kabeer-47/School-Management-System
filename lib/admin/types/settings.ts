@@ -13,6 +13,10 @@ export interface SchoolProfile {
   establishedYear?: string;
   registrationNo?: string;
   board?: string;
+  schoolType?: string;
+  schoolLevel?: string;
+  medium?: string;
+  genderPolicy?: string;
 }
 
 export interface Term {
@@ -29,12 +33,34 @@ export interface AcademicYearConfig {
   terms: Term[];
 }
 
+export interface TermDefinition {
+  id: string;
+  name: string;
+}
+
+export interface ClassGroup {
+  id: string;
+  name: string;
+  classes: string[];
+  subjectIds: string[];
+}
+
+export interface SectionDefinition {
+  id: string;
+  name: string;
+}
+
+export interface SubjectDefinition {
+  id: string;
+  name: string;
+}
+
 export interface FeeHead {
   id: string;
   name: string;
   amount: number;
   frequency: "monthly" | "quarterly" | "biannual" | "annual" | "one-time";
-  applicableTo: "all" | string[]; // "all" or array of class names
+  applicableTo: "all" | string[];
   isActive: boolean;
 }
 
@@ -42,9 +68,10 @@ export interface FeeConcession {
   id: string;
   name: string;
   type: "percentage" | "fixed";
-  value: number; // percentage or fixed amount
+  value: number;
   description: string;
   isActive: boolean;
+  autoApply?: boolean;
 }
 
 export interface GradeThreshold {
@@ -91,11 +118,37 @@ export interface ReportCardConfig {
   showGradeScale: boolean;
 }
 
+// ─── Late Fee Configuration ─────────────────────────────────
+
+export type LateFeeType = "fixed" | "per-day" | "slab-based";
+
+export interface LateFeeSlab {
+  id: string;
+  fromDay: number;
+  toDay: number;
+  amount: number;
+}
+
+export interface LateFeeConfig {
+  dueDateDay: number;
+  gracePeriodDays: number;
+  lateFeeType: LateFeeType;
+  fixedAmount: number;
+  perDayAmount: number;
+  slabs: LateFeeSlab[];
+  maxLateFeeCap: number;
+  allowWaiver: boolean;
+}
+
 export type SettingsPageId =
   | "school-profile"
   | "academic-year"
+  | "class-groups"
+  | "sections"
+  | "subjects"
   | "fee-structure"
   | "fee-concessions"
+  | "late-fee"
   | "grade-scale"
   | "pass-fail"
   | "promotion-rules"

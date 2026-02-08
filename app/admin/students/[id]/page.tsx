@@ -231,10 +231,6 @@ export default function StudentDetailPage() {
       <SiblingsCard
         currentStudent={student}
         siblings={siblings}
-        onApplyDiscount={() => {
-          console.log("Apply sibling discount for:", student.studentName);
-          console.log("Siblings:", siblings.map((s) => s.studentName));
-        }}
       />
 
       {/* Parent / Guardian */}

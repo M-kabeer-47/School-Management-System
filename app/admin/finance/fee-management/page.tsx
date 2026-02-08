@@ -14,6 +14,7 @@ import {
     BarChart3,
     Printer,
     CreditCard,
+    Layers,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { StatCard } from "@/components/ui/StatCard";
@@ -52,6 +53,13 @@ export default function FeeManagementPage() {
             href: "/admin/finance/fee-management/generate-challan",
             icon: Plus,
             color: "bg-accent",
+        },
+        {
+            title: "Bulk Generate",
+            description: "Generate challans for entire school or by class",
+            href: "/admin/finance/fee-management/bulk-generate",
+            icon: Layers,
+            color: "bg-teal-500",
         },
         {
             title: "Print Challans",

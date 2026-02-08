@@ -181,3 +181,30 @@ export interface ChallanData {
     items: { name: string; amount: number }[];
     total: number;
 }
+
+// ─── Bulk Challan Generation ────────────────────────────────
+
+export type BulkGenerationScope = "entire-school" | "specific-classes";
+
+export interface BulkGenerationConfig {
+    scope: BulkGenerationScope;
+    selectedClasses: string[];
+    month: string;
+    dueDate: string;
+    includeArrears: boolean;
+}
+
+export interface BulkGenerationPreview {
+    totalStudents: number;
+    totalAmount: number;
+    byClass: {
+        className: string;
+        studentCount: number;
+        amountPerStudent: number;
+        totalAmount: number;
+    }[];
+    concessionsApplied: number;
+    totalConcessionAmount: number;
+    arrearsStudents: number;
+    arrearsAmount: number;
+}

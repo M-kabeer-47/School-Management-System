@@ -20,6 +20,7 @@ interface PrintChallanTableProps {
   onToggleSelect: (id: string) => void;
   onToggleSelectAll: () => void;
   onPreview: (challan: ChallanData) => void;
+  publishedIds?: string[];
 }
 
 export function PrintChallanTable({
@@ -28,6 +29,7 @@ export function PrintChallanTable({
   onToggleSelect,
   onToggleSelectAll,
   onPreview,
+  publishedIds,
 }: PrintChallanTableProps) {
   const allSelected =
     challans.length > 0 && challans.every((c) => selectedIds.includes(c.id));
@@ -107,9 +109,16 @@ export function PrintChallanTable({
                 </div>
               </TableCell>
               <TableCell>
-                <span className="font-mono text-sm bg-surface-hover px-2 py-1 rounded">
-                  {challan.challanNo}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-sm bg-surface-hover px-2 py-1 rounded">
+                    {challan.challanNo}
+                  </span>
+                  {publishedIds?.includes(challan.id) && (
+                    <span className="text-[10px] font-bold text-green-600 bg-green-100 dark:bg-green-900/20 px-2 py-0.5 rounded-full">
+                      Published
+                    </span>
+                  )}
+                </div>
               </TableCell>
               <TableCell className="text-text-secondary">
                 {challan.month.slice(0, 3)} 2026

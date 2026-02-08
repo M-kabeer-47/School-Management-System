@@ -9,8 +9,11 @@ import {
     Expense,
     StudentFeeRecord,
     ChallanData,
+    BulkGenerationConfig,
+    BulkGenerationPreview,
 } from "@/lib/admin/types/finance";
 import { allStudents } from "./students";
+import { feeHeads, feeConcessions } from "./settings";
 
 
 // Fee Structures by Class
@@ -380,3 +383,115 @@ export const generateChallans = (): ChallanData[] => {
 // Pre-generated data for pages to use
 export const studentFeeRecords = generateFeeRecords();
 export const challanData = generateChallans();
+
+// ─── Bulk Challan Generation Helpers ────────────────────────
+
+/** Calculate monthly fee for a student based on their class using feeHeads from settings */
+export function calculateStudentFee(studentClass: string): {
+    items: { name: string; amount: number }[];
+    total: number;
+} {
+    const applicableFees = feeHeads.filter((fh) => {
+        if (!fh.isActive) return false;
+        if (fh.frequency !== "monthly") return false;
+        if (fh.applicableTo === "all") return true;
+        return (fh.applicableTo as string[]).some(
+            (c) =>
+                c.includes(studentClass) ||
+                c.toLowerCase().includes(`grade ${studentClass}`)
+        );
+    });
+
+    const items = applicableFees.map((fh) => ({ name: fh.name, amount: fh.amount }));
+    const total = items.reduce((sum, i) => sum + i.amount, 0);
+
+    return { items, total };
+}
+
+/** Generate preview data for bulk challan generation */
+export function generateBulkPreview(
+    config: BulkGenerationConfig
+): BulkGenerationPreview {
+    const targetStudents = allStudents.filter((s) => {
+        if (s.status !== "Active") return false;
+        if (config.scope === "entire-school") return true;
+        return config.selectedClasses.includes(s.class);
+    });
+
+    const classSet = [...new Set(targetStudents.map((s) => s.class))].sort(
+        (a, b) => parseInt(a) - parseInt(b)
+    );
+
+    const byClass = classSet.map((cls) => {
+        const classStudents = targetStudents.filter((s) => s.class === cls);
+        const feeCalc = calculateStudentFee(cls);
+        return {
+            className: cls,
+            studentCount: classStudents.length,
+            amountPerStudent: feeCalc.total,
+            totalAmount: feeCalc.total * classStudents.length,
+        };
+    });
+
+    const concessionsApplied = Math.floor(targetStudents.length * 0.12);
+    const avgFee =
+        byClass.length > 0
+            ? byClass.reduce((s, c) => s + c.amountPerStudent, 0) / byClass.length
+            : 0;
+    const siblingDiscount = feeConcessions.find(
+        (c) => c.isActive && c.autoApply && c.type === "percentage"
+    );
+    const discountPct = siblingDiscount ? siblingDiscount.value / 100 : 0.1;
+
+    return {
+        totalStudents: targetStudents.length,
+        totalAmount: byClass.reduce((sum, c) => sum + c.totalAmount, 0),
+        byClass,
+        concessionsApplied,
+        totalConcessionAmount: Math.round(concessionsApplied * avgFee * discountPct),
+        arrearsStudents: config.includeArrears ? feeDefaulters.length : 0,
+        arrearsAmount: config.includeArrears
+            ? feeDefaulters.reduce((sum, d) => sum + d.totalDue, 0)
+            : 0,
+    };
+}
+
+/** Generate bulk challans for all target students */
+export function generateBulkChallans(
+    config: BulkGenerationConfig
+): FeeChallan[] {
+    const targetStudents = allStudents.filter((s) => {
+        if (s.status !== "Active") return false;
+        if (config.scope === "entire-school") return true;
+        return config.selectedClasses.includes(s.class);
+    });
+
+    return targetStudents.map((student, index) => {
+        const feeCalc = calculateStudentFee(student.class);
+        const challanNo = `CH-2026-B${String(index + 1).padStart(4, "0")}`;
+
+        return {
+            id: `bulk-${Date.now()}-${index}`,
+            challanNo,
+            studentId: student.id,
+            studentName: student.studentName,
+            fatherName: student.fatherName,
+            class: student.class,
+            section: student.section,
+            admissionNo: student.admissionNo,
+            month: config.month,
+            academicYear: "2025-2026",
+            issueDate: new Date().toISOString().split("T")[0],
+            dueDate: config.dueDate,
+            lineItems: feeCalc.items.map((item, i) => ({
+                id: `li-${index}-${i}`,
+                name: item.name,
+                amount: item.amount,
+            })),
+            totalAmount: feeCalc.total,
+            discountAmount: 0,
+            netAmount: feeCalc.total,
+            status: "pending" as const,
+        };
+    });
+}

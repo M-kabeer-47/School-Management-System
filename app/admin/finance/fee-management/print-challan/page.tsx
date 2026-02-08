@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Printer, FileText, Filter, X } from "lucide-react";
+import { Printer, FileText, Filter, X, Upload, Check } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { Pagination } from "@/components/admin/students/Pagination";
@@ -12,7 +12,8 @@ import { PrintChallanTable } from "@/components/admin/finance";
 import { ChallanPrintTemplate } from "@/components/admin/finance/ChallanPrintTemplate";
 import { getUniqueClasses } from "@/lib/admin/mock-data/students";
 import { challanData } from "@/lib/admin/mock-data/finance";
-import { ChallanData } from "@/lib/admin/types/finance";
+import { ChallanData, FeeChallan } from "@/lib/admin/types/finance";
+import { publishChallans } from "@/lib/shared/challan-store";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -25,6 +26,7 @@ export default function PrintChallanPage() {
     const [showFilters, setShowFilters] = useState(false);
     const [isPrinting, setIsPrinting] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
+    const [publishedIds, setPublishedIds] = useState<string[]>([]);
 
     const uniqueClasses = getUniqueClasses();
 
@@ -75,6 +77,38 @@ export default function PrintChallanPage() {
         console.log("Printing challans for:", selectedIds);
         handlePrint();
     };
+
+    const handlePublishToPortal = () => {
+        const selectedChallans = challans.filter((c) => selectedIds.includes(c.id));
+        const asFeeChallan: FeeChallan[] = selectedChallans.map((c) => ({
+            id: c.id,
+            challanNo: c.challanNo,
+            studentId: c.id,
+            studentName: c.studentName,
+            fatherName: c.fatherName,
+            class: c.class,
+            section: c.section,
+            admissionNo: c.admissionNo,
+            month: c.month,
+            academicYear: "2025-2026",
+            issueDate: new Date().toISOString().split("T")[0],
+            dueDate: c.dueDate,
+            lineItems: c.items.map((item, i) => ({
+                id: `li-${i}`,
+                name: item.name,
+                amount: item.amount,
+            })),
+            totalAmount: c.total,
+            discountAmount: 0,
+            netAmount: c.total,
+            status: "pending" as const,
+        }));
+        publishChallans(asFeeChallan);
+        setPublishedIds((prev) => [...prev, ...selectedIds]);
+    };
+
+    const allSelectedPublished =
+        selectedIds.length > 0 && selectedIds.every((id) => publishedIds.includes(id));
 
     const clearFilters = () => {
         setSearch("");
@@ -208,16 +242,39 @@ export default function PrintChallanPage() {
                             className="bg-purple-100 dark:bg-purple-900/30 border border-purple-200 dark:border-purple-800 rounded-xl px-4 py-3 flex items-center justify-between"
                         >
                             <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
-                                {selectedIds.length} challans selected for printing
+                                {selectedIds.length} challans selected
                             </span>
-                            <Button
-                                size="sm"
-                                className="bg-purple-600 hover:bg-purple-700"
-                                onClick={handleBulkPrint}
-                            >
-                                <Printer className="w-4 h-4" />
-                                Print All Selected
-                            </Button>
+                            <div className="flex items-center gap-2">
+                                {allSelectedPublished ? (
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        disabled
+                                        className="border-green-300 text-green-700 gap-1.5 opacity-80"
+                                    >
+                                        <Check className="w-4 h-4" />
+                                        Published
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={handlePublishToPortal}
+                                        className="border-green-300 text-green-700 hover:bg-green-50 dark:hover:bg-green-900/20 gap-1.5"
+                                    >
+                                        <Upload className="w-4 h-4" />
+                                        Publish to Portal
+                                    </Button>
+                                )}
+                                <Button
+                                    size="sm"
+                                    className="bg-purple-600 hover:bg-purple-700"
+                                    onClick={handleBulkPrint}
+                                >
+                                    <Printer className="w-4 h-4" />
+                                    Print All Selected
+                                </Button>
+                            </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -230,6 +287,7 @@ export default function PrintChallanPage() {
                         onToggleSelect={handleToggleSelect}
                         onToggleSelectAll={handleSelectAll}
                         onPreview={setPreviewChallan}
+                        publishedIds={publishedIds}
                     />
                 </div>
 

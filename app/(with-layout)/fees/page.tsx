@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { FeesTable } from "@/components/student/fees";
 import {
-  challans,
+  getPublishedChallans,
   getPendingChallans,
   getPaidChallans,
-} from "@/lib/student/mock-data/fees";
+} from "@/lib/shared/challan-store";
 import { Button } from "@/components/ui/Button";
 import { Eye, EyeOff } from "lucide-react";
 import { PageHeaderIcons } from "@/utils/student/icons";
@@ -15,9 +15,10 @@ import { PageHeaderIcons } from "@/utils/student/icons";
 export default function FeesPage() {
   const [showAll, setShowAll] = useState(false);
 
+  const allChallans = getPublishedChallans();
   const pendingChallans = getPendingChallans();
   const paidChallans = getPaidChallans();
-  const displayChallans = showAll ? challans : pendingChallans;
+  const displayChallans = showAll ? allChallans : pendingChallans;
 
   const hasPendingFees = pendingChallans.length > 0;
 

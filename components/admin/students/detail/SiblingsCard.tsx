@@ -1,38 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Users,
   BadgePercent,
   GraduationCap,
   CheckCircle2,
   User,
+  Info,
 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
 import { Student } from "@/lib/admin/types/student";
 import { clsx } from "clsx";
 
 interface SiblingsCardProps {
   currentStudent: Student;
   siblings: Student[];
-  onApplyDiscount: () => void;
 }
 
 export function SiblingsCard({
   currentStudent,
   siblings,
-  onApplyDiscount,
 }: SiblingsCardProps) {
-  const [discountApplied, setDiscountApplied] = useState(
-    currentStudent.hasSiblingDiscount || false,
-  );
-
-  const handleApplyDiscount = () => {
-    setDiscountApplied(true);
-    onApplyDiscount();
-  };
-
   if (siblings.length === 0) {
     return (
       <div className="bg-surface/50 backdrop-blur-xl border border-white/20 dark:border-white/5 rounded-2xl shadow-sm p-6">
@@ -69,31 +56,19 @@ export function SiblingsCard({
           </div>
         </div>
 
-        {/* Apply Sibling Discount Button */}
-        <AnimatePresence mode="wait">
-          {discountApplied ? (
-            <motion.div
-              key="applied"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-            >
-              <CheckCircle2 className="w-4 h-4" />
-              <span className="text-xs font-semibold">Discount Applied</span>
-            </motion.div>
-          ) : (
-            <motion.div key="apply" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <Button
-                onClick={handleApplyDiscount}
-                className="bg-accent hover:bg-accent-hover text-white gap-2 text-xs"
-                size="sm"
-              >
-                <BadgePercent className="w-4 h-4" />
-                Apply Sibling Discount
-              </Button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Auto-applied discount indicator */}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
+          <CheckCircle2 className="w-4 h-4" />
+          <span className="text-xs font-semibold">Discount Auto-Applied</span>
+        </div>
+      </div>
+
+      {/* Info banner */}
+      <div className="px-6 py-2.5 bg-blue-50 dark:bg-blue-950/20 border-b border-blue-100 dark:border-blue-900/30 flex items-center gap-2">
+        <Info className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+        <p className="text-xs text-blue-600 dark:text-blue-400">
+          Sibling discount is automatically applied based on school fee concession settings.
+        </p>
       </div>
 
       {/* Siblings List */}

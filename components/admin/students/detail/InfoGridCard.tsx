@@ -180,7 +180,7 @@ export function InfoGridCard({
                           onChange={(e) =>
                             handleChange(field.key, e.target.value)
                           }
-                          className="h-9 text-sm"
+                          className="h-9 text-sm min-w-fit"
                           type={field.type || "text"}
                         />
                       )}
