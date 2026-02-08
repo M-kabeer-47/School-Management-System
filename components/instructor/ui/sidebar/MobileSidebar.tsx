@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { InstructorSidebarItem } from "./SidebarItem";
 import { InstructorSidebarHeader } from "./SidebarHeader";
 import { InstructorSidebarFooter } from "./SidebarFooter";
@@ -10,8 +11,15 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export const InstructorMobileSidebar = ({ items, user }: SidebarProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
-  // Close sidebar on route change? usually handled by layout but good to have
+  // Helper to check active state
+  const isActive = (href: string) => {
+    if (href === "/instructor" && pathname === "/instructor") return true;
+    if (href !== "/instructor" && pathname?.startsWith(href)) return true;
+    return false;
+  };
+
   // Prevent body scroll when menu is open
   useEffect(() => {
     if (isOpen) {
@@ -20,6 +28,11 @@ export const InstructorMobileSidebar = ({ items, user }: SidebarProps) => {
       document.body.style.overflow = "unset";
     }
   }, [isOpen]);
+
+  // Close menu on navigation
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   return (
     <div className="md:hidden">
@@ -68,7 +81,7 @@ export const InstructorMobileSidebar = ({ items, user }: SidebarProps) => {
                   <InstructorSidebarItem
                     key={item.href}
                     item={item}
-                    isActive={false} // Would need real path check here or pass down
+                    isActive={isActive(item.href)}
                     isCollapsed={false}
                   />
                 ))}
